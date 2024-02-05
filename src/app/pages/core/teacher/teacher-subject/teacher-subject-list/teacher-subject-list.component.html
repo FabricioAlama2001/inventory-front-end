@@ -1,0 +1,56 @@
+<p-toolbar>
+  <div class="p-toolbar-group-right  ml-2">
+    <p-dropdown [formControl]="selectedSchoolPeriod"
+                dataKey="id"
+                [options]="schoolPeriods"
+                optionLabel="name"
+                placeholder="Periodo Lectivo"
+                pTooltip="Periodo Lectivo">
+    </p-dropdown>
+    <p-dropdown [formControl]="selectedAcademicPeriod"
+                dataKey="id"
+                [options]="academicPeriods"
+                optionLabel="name"
+                placeholder="Todos los Niveles"
+                pTooltip="Nivel Académico"
+                [showClear]="true">
+    </p-dropdown>
+  </div>
+</p-toolbar>
+<div class="p-fluid">
+  <p-card class="xl:col-4" *ngFor="let item of items">
+    <div class="row materia" style="width: 100%; height: 2rem; margin: float; margin-top: 0%; margin-left: 0%;">
+      <p> {{ item.subject.name }} </p>
+    </div>
+    <br>
+    <div class="card-body">
+      <div class="row carrera"
+           style="color:gray; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+        <p> {{ item.subject.curriculum.career.name }} {{ item.subject.curriculum.name }} </p>
+      </div>
+      <br>
+      <div class="row profesor">
+
+
+        <p>{{ item.teacher.user.name }} {{ item.teacher.user.lastname }}</p>
+
+      </div>
+      <br>
+      <div class="row jornada">
+        <p>{{ item.workday.name }} {{ item.parallel.name }} </p>
+      </div>
+      <br>
+      <div class="row aprobados">
+        <!-- como seria la ruta para saber que estudiantes aprobaron/reprobaron/pendiente la materia  //no es necesario por el momento -->
+        APROBADOS:&nbsp;<p class="text-success">22</p>&nbsp;REPROBADOS:&nbsp;<p class="text-danger">6</p>&nbsp;PENDIENTES:&nbsp;<p
+        class="text-warning">0</p>
+      </div>
+      <br>
+      <div class="row notas">
+        <button pButton><i class="pi pi-check"></i> notas registradas</button>
+      </div>
+
+    </div>
+
+  </p-card>
+</div>

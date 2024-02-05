@@ -1,0 +1,176 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div formGroupName="informationStudent">
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="isFamilyCatastrophicIllness"
+               label="¿Algún miembro de su familia, sufre alguna enfermedad catastrófica?:"
+               [required]="isFamilyCatastrophicIllnessField"></label>
+        <p-dropdown
+          id="isFamilyCatastrophicIllness"
+          formControlName="isFamilyCatastrophicIllness"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isFamilyCatastrophicIllnessField.value">
+              <div>{{ isFamilyCatastrophicIllnessField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isFamilyCatastrophicIllnessField.errors"
+          [touched]="isFamilyCatastrophicIllnessField.touched"
+          [dirty]="isFamilyCatastrophicIllnessField.dirty">
+        </small>
+      </div>
+      <div *ngIf="familyKinshipCatastrophicIllnessField.hasValidator(Validators.required)"
+           class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="familyKinshipCatastrophicIllness" label="Especifique quién:"
+               [required]="familyKinshipCatastrophicIllnessField"></label>
+        <p-dropdown
+          id="familyKinshipCatastrophicIllness"
+          formControlName="familyKinshipCatastrophicIllness"
+          dataKey="id"
+          [options]="familyKinshipCatastrophicIllness"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="familyKinshipCatastrophicIllnessField.value">
+              <div>{{ familyKinshipCatastrophicIllnessField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="familyKinshipCatastrophicIllnessField.errors"
+          [touched]="familyKinshipCatastrophicIllnessField.touched"
+          [dirty]="familyKinshipCatastrophicIllnessField.dirty">
+        </small>
+      </div>
+      <div *ngIf="familyCatastrophicIllnessField.hasValidator(Validators.required)"
+           class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="familyCatastrophicIllness" label="¿Qué tipo de enfermedad?:"
+               [required]="familyCatastrophicIllnessField"></label>
+        <input pInputText id="familyCatastrophicIllness" formControlName="familyCatastrophicIllness"/>
+        <small
+          appErrorMessage
+          [errors]="familyCatastrophicIllnessField.errors"
+          [touched]="familyCatastrophicIllnessField.touched"
+          [dirty]="familyCatastrophicIllnessField.dirty">
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="isFamilyDisability" label="¿Algún miembro de su familia, presenta alguna discapacidad?:"
+               [required]="isFamilyDisabilityField"></label>
+        <p-dropdown
+          id="isFamilyDisability"
+          formControlName="isFamilyDisability"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isFamilyDisabilityField.value">
+              <div>{{ isFamilyDisabilityField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isFamilyDisabilityField.errors"
+          [touched]="isFamilyDisabilityField.touched"
+          [dirty]="isFamilyDisabilityField.dirty">
+        </small>
+      </div>
+      <div *ngIf="familyDisabilityPercentageField.hasValidator(Validators.required)"
+           class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="familyDisabilityPercentage" label="Porcentaje de discapacidad:"
+               [required]="familyDisabilityPercentageField"></label>
+        <p-inputNumber id="familyDisabilityPercentage" formControlName="familyDisabilityPercentage"
+                       [min]="1"
+                       [max]="100"
+                       [showButtons]="true"></p-inputNumber>
+        <small appErrorMessage [errors]="familyDisabilityPercentageField.errors"
+               [touched]="familyDisabilityPercentageField.touched" [dirty]="familyDisabilityPercentageField.dirty">
+        </small>
+      </div>
+      <div *ngIf="familyKinshipDisabilityField.hasValidator(Validators.required)"
+           class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="familyKinshipDisability" label="Especifique quién:"
+               [required]="familyKinshipDisabilityField"></label>
+        <p-dropdown
+          id="familyKinshipDisability"
+          formControlName="familyKinshipDisability"
+          dataKey="id"
+          [options]="familyKinshipDisabilities"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="familyKinshipDisabilityField.value">
+              <div>{{ familyKinshipDisabilityField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="familyKinshipDisabilityField.errors"
+          [touched]="familyKinshipDisabilityField.touched"
+          [dirty]="familyKinshipDisabilityField.dirty">
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Atrás"
+        class="p-button-warning"
+        [icon]="PrimeIcons.ARROW_LEFT"
+        (click)="previous.emit(-1)"></button>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button *ngIf="!form.disabled"
+              pButton
+              pRipple
+              label="Guardar y Continuar"
+              [icon]="PrimeIcons.ARROW_RIGHT"
+              iconPos="right"></button>
+
+      <button *ngIf="form.disabled"
+              pButton
+              type="button"
+              pRipple
+              label="Continuar"
+              [icon]="PrimeIcons.ARROW_RIGHT"
+              iconPos="right"
+              (click)="next.emit()"></button>
+    </div>
+  </div>
+</form>

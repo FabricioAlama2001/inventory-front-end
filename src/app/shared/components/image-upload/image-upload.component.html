@@ -1,0 +1,14 @@
+<p-fileUpload
+  #uploadFiles
+  chooseLabel="Cargar"
+  [chooseIcon]="PrimeIcons.UPLOAD"
+  uploadLabel="Subir Imagen"
+  name="image"
+  [auto]="true"
+  mode="basic"
+  [accept]="acceptAttributes"
+  [maxFileSize]="maxFileSize"
+  [fileLimit]="fileLimit"
+  [customUpload]="true"
+  (uploadHandler)="uploadFile($event,uploadFiles)">
+</p-fileUpload>

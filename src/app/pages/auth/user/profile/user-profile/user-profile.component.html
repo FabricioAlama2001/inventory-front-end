@@ -1,0 +1,230 @@
+<app-skeleton *ngIf="coreService.isLoading" [type]="SkeletonEnum.CARD"></app-skeleton>
+<form *ngIf="!coreService.isLoading" [formGroup]="form" (ngSubmit)="onSubmitProfile()" class="p-fluid">
+  <!--Avatar && identification && identificationType-->
+  <div class="formgrid grid">
+    <div class="field xl:col-2 lg:col-2 md:col-4 sm:col-12 text-center">
+      <p-avatar [image]="HOST_URL+avatarField.value" styleClass="mr-2"
+                size="xlarge" shape="circle"></p-avatar>
+      <p-fileUpload
+        #uploadFiles
+        chooseLabel="Cargar"
+        [chooseIcon]="PrimeIcons.UPLOAD"
+        uploadLabel="Subir Imagen"
+        name="avatar"
+        [auto]="true"
+        mode="basic"
+        accept="image/*"
+        [maxFileSize]="1024000"
+        [customUpload]="true"
+        (uploadHandler)="uploadAvatar($event,uploadFiles)">
+      </p-fileUpload>
+    </div>
+    <div class="field xl:col-5 lg:col-5 md:col-4 sm:col-12">
+      <label appLabel for="identificationType" label="Tipo de Documento:"
+             [required]="identificationTypeField"></label>
+      <p-dropdown id="identificationType"
+                  formControlName="identificationType"
+                  dataKey="id"
+                  [options]="identificationTypes"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  placeholder="Seleccione...">
+      </p-dropdown>
+      <small appErrorMessage
+             [errors]="identificationTypeField.errors"
+             [touched]="identificationTypeField.touched"
+             [dirty]="identificationTypeField.dirty">
+      </small>
+    </div>
+    <div class="field xl:col-5 lg:col-5 md:col-4 sm:col-12">
+      <label appLabel for="identification" label="Número de Documento:" [required]="identificationField"></label>
+      <input pInputText type="text" id="identification" formControlName="identification"/>
+      <small appErrorMessage
+             [errors]="identificationField.errors"
+             [touched]="identificationField.touched"
+             [dirty]="identificationField.dirty">
+      </small>
+    </div>
+  </div>
+
+  <!--name && lastname-->
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="name" label="Nombres:" [required]="nameField"></label>
+      <input pInputText type="text" id="name" formControlName="name"/>
+      <small appErrorMessage
+             [errors]="nameField.errors"
+             [touched]="nameField.touched"
+             [dirty]="nameField.dirty">
+      </small>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="lastname" label="Apellidos:" [required]="lastnameField"></label>
+      <input pInputText type="text" id="lastname" formControlName="lastname"/>
+      <small appErrorMessage
+             [errors]="lastnameField.errors"
+             [touched]="lastnameField.touched"
+             [dirty]="lastnameField.dirty">
+      </small>
+    </div>
+  </div>
+
+  <!--birthdate && ethnicOrigin-->
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="birthdate" label="Fecha de Nacimiento: (yyyy-mm-dd)" [required]="birthdateField"></label>
+      <p-calendar id="birthdate"
+                  formControlName="birthdate"
+                  dateFormat="yy-mm-dd"
+                  [firstDayOfWeek]="1"
+                  [showIcon]="true"></p-calendar>
+      <small appErrorMessage
+             [errors]="birthdateField.errors"
+             [touched]="birthdateField.touched"
+             [dirty]="birthdateField.dirty">
+      </small>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="ethnicOrigin" label="Etnia:" [required]="ethnicOriginField"></label>
+      <p-dropdown id="ethnicOrigin"
+                  formControlName="ethnicOrigin"
+                  dataKey="id"
+                  [options]="ethnicOrigins"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  placeholder="Seleccione...">
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="ethnicOriginField.value">
+            <div>{{ethnicOriginField.value.name}}</div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="item" let-item>
+          {{item.name}}
+        </ng-template>
+      </p-dropdown>
+      <small appErrorMessage
+             [errors]="ethnicOriginField.errors"
+             [touched]="ethnicOriginField.touched"
+             [dirty]="ethnicOriginField.dirty">
+      </small>
+    </div>
+  </div>
+
+  <!--sex && gender-->
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="sex" label="Sexo:" [required]="sexField"></label>
+      <p-dropdown id="sex"
+                  formControlName="sex"
+                  dataKey="id"
+                  [options]="sexes"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  placeholder="Seleccione...">
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="sexField.value">
+            <div>{{sexField.value.name}}</div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="item" let-item>
+          {{item.name}}
+        </ng-template>
+      </p-dropdown>
+      <small appErrorMessage
+             [errors]="sexField.errors"
+             [touched]="sexField.touched"
+             [dirty]="sexField.dirty">
+      </small>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="gender" label="Género:" [required]="genderField"></label>
+      <p-dropdown id="gender"
+                  formControlName="gender"
+                  dataKey="id"
+                  [options]="genders"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  placeholder="Seleccione...">
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="genderField.value">
+            <div>{{genderField.value.name}}</div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="item" let-item>
+          {{item.name}}
+        </ng-template>
+      </p-dropdown>
+      <small appErrorMessage
+             [errors]="genderField.errors"
+             [touched]="genderField.touched"
+             [dirty]="genderField.dirty">
+      </small>
+    </div>
+  </div>
+
+  <!--bloodType && maritalStatus-->
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="bloodType" label="Tipo de Sangre:" [required]="bloodTypeField"></label>
+      <p-dropdown id="bloodType"
+                  formControlName="bloodType"
+                  dataKey="id"
+                  [options]="bloodTypes"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  placeholder="Seleccione...">
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="bloodTypeField.value">
+            <div>{{bloodTypeField.value.name}}</div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="item" let-item>
+          {{item.name}}
+        </ng-template>
+      </p-dropdown>
+      <small appErrorMessage
+             [errors]="bloodTypeField.errors"
+             [touched]="bloodTypeField.touched"
+             [dirty]="bloodTypeField.dirty">
+      </small>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="maritalStatus" label="Estado Civil:" [required]="maritalStatusField"></label>
+      <p-dropdown id="maritalStatus"
+                  formControlName="maritalStatus"
+                  dataKey="id"
+                  [options]="maritalStatus"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  placeholder="Seleccione...">
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="maritalStatusField.value">
+            <div>{{maritalStatusField.value.name}}</div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="item" let-item>
+          {{item.name}}
+        </ng-template>
+      </p-dropdown>
+      <small appErrorMessage
+             [errors]="maritalStatusField.errors"
+             [touched]="maritalStatusField.touched"
+             [dirty]="maritalStatusField.dirty">
+      </small>
+    </div>
+  </div>
+
+  <!--submit-->
+  <div class="field">
+    <button pButton pRipple id="submitProfile" type="submit"
+            label="Actualizar"
+            [icon]="PrimeIcons.SAVE"
+            [loading]="coreService.isLoading"></button>
+  </div>
+</form>

@@ -1,0 +1,25 @@
+.p-breadcrumb {
+  background: rgba(23, 48, 74, 29);
+  //font-size: 12px;
+  //position: relative;
+}
+
+.p-breadcrumb ul li .p-menuitem-link .p-menuitem-text{
+  color: white;
+}
+
+.p-breadcrumb ul li.p-breadcrumb-chevron{
+  color: white;
+}
+
+.p-breadcrumb ul li .p-menuitem-link .p-menuitem-icon{
+  color: white;
+}
+
+.panel-profile {
+  //background: rgba(23, 48, 74, 0.05);
+  background: rgba(248, 195, 0, 0.3);
+  //background: #f8c300;
+  opacity: 1;
+  border-radius: 5px;
+}

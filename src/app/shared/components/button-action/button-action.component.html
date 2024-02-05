@@ -1,0 +1,11 @@
+<p-sidebar [(visible)]="isVisible" position="right" (onHide)="isHide.emit(true)">
+  <ng-template pTemplate="header">
+    {{LabelButtonActionEnum.ACTIONS}}
+  </ng-template>
+  <ng-template pTemplate="content">
+    <p-panelMenu [model]="buttonActions"
+                 [style]="{'width':'300px'}"
+                 (click)="isVisible=false; isHide.emit(true)"></p-panelMenu>
+  </ng-template>
+  <ng-template pTemplate="footer">Footer Content</ng-template>
+</p-sidebar>

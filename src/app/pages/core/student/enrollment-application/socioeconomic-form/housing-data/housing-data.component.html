@@ -1,0 +1,567 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div formGroupName="informationStudent">
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label
+          appLabel
+          for="studentLive"
+          label="¿Con quién vive el estudiante?:"
+          [required]="studentLiveField"
+        ></label>
+        <p-dropdown
+          id="studentLive"
+          formControlName="studentLive"
+          dataKey="id"
+          [options]="studentLives"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="studentLiveField.value">
+              <div>{{ studentLiveField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="studentLiveField.errors"
+          [touched]="studentLiveField.touched"
+          [dirty]="studentLiveField.dirty"
+        >
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label
+          appLabel
+          for="homeOwnership"
+          label="La vivienda en la que habita el estudiante es:"
+          [required]="homeOwnershipField"
+        ></label>
+        <p-dropdown
+          id="homeOwnership"
+          formControlName="homeOwnership"
+          dataKey="id"
+          [options]="homeOwnerships"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="homeOwnershipField.value">
+              <div>{{ homeOwnershipField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="homeOwnershipField.errors"
+          [touched]="homeOwnershipField.touched"
+          [dirty]="homeOwnershipField.dirty"
+        >
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label
+          appLabel
+          for="homeType"
+          label="Tipo de vivienda:"
+          [required]="homeTypeField"
+        ></label>
+        <p-dropdown
+          id="homeType"
+          formControlName="homeType"
+          dataKey="id"
+          [options]="homeTypes"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="homeTypeField.value">
+              <div>{{ homeTypeField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="homeTypeField.errors"
+          [touched]="homeTypeField.touched"
+          [dirty]="homeTypeField.dirty"
+        >
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label
+          appLabel
+          for="homeRoof"
+          label="Principal material del techo de la vivienda:"
+          [required]="homeRoofField"
+        ></label>
+        <p-dropdown
+          id="homeRoof"
+          formControlName="homeRoof"
+          dataKey="id"
+          [options]="homeRoofs"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="homeRoofField.value">
+              <div>{{ homeRoofField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="homeRoofField.errors"
+          [touched]="homeRoofField.touched"
+          [dirty]="homeRoofField.dirty"
+        >
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label
+          appLabel
+          for="homeFloor"
+          label="Principal material del piso de la vivienda"
+          [required]="homeFloorField"
+        ></label>
+        <p-dropdown
+          id="homeFloor"
+          formControlName="homeFloor"
+          dataKey="id"
+          [options]="homeFloors"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="homeFloorField.value">
+              <div>{{ homeFloorField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="homeFloorField.errors"
+          [touched]="homeFloorField.touched"
+          [dirty]="homeFloorField.dirty"
+        >
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label
+          appLabel
+          for="homeWall"
+          label="Principal material de las paredes de la vivienda"
+          [required]="homeWallField"
+        ></label>
+        <p-dropdown
+          id="homeWall"
+          formControlName="homeWall"
+          dataKey="id"
+          [options]="homeWalls"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="homeWallField.value">
+              <div>{{ homeWallField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="homeWallField.errors"
+          [touched]="homeWallField.touched"
+          [dirty]="homeWallField.dirty"
+        >
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label
+          appLabel
+          for="isWaterService"
+          label="¿Posee el servicio básico de agua?"
+          [required]="isWaterServiceField"
+        ></label>
+        <p-dropdown
+          id="isWaterService"
+          formControlName="isWaterService"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isWaterServiceField.value">
+              <div>{{ isWaterServiceField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isWaterServiceField.errors"
+          [touched]="isWaterServiceField.touched"
+          [dirty]="isWaterServiceField.dirty"
+        >
+        </small>
+      </div>
+      <div *ngIf="waterServiceTypeField.hasValidator(Validators.required)"
+           class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label
+          appLabel
+          for="waterServiceType"
+          label="¿Qué tipo de agua consume en su domicilio?"
+          [required]="waterServiceTypeField"
+        ></label>
+        <p-dropdown
+          id="waterServiceType"
+          formControlName="waterServiceType"
+          dataKey="id"
+          [options]="waterServiceTypes"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="waterServiceTypeField.value">
+              <div>{{ waterServiceTypeField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="waterServiceTypeField.errors"
+          [touched]="waterServiceTypeField.touched"
+          [dirty]="waterServiceTypeField.dirty"
+        >
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label
+          appLabel
+          for="isElectricService"
+          label="¿Posee luz en su domicilio?:"
+          [required]="isElectricServiceField"
+        ></label>
+        <p-dropdown
+          id="isElectricService"
+          formControlName="isElectricService"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isElectricServiceField.value">
+              <div>{{ isElectricServiceField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isElectricServiceField.errors"
+          [touched]="isElectricServiceField.touched"
+          [dirty]="isElectricServiceField.dirty"
+        >
+        </small>
+      </div>
+      <div *ngIf="electricServiceBlackoutField.hasValidator(Validators.required)"
+           class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label
+          appLabel
+          for="electricServiceBlackout"
+          label="¿Con qué frecuencia presenta apagones o cortes de luz en su vivienda?:"
+          [required]="electricServiceBlackoutField"
+        ></label>
+        <p-dropdown
+          id="electricServiceBlackout"
+          formControlName="electricServiceBlackout"
+          dataKey="id"
+          [options]="electricServiceBlackouts"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="electricServiceBlackoutField.value">
+              <div>{{ electricServiceBlackoutField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="electricServiceBlackoutField.errors"
+          [touched]="electricServiceBlackoutField.touched"
+          [dirty]="electricServiceBlackoutField.dirty"
+        >
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="isPhoneService" label="¿Posee el servicio básico de teléfono en su vivienda?"
+               [required]="isPhoneServiceField"></label>
+        <p-dropdown
+          id="isPhoneService"
+          formControlName="isPhoneService"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isPhoneServiceField.value">
+              <div>{{ isPhoneServiceField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isPhoneServiceField.errors"
+          [touched]="isPhoneServiceField.touched"
+          [dirty]="isPhoneServiceField.dirty"
+        >
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="isSewerageService" label="¿Posee el servicio básico de alcantarillado en su vivienda?"
+               [required]="isSewerageServiceField"></label>
+        <p-dropdown
+          id="isSewerageService"
+          formControlName="isSewerageService"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isSewerageServiceField.value">
+              <div>{{ isSewerageServiceField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isSewerageServiceField.errors"
+          [touched]="isSewerageServiceField.touched"
+          [dirty]="isSewerageServiceField.dirty"
+        >
+        </small>
+      </div>
+      <div *ngIf="sewerageServiceTypeField.hasValidator(Validators.required)"
+           class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="sewerageServiceType" label="¿Que tipo de alcantarillado posee?:"
+               [required]="sewerageServiceTypeField"></label>
+        <p-dropdown
+          id="sewerageServiceType"
+          formControlName="sewerageServiceType"
+          dataKey="id"
+          [options]="sewerageServiceTypes"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="sewerageServiceTypeField.value">
+              <div>{{ sewerageServiceTypeField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="sewerageServiceTypeField.errors"
+          [touched]="sewerageServiceTypeField.touched"
+          [dirty]="sewerageServiceTypeField.dirty"
+        >
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="economicContribution" label="¿Para sus estudios recibe aportes de?:"
+               [required]="economicContributionField" class="mb-4"></label>
+        <p-dropdown
+          id="economicContribution"
+          formControlName="economicContribution"
+          dataKey="id"
+          [options]="economicContributions"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="economicContributionField.value">
+              <div>{{ economicContributionField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="economicContributionField.errors"
+          [touched]="economicContributionField.touched"
+          [dirty]="economicContributionField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label
+          appLabel
+          for="isFamilyEconomicAid"
+          label="¿Algun miembro del grupo familiar es beneficiario de algún bono, beca o ayuda económica?:"
+          [required]="isFamilyEconomicAidField"
+        ></label>
+        <p-dropdown
+          id="isFamilyEconomicAid"
+          formControlName="isFamilyEconomicAid"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isFamilyEconomicAidField.value">
+              <div>{{ isFamilyEconomicAidField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isFamilyEconomicAidField.errors"
+          [touched]="isFamilyEconomicAidField.touched"
+          [dirty]="isFamilyEconomicAidField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="consumeNewsType" label="En que medio consume noticias"
+               [required]="consumeNewsTypeField" class="mb-4"></label>
+        <p-dropdown
+          id="consumeNewsType"
+          formControlName="consumeNewsType"
+          dataKey="id"
+          [options]="consumeNewsTypes"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="consumeNewsTypeField.value">
+              <div>{{ consumeNewsTypeField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="consumeNewsTypeField.errors"
+          [touched]="consumeNewsTypeField.touched"
+          [dirty]="consumeNewsTypeField.dirty">
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Atrás"
+        class="p-button-warning"
+        [icon]="PrimeIcons.ARROW_LEFT"
+        (click)="previous.emit(-1)"
+      ></button>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button *ngIf="!form.disabled"
+              pButton
+              pRipple
+              label="Guardar y Continuar"
+              [icon]="PrimeIcons.ARROW_RIGHT"
+              iconPos="right"></button>
+
+      <button *ngIf="form.disabled"
+              pButton
+              type="button"
+              pRipple
+              label="Continuar"
+              [icon]="PrimeIcons.ARROW_RIGHT"
+              iconPos="right"
+              (click)="next.emit()"></button>
+    </div>
+  </div>
+</form>

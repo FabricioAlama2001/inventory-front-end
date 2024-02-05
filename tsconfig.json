@@ -1,0 +1,53 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2022",
+    "module": "es2022",
+    "skipLibCheck": true,
+    "lib": [
+      "es2022",
+      "dom"
+    ],
+    "paths": {
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@env/*": [
+        "src/environments/*"
+      ],
+      "@layout": [
+        "src/app/layout"
+      ],
+      "@models/*": [
+        "src/app/models/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@services/*": [
+        "src/app/services/*"
+      ],
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

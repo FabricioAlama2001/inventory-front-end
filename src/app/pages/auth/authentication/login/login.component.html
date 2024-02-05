@@ -1,0 +1,50 @@
+<div class="login-page">
+  <div class="login-form">
+    <div class="p-fluid panel-auth">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="field text-center">
+          <img src="assets/images/logo/logo-sm.png" alt="">
+          <h2>{{authService.system}}</h2>
+        </div>
+
+        <div class="field">
+          <label for="username" appLabel label="Usuario:" [required]="usernameField"></label>
+          <input pInputText id="username" formControlName="username">
+          <small appErrorMessage
+                 [errors]="usernameField.errors"
+                 [touched]="usernameField.touched"
+                 [dirty]="usernameField.dirty">
+          </small>
+        </div>
+
+        <div class="field">
+          <label for="password" appLabel label="Contraseña:" [required]="passwordField"></label>
+          <p-password id="password" formControlName="password" [feedback]="false"></p-password>
+          <small appErrorMessage
+                 [errors]="passwordField.errors"
+                 [touched]="passwordField.touched"
+                 [dirty]="passwordField.dirty">
+          </small>
+        </div>
+
+        <div *ngIf="coreService.isLoading" class="field">
+          <app-progress-bar [message]="messageService.progressBarLogin"></app-progress-bar>
+        </div>
+
+        <div class="field">
+          <button pButton pRipple
+                  label="Continuar"
+                  [icon]="PrimeIcons.SIGN_IN"></button>
+        </div>
+
+        <div class="formgrid grid">
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <button pButton pRipple type="button" label="Recuperar contraseña"
+                    class="p-button-info"
+                    icon="pi pi-key" (click)="redirectPasswordReset()"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

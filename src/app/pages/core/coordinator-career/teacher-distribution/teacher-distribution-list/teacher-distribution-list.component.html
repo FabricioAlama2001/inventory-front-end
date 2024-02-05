@@ -1,0 +1,126 @@
+<div class="formgrid p-fluid">
+  <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+    <p-dropdown
+      [options]="careerOptions"
+      [(ngModel)]="selectedCareer"
+      placeholder="Seleccionar Carrera"
+      (onChange)="onCareerSelected()">
+    </p-dropdown>
+  </div>
+</div>
+
+<div *ngIf="isCareerSelected">
+
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <button pButton pRipple type="button"
+              label="Crear"
+              class="p-button-success"
+              [icon]="PrimeIcons.PLUS"
+              (click)="redirectCreateForm()">
+      </button>
+
+      <button pButton pRipple type="button"
+              label="Refrescar"
+              class="p-button-info ml-2"
+              [icon]="PrimeIcons.REFRESH"
+              [loading]="coreService.isLoading"
+              (click)="findAll()">
+      </button>
+
+      <button pButton pRipple type="button"
+              label="Exportar Distributivo Docente"
+              class="p-button-success ml-2"
+              [icon]="PrimeIcons.PLUS"
+              [loading]="coreService.isLoading"
+              (click)="export()">
+      </button>
+
+      <button pButton pRipple type="button"
+              label="Eliminar Seleccionados"
+              class="p-button-danger"
+              [disabled]="selectedItems.length===0"
+              [icon]="PrimeIcons.TRASH"
+              [loading]="coreService.isLoading"
+              (click)="removeAll()">
+      </button>
+    </div>
+    <div class="p-toolbar-group-right">
+      <div class="p-inputgroup">
+        <input type="text" pInputText [formControl]="search" placeholder="Buscar ...">
+        <button pButton pRipple type="button"
+                [icon]="PrimeIcons.SEARCH"
+                [loading]="coreService.isLoading"
+                (click)="findAll()"></button>
+      </div>
+    </div>
+  </p-toolbar>
+
+  <p-paginator
+    [rows]="paginator.limit"
+    [totalRecords]="paginator.totalItems"
+    (onPageChange)="paginate($event)">
+  </p-paginator>
+
+  <p-divider></p-divider>
+
+  <p-table
+    dataKey="id"
+    styleClass="p-datatable-striped"
+    [value]="items"
+    [columns]="columns"
+    [loading]="coreService.isLoading"
+    [(selection)]="selectedItems">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th class="text-center">
+          Permisos
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+      <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+        <td>
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </td>
+        <td *ngFor="let col of columns">
+          <!--Objects-->
+          <div *ngIf="rowData[col.field]?.id" [ngSwitch]="col.field">
+            <div *ngSwitchCase="'state'">
+              <p-tag severity="info" [value]="rowData[col.field].code" class="mr-1"></p-tag>
+            </div>
+          </div>
+
+          <!--Fields-->
+          <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+            <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+          </div>
+        </td>
+        <td class="text-center">
+          <button pButton pRipple type="button" [icon]="PrimeIcons.ELLIPSIS_V" (click)="selectItem(rowData)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length">
+          {{messageService.paginatorNoRecordsFound}}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      {{messageService.paginatorTotalRegisters(paginator.totalItems)}}
+    </ng-template>
+  </p-table>
+
+  <p-sidebar [(visible)]="isButtonActions" position="right">
+    <p-panelMenu [model]="buttonActions" [style]="{'width':'300px'}" (click)="isButtonActions=false"></p-panelMenu>
+  </p-sidebar>
+</div>

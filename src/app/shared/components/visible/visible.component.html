@@ -1,0 +1,12 @@
+<button *ngIf="isVisible" pButton pRipple
+        class="p-button-success"
+        [icon]="PrimeIcons.EYE"
+        pTooltip="Es Visible"
+></button>
+
+<button *ngIf="!isVisible" pButton pRipple
+        class="p-button-danger"
+        [icon]="PrimeIcons.EYE_SLASH"
+        pTooltip="Está Oculto"
+></button>
+

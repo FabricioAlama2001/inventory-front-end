@@ -1,0 +1,17 @@
+<router-outlet></router-outlet>
+<p-dialog header="Procesando"
+          [visible]="coreService.isProcessing"
+          [modal]="true"
+          [closable]="false"
+          [style]="{width: '50vw'}">
+  <p>
+    Por favor espere, estamos procesando su petición...
+  </p>
+  <p-progressBar mode="indeterminate"></p-progressBar>
+</p-dialog>
+
+<p-toast [key]="CoreMessageEnum.APP_TOAST"></p-toast>
+
+<p-confirmDialog [key]="CoreMessageEnum.APP_CONFIRM_DIALOG" [style]="{width: '50vw'}"></p-confirmDialog>
+
+<p-confirmPopup [key]="CoreMessageEnum.APP_CONFIRM_POPUP"></p-confirmPopup>

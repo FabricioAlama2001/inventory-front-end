@@ -1,0 +1,62 @@
+<div class="p-fluid">
+  <div class="grid">
+    <div class="field xl:col-9 lg:col-9 md:col-12 sm:col-6">
+      <p-breadcrumb *ngIf="items?.length" [model]="items" [home]="home"></p-breadcrumb>
+    </div>
+    <div *ngIf="authService.auth" class="field xl:col-3 lg:col-3 md:col-12 sm:col-12 mt-1">
+      <button pButton pRipple type="button" (click)="op.toggle($event)"
+              [ngClass]="{'p-button-danger':coreService.version!=coreService.newVersion}"
+              [pTooltip]="coreService.version!=coreService.newVersion?'Tiene actualización pendiente':''"
+              class="p-button-outlined"
+              [icon]="coreService.version!=coreService.newVersion?PrimeIcons.INFO_CIRCLE:PrimeIcons.CHECK_CIRCLE"
+              [label]="authService.auth.identification + ' - ' + authService.role.name"></button>
+    </div>
+  </div>
+</div>
+
+<app-progress-bar *ngIf="coreService.isLoading"></app-progress-bar>
+
+<p-overlayPanel #op>
+  <div *ngIf="authService.auth">
+    <div class="text-center">
+      <p-avatar [image]="HOST_URL+authService.auth.avatar" styleClass="mr-2" size="xlarge"
+                shape="circle"></p-avatar>
+    </div>
+    <div class="field">
+      <button pButton pRipple type="button"
+              class="p-button-text"
+              [icon]="PrimeIcons.USER"
+              pTooltip="Usuario"
+              [label]="authService.auth.name + ' ' + authService.auth.lastname"
+              (click)="redirectProfile()"></button>
+      <p-divider></p-divider>
+      <button pButton pRipple type="button"
+              class="p-button-text"
+              [icon]="PrimeIcons.ID_CARD"
+              pTooltip="Rol"
+              [label]="authService.role.name"
+              (click)="redirectProfile()"></button>
+      <br>
+      <button *ngIf="institutionsService.institution" pButton pRipple type="button"
+              class="p-button-text"
+              [icon]="PrimeIcons.BUILDING"
+              pTooltip="Institución"
+              [label]="institutionsService.institution.shortName!"
+              (click)="redirectProfile()"></button>
+      <br>
+      <button *ngIf="coreService.version!=coreService.newVersion" pButton pRipple type="button"
+              class="p-button-success p-button-text"
+              [icon]="PrimeIcons.SYNC"
+              pTooltip="Nueva Actualización"
+              [label]="'Actualizar '+coreService.newVersion"
+              (click)="updateSystem()"></button>
+      <p-divider></p-divider>
+      <button pButton pRipple type="button"
+              class="p-button-danger p-button-text"
+              [icon]="PrimeIcons.SIGN_OUT"
+              label="Cerrar Sesión"
+              (click)="signOut()"></button>
+    </div>
+  </div>
+</p-overlayPanel>
+

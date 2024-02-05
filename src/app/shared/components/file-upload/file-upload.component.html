@@ -1,0 +1,39 @@
+<div *ngIf="types?.length" class="formgrid grid">
+  <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+    <label appLabel for="type" label="Tipo de Documento:" [required]="type"></label>
+    <p-dropdown
+      id="type"
+      dataKey="id"
+      [formControl]="type"
+      [options]="types"
+      optionLabel="name"
+      placeholder="Seleccione...">
+    </p-dropdown>
+  </div>
+</div>
+<p-fileUpload
+  #uploadFiles
+  chooseLabel="Cargar Archivo"
+  [chooseIcon]="PrimeIcons.UPLOAD"
+  uploadLabel="Subir archivos"
+  cancelLabel="Limpiar"
+  name="files[]"
+  [auto]="auto"
+  [accept]="acceptAttributes"
+  [multiple]="multiple"
+  [maxFileSize]="maxFileSize"
+  [mode]="mode"
+  [fileLimit]="fileLimit"
+  [customUpload]="true"
+  (uploadHandler)="uploadFile($event,uploadFiles)">
+  <ng-template pTemplate="content" let-files>
+    <div class="p-text-center">
+      <img src="assets/images/shared/files/upload.png" alt="upload">
+      <br>
+      <button pButton label="Browse" [icon]="PrimeIcons.SEARCH" (click)="uploadFiles.choose()"></button>
+      <h6>
+        o arrastre aquí sus archivos
+      </h6>
+    </div>
+  </ng-template>
+</p-fileUpload>

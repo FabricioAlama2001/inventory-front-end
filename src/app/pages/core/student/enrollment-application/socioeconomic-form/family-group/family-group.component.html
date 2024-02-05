@@ -1,0 +1,105 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div formGroupName="informationStudent">
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="membersHouseNumber"
+               label="¿Cuántos integrantes conforman el núcleo familiar, a excepción del estudiante?:"
+               [required]="membersHouseNumberField"></label>
+        <p-inputNumber id="membersHouseNumber" formControlName="membersHouseNumber"
+                       [max]="20"
+                       [min]="0"
+                       [showButtons]="true"></p-inputNumber>
+        <small
+          appErrorMessage
+          [errors]="membersHouseNumberField.errors"
+          [touched]="membersHouseNumberField.touched"
+          [dirty]="membersHouseNumberField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="familyIncome" label="Total de ingresos mensuales:" [required]="familyIncomeField" class="mb-4"></label>
+        <p-dropdown
+          id="familyIncome"
+          formControlName="familyIncome"
+          dataKey="id"
+          [options]="familyIncomes"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="familyIncomeField.value">
+              <div>{{ familyIncomeField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="familyIncomeField.errors"
+          [touched]="familyIncomeField.touched"
+          [dirty]="familyIncomeField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="isDependsEconomically" label="¿Depende económicamente de otra persona?:"
+               [required]="isDependsEconomicallyField" class="mb-4"></label>
+        <p-dropdown
+          id="isDependsEconomically"
+          formControlName="isDependsEconomically"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isDependsEconomicallyField.value">
+              <div>{{ isDependsEconomicallyField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isDependsEconomicallyField.errors"
+          [touched]="isDependsEconomicallyField.touched"
+          [dirty]="isDependsEconomicallyField.dirty">
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Atrás"
+        class="p-button-warning"
+        [icon]="PrimeIcons.ARROW_LEFT"
+        (click)="previous.emit(-1)"></button>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button *ngIf="!form.disabled"
+              pButton
+              pRipple
+              label="Guardar y Continuar"
+              [icon]="PrimeIcons.ARROW_RIGHT"
+              iconPos="right"></button>
+
+      <button *ngIf="form.disabled"
+              pButton
+              type="button"
+              pRipple
+              label="Continuar"
+              [icon]="PrimeIcons.ARROW_RIGHT"
+              iconPos="right"
+              (click)="next.emit()"></button>
+    </div>
+  </div>
+</form>

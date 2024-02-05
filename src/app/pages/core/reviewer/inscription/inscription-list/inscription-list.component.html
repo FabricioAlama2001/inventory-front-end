@@ -1,0 +1,187 @@
+<div class="panel-messages-info p-fluid">
+  <div class="grid">
+    <div class="xl:col-2 lg:col-2 md:col-6 sm:col-12">
+      <button pButton
+              pRipple
+              type="button"
+              pTooltip="Refrescar"
+              class="p-button-info"
+              [icon]="PrimeIcons.REFRESH"
+              [loading]="coreService.isLoading"
+              (click)="findEnrollmentsByCareer()">
+      </button>
+      <button pButton
+              pRipple
+              type="button"
+              pTooltip="Más opciones"
+              class="ml-2"
+              [icon]="PrimeIcons.ELLIPSIS_V"
+              [loading]="coreService.isLoading"
+              (click)="showMoreOptions()">
+      </button>
+    </div>
+    <div class="xl:col-3 lg:col-3 md:col-6 sm:col-12">
+      <p-dropdown [formControl]="selectedSchoolPeriod"
+                  dataKey="id"
+                  [options]="schoolPeriods"
+                  optionLabel="name"
+                  placeholder="Periodo Lectivo"
+                  pTooltip="Periodo Lectivo">
+      </p-dropdown>
+    </div>
+    <div class="xl:col-3 lg:col-3 md:col-6 sm:col-12">
+      <p-dropdown [formControl]="selectedCareer"
+                  dataKey="id"
+                  [options]="careers"
+                  optionLabel="name"
+                  placeholder="Carrera"
+                  pTooltip="Carrera">
+      </p-dropdown>
+    </div>
+    <div class="xl:col-2 lg:col-2 md:col-6 sm:col-12">
+      <p-dropdown [formControl]="selectedAcademicPeriod"
+                  dataKey="id"
+                  [options]="academicPeriods"
+                  optionLabel="name"
+                  placeholder="Todos los Niveles"
+                  pTooltip="Nivel Académico"
+                  [showClear]="true">
+      </p-dropdown>
+    </div>
+    <div class="xl:col-2 lg:col-2 md:col-6 sm:col-12">
+      <p-dropdown [formControl]="selectedEnrollmentState"
+                  dataKey="id"
+                  [options]="enrollmentStates"
+                  optionLabel="name"
+                  placeholder="Todos los estados"
+                  pTooltip="Estado Matrícula"
+                  [showClear]="true">
+      </p-dropdown>
+    </div>
+  </div>
+</div>
+
+<p-paginator [rows]="paginator.limit"
+             [totalRecords]="paginator.totalItems"
+             (onPageChange)="paginate($event)"
+>
+</p-paginator>
+
+<p-table
+  #dt1
+  dataKey="id"
+  styleClass="p-datatable-striped"
+  [value]="items"
+  [columns]="columns"
+  [loading]="coreService.isLoading"
+  [(selection)]="selectedItems">
+  <ng-template pTemplate="caption">
+    <div class="flex">
+      <!-- <div class="p-toolbar-group-left">
+        <p-button label="Matriculados" badge="8" styleClass="mr-2"></p-button>
+        <p-button label="En proceso" styleClass="p-button-success mr-2" badge="8" badgeClass="p-badge-danger"></p-button>
+        <p-button label="Retirados" badge="8" styleClass="mr-2"></p-button>
+        <p-button label="Anulados" styleClass="p-button-warning mr-2" badge="8" badgeClass="p-badge-danger"></p-button>
+      </div> -->
+      <h1>Lista de Inscritos</h1>
+      <div class="p-input-icon-left ml-auto">
+        <div class="p-inputgroup">
+          <input type="text"
+                 pInputText
+                 [formControl]="search"
+                 placeholder="Buscar...">
+          <button pButton
+                  pRipple
+                  type="button"
+                  [icon]="PrimeIcons.SEARCH"
+                  [loading]="coreService.isLoading"
+                  (click)="findEnrollmentsByCareer()"
+          >
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <!--      <th style="width: 3rem"></th>-->
+      <th class="text-center" *ngFor="let col of columns" [pSortableColumn]="col.field">
+        {{col.header}}
+        <p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
+      <th class="text-center">
+        {{LabelButtonActionEnum.ACTIONS}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+    <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+      <!--      <td>-->
+      <!--        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
+      <!--      </td>-->
+      <td class="text-center" *ngFor="let col of columns">
+        <!--Objects-->
+        <div *ngIf="rowData[col.field]?.id" [ngSwitch]="col.field">
+          <div *ngSwitchCase="'academicPeriod'">
+            {{rowData[col.field].name}}
+          </div>
+          <div *ngSwitchCase="'type'">
+            {{rowData[col.field].name}}
+          </div>
+          <div *ngSwitchCase="'workday'">
+            {{rowData[col.field].name}}
+          </div>
+          <div *ngSwitchCase="'parallel'">
+            {{rowData[col.field].name}}
+          </div>
+          <div *ngSwitchCase="'enrollmentState'">
+            <p-tag [value]="rowData[col.field].state.name"
+                   [severity]="rowData[col.field].state.code|enrollmentState"></p-tag>
+          </div>
+        </div>
+
+        <!--Fields-->
+        <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+          <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+          <div *ngSwitchCase="'identification'">
+            {{rowData['student']?.user.identification}}
+          </div>
+          <div *ngSwitchCase="'lastname'">
+            {{rowData['student']?.user.lastname}}
+          </div>
+          <div *ngSwitchCase="'name'">
+            {{rowData['student']?.user.name}}
+          </div>
+        </div>
+      </td>
+      <td class="text-center">
+        <button pButton pRipple type="button" [icon]="PrimeIcons.ELLIPSIS_V" (click)="selectItem(rowData)"></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="columns.length">
+        {{messageService.paginatorNoRecordsFound}}
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    {{messageService.paginatorTotalRegisters(paginator.totalItems)}}
+  </ng-template>
+</p-table>
+
+<p-sidebar [(visible)]="isButtonActions" position="right">
+  <p-panelMenu [model]="buttonActions" [style]="{'width':'300px'}" (click)="isButtonActions=false"></p-panelMenu>
+</p-sidebar>
+
+<p-sidebar [(visible)]="isMoreButtonActions" position="left">
+  <p-panelMenu [model]="moreButtonActions" [style]="{'width':'300px'}" (click)="isMoreButtonActions=false"></p-panelMenu>
+</p-sidebar>
+
+<app-file-list *ngIf="isFileList"
+               [isVisible]="isFileList"
+               (isHide)="isFileList=false"
+               [modelId]="selectedItem.id!"
+               [types]="fileTypes">
+</app-file-list>

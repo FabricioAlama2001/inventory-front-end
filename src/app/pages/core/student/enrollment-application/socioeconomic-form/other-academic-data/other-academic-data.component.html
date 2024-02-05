@@ -1,0 +1,159 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div formGroupName="informationStudent">
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="isElectronicDevice" label="¿Usted cuenta con un equipo tecnológico?:"
+               [required]="isElectronicDeviceField"></label>
+        <p-dropdown
+          id="isElectronicDevice"
+          formControlName="isElectronicDevice"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isElectronicDeviceField.value">
+              <div>{{ isElectronicDeviceField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isElectronicDeviceField.errors"
+          [touched]="isElectronicDeviceField.touched"
+          [dirty]="isElectronicDeviceField.dirty"
+        >
+        </small>
+      </div>
+      <div *ngIf="electronicDeviceField.hasValidator(Validators.required)"
+           class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="electronicDevice" label="Dispositivo tecnológico:"
+               [required]="electronicDeviceField"></label>
+        <p-dropdown
+          id="electronicDevice"
+          formControlName="electronicDevice"
+          dataKey="id"
+          [options]="electronicDevices"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="electronicDeviceField.value">
+              <div>{{ electronicDeviceField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="electronicDeviceField.errors"
+          [touched]="electronicDeviceField.touched"
+          [dirty]="electronicDeviceField.dirty"
+        >
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="isInternet" label="¿Posee cobertura a Internet?:" [required]="isInternetField"></label>
+        <p-dropdown
+          id="isInternet"
+          formControlName="isInternet"
+          dataKey="id"
+          [options]="yesNo"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="isInternetField.value">
+              <div>{{ isInternetField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="isInternetField.errors"
+          [touched]="isInternetField.touched"
+          [dirty]="isInternetField.dirty"
+        >
+        </small>
+      </div>
+      <div *ngIf="internetTypeField.hasValidator(Validators.required)"
+           class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="internetType" label="Tipo de cobertura de Internet que utiliza:"
+               [required]="internetTypeField"></label>
+        <p-dropdown
+          id="internetType"
+          formControlName="internetType"
+          dataKey="id"
+          [options]="internetTypes"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="internetTypeField.value">
+              <div>{{ internetTypeField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{ item.name }}
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="internetTypeField.errors"
+          [touched]="internetTypeField.touched"
+          [dirty]="internetTypeField.dirty"
+        >
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Atrás"
+        class="p-button-warning"
+        [icon]="PrimeIcons.ARROW_LEFT"
+        (click)="previous.emit(-1)"
+      ></button>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button *ngIf="!form.disabled"
+              pButton
+              pRipple
+              label="Guardar y Continuar"
+              [icon]="PrimeIcons.ARROW_RIGHT"
+              iconPos="right"></button>
+
+      <button *ngIf="form.disabled"
+              pButton
+              type="button"
+              pRipple
+              label="Continuar"
+              [icon]="PrimeIcons.ARROW_RIGHT"
+              iconPos="right"
+              (click)="next.emit()"></button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,179 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <p-dropdown formControlName="schoolPeriod"
+                  dataKey="id"
+                  class="ml-2"
+                  [options]="schoolPeriods"
+                  optionLabel="name"
+                  placeholder="Periodo Lectivo"
+                  pTooltip="Periodo Lectivo">
+      </p-dropdown>
+
+      <p-dropdown
+        dataKey="id"
+        class="ml-3"
+        [options]="careers"
+        formControlName="career"
+        pTooltip="Carreras"
+        filterBy="name"
+        optionLabel="name"
+        placeholder="Seleccione una carrera...">
+      </p-dropdown>
+
+      <p-dropdown
+        dataKey="id"
+        class="ml-3"
+        [options]="curriculums"
+        [formControl]="selectedCurriculum"
+        (onChange)="findSubjectsAllByCurriculum()"
+        pTooltip="Mallas Curriculares"
+        filterBy="name"
+        optionLabel="name"
+        placeholder="Seleccione una malla curricular...">
+      </p-dropdown>
+    </div>
+    <div class="p-toolbar-group-right">
+      <h3>
+        Total Asignaturas: {{selectedItems.length}}
+      </h3>
+    </div>
+  </p-toolbar>
+
+  <p-table
+    #dt1
+    dataKey="id"
+    styleClass="p-datatable-striped"
+    [value]="items"
+    [columns]="columns"
+    [paginator]="true"
+    paginatorPosition="top"
+    [rows]="40"
+    [globalFilterFields]="['code','name','academicPeriod.name']"
+    [loading]="coreService.isLoading"
+    (onRowSelect)="selectItems()"
+    (onRowUnselect)="selectItems()"
+    [(selection)]="selectedItems">
+    <ng-template pTemplate="caption">
+      <div class="grid">
+        <div class="xl:col-3 lg:col-3 md:col-6 sm:col-12">
+          <p-dropdown
+            dataKey="id"
+            [options]="workdays"
+            formControlName="workday"
+            pTooltip="Jornada"
+            filterBy="name"
+            optionLabel="name"
+            placeholder="Seleccione una jornada...">
+          </p-dropdown>
+        </div>
+        <div class="xl:col-3 lg:col-3 md:col-6 sm:col-12">
+          <p-dropdown
+            dataKey="id"
+            [options]="parallels"
+            formControlName="parallel"
+            pTooltip="Paralelo"
+            filterBy="name"
+            optionLabel="name"
+            placeholder="Seleccione un paralelo...">
+          </p-dropdown>
+        </div>
+        <div class="xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <div class="p-input-icon-left ml-auto">
+            <i [class]="PrimeIcons.SEARCH"></i>
+            <input #search pInputText type="text"
+                   placeholder="Buscar..."
+                   (input)="dt1.filterGlobal(search.value, 'contains')"/>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 3rem">
+
+        </th>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+      <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+        <td>
+          <p-tableCheckbox *ngIf="rowData?.academicState!='a'" [disabled]="form.disabled" [value]="rowData"></p-tableCheckbox>
+        </td>
+        <td *ngFor="let col of columns">
+          <!--Objects-->
+          <div *ngIf="rowData[col.field]?.id" [ngSwitch]="col.field">
+            <div *ngSwitchCase="'academicPeriod'">
+              {{rowData[col.field].name}}
+            </div>
+            <div *ngSwitchCase="'academicState'">
+              a{{rowData[col.field]|json}}v
+              a{{rowData[col.field]?.name|json}}v
+              <p-tag [value]="rowData[col.field]?.code|academicState"
+                     [severity]="rowData[col.field]?.code==='a'?'success':rowData[col.field]?.code==='r'?'danger':'info'"></p-tag>
+            </div>
+            <div *ngSwitchCase="'type'">
+              {{rowData[col.field].name}}
+            </div>
+          </div>
+
+          <!--Fields-->
+          <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+            <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+            <div *ngSwitchCase="'academicState'">
+              <p-tag [value]="rowData[col.field]?.code|academicState"
+                     [severity]="rowData[col.field]?.code==='a'?'success':rowData[col.field]?.code==='r'?'danger':'info'"></p-tag>
+            </div>
+            <div *ngSwitchCase="'state'">
+              <p-tag *ngFor="let enrollmentState of rowData?.enrollmentStates" [value]="enrollmentState?.state?.name"
+                     [severity]="enrollmentState?.state?.code|enrollmentState" class="ml-1"></p-tag>
+            </div>
+            <div *ngSwitchCase="'hours'">
+              {{rowData['teacherHour']}}h / {{rowData['practicalHour']}}h / {{rowData['autonomousHour']}}h
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length">
+          {{messageService.paginatorNoRecordsFound}}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      {{messageService.paginatorTotalRegisters(items.length)}}
+    </ng-template>
+  </p-table>
+
+  <div class="formgrid grid">
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+      <button pButton
+              type="button"
+              class="p-button-warning"
+              label="Regresar"
+              [icon]="PrimeIcons.ARROW_LEFT"
+              iconPos="left"
+              (click)="previous()"></button>
+    </div>
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+      <button *ngIf="form.enabled" pButton pRipple
+              label="Guardar y Continuar"
+              [icon]="PrimeIcons.SAVE"
+              iconPos="right"></button>
+    </div>
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+      <button *ngIf="enrollment?.enrollmentStates" pButton pRipple type="button"
+              class="p-button-success"
+              label="Continuar a la siguiente sección"
+              [icon]="PrimeIcons.ARROW_RIGHT"
+              iconPos="right"
+              (click)="next()"></button>
+    </div>
+  </div>
+</form>

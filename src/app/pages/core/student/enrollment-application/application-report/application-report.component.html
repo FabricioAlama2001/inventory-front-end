@@ -1,0 +1,36 @@
+<app-skeleton *ngIf="!isLoadingPdf" [type]="SkeletonEnum.CARD"></app-skeleton>
+
+<div class="formgrid grid">
+  <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+    <button pButton
+            type="button"
+            class="p-button-warning"
+            label="Regresar"
+            [icon]="PrimeIcons.ARROW_LEFT"
+            iconPos="left"
+            (click)="previous()"></button>
+  </div>
+  <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+    <button pButton
+            type="button"
+            class="p-button-info"
+            label="Descargar"
+            [icon]="PrimeIcons.DOWNLOAD"
+            iconPos="left"
+            (click)="download()"></button>
+  </div>
+  <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+    <button pButton
+            class="p-button-success"
+            label="Continuar a la siguiente sección"
+            [icon]="PrimeIcons.ARROW_RIGHT"
+            iconPos="right"
+            (click)="next()"></button>
+  </div>
+</div>
+
+<pdf-viewer [src]="pdfSrc"
+            [render-text]="true"
+            [original-size]="false"
+            style="width: 1200px; height: 800px">
+</pdf-viewer>
