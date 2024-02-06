@@ -13,7 +13,7 @@ import {debounceTime} from "rxjs";
 export class SearchComponent implements OnInit {
   @Input() columns: ColumnModel[] = [];
   @Input() records: any[] = [];
-  @Input() paginatorIn = this.coreService.paginator;
+  @Input() paginatorIn;
   @Output() selectedRecordOut: EventEmitter<any> = new EventEmitter<any>();
   @Output() displayModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() paginatorOut: EventEmitter<number> = new EventEmitter<number>();
@@ -25,6 +25,8 @@ export class SearchComponent implements OnInit {
   selectedRecords: any[] = [];
 
   constructor(private coreService: CoreService, public messageService: MessageService) {
+    this.paginatorIn = this.coreService.paginator
+
     this.search.valueChanges.pipe(debounceTime(600)).subscribe((value: string | undefined) => {
       this.searchOut.emit(value);
     })

@@ -15,7 +15,7 @@ export class FileUploadComponent {
   @Input() multiple = true;
   @Input() maxFileSize = 10240000 * 20;
   @Input() fileLimit = 20;
-  @Input() mode = 'basic';
+  @Input() mode:'basic'|'advanced'|undefined = 'basic';
   @Input() modelId: string = '';
   @Output() flagUploadFiles: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Input() types: CatalogueModel[] = [];
