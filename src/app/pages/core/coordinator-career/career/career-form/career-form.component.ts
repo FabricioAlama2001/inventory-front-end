@@ -71,7 +71,7 @@ export class CareerFormComponent implements OnInit, OnExitInterface {
 
   async onExit(): Promise<boolean> {
     if (this.form.touched && this.form.dirty) {
-      return await this.messageService.questionOnExit().then(result => result.isConfirmed);
+      return await this.messageService.questionOnExit().then((result: { isConfirmed: any; }) => result.isConfirmed);
     }
     return true;
   }
@@ -147,7 +147,7 @@ export class CareerFormComponent implements OnInit, OnExitInterface {
 
   /** Load Data **/
   get(): void {
-    this.careersHttpService.findOne(this.id!).subscribe((item) => {
+    this.careersHttpService.findOne(this.id!).subscribe((item: { [key: string]: any; }) => {
       this.form.patchValue(item);
     });
   }

@@ -56,7 +56,7 @@ export class EventFormComponent implements OnInit, OnExitInterface {
 
   async onExit(): Promise<boolean> {
     if (this.form.touched && this.form.dirty) {
-      return await this.messageService.questionOnExit().then(result => result.isConfirmed);
+      return await this.messageService.questionOnExit().then((result: { isConfirmed: any; }) => result.isConfirmed);
     }
     return true;
   }
@@ -68,7 +68,7 @@ export class EventFormComponent implements OnInit, OnExitInterface {
       this.get();
     }
 
-    this.startedAtField.valueChanges.subscribe(value => {
+    this.startedAtField.valueChanges.subscribe((value: string | number | Date) => {
       this.startedAt = new Date(value);
       if (isAfter(this.startedAt, new Date(this.endedAtField.value))) {
         this.endedAtField.setValue(this.startedAt);
@@ -123,7 +123,7 @@ export class EventFormComponent implements OnInit, OnExitInterface {
 
   /** Load Data **/
   get(): void {
-    this.eventsHttpService.findOne(this.id!).subscribe((item) => {
+    this.eventsHttpService.findOne(this.id!).subscribe((item: { [key: string]: any; }) => {
       this.form.patchValue(item);
     });
   }

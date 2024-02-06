@@ -60,7 +60,7 @@ export class SchoolPeriodFormComponent implements OnInit, OnExitInterface {
 
   async onExit(): Promise<boolean> {
     if (this.form.touched && this.form.dirty) {
-      return await this.messageService.questionOnExit().then(result => result.isConfirmed);
+      return await this.messageService.questionOnExit().then((result: { isConfirmed: any; }) => result.isConfirmed);
     }
     return true;
   }
@@ -72,28 +72,28 @@ export class SchoolPeriodFormComponent implements OnInit, OnExitInterface {
       this.get();
     }
 
-    this.startedAtField.valueChanges.subscribe(value => {
+    this.startedAtField.valueChanges.subscribe((value: any) => {
       this.startedAt = new Date(value);
       if (isAfter(this.startedAt, new Date(this.endedAtField.value))) {
         this.endedAtField.setValue(this.startedAt);
       }
     });
 
-    this.ordinaryStartedAtField.valueChanges.subscribe(value => {
+    this.ordinaryStartedAtField.valueChanges.subscribe((value: any) => {
       this.ordinaryStartedAt = new Date(value);
       if (isAfter(this.ordinaryStartedAt, new Date(this.ordinaryEndedAtField.value))) {
         this.ordinaryEndedAtField.setValue(this.ordinaryStartedAt);
       }
     });
 
-    this.extraOrdinaryStartedAtField.valueChanges.subscribe(value => {
+    this.extraOrdinaryStartedAtField.valueChanges.subscribe((value: any) => {
       this.extraOrdinaryStartedAt = new Date(value);
       if (isAfter(this.extraOrdinaryStartedAt, new Date(this.extraOrdinaryEndedAtField.value))) {
         this.extraOrdinaryEndedAtField.setValue(this.extraOrdinaryStartedAt);
       }
     });
 
-    this.especialStartedAtField.valueChanges.subscribe(value => {
+    this.especialStartedAtField.valueChanges.subscribe((value: any) => {
       this.especialStartedAt = new Date(value);
       if (isAfter(this.especialStartedAt, new Date(this.especialEndedAtField.value))) {
         this.especialEndedAtField.setValue(this.especialStartedAt);
@@ -154,7 +154,7 @@ export class SchoolPeriodFormComponent implements OnInit, OnExitInterface {
 
   /** Load Data **/
   get(): void {
-    this.schoolPeriodsHttpService.findOne(this.id!).subscribe((item) => {
+    this.schoolPeriodsHttpService.findOne(this.id!).subscribe((item: { [key: string]: any; }) => {
       this.form.patchValue(item);
     });
   }

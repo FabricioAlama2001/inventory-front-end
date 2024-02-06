@@ -65,7 +65,7 @@ export class TeacherFormComponent implements OnInit, OnExitInterface {
 
   async onExit(): Promise<boolean> {
     if (this.form.touched && this.form.dirty) {
-      return await this.messageService.questionOnExit().then(result => result.isConfirmed);
+      return await this.messageService.questionOnExit().then((result: { isConfirmed: any; }) => result.isConfirmed);
     }
     return true;
   }
@@ -169,7 +169,7 @@ export class TeacherFormComponent implements OnInit, OnExitInterface {
 
   /** Load Data **/
   get(): void {
-    this.teachersHttpService.findOne(this.id!).subscribe((teacher) => {
+    this.teachersHttpService.findOne(this.id!).subscribe((teacher: { [key: string]: any; }) => {
       this.form.patchValue(teacher);
     });
   }

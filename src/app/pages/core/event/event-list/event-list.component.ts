@@ -52,7 +52,7 @@ export class EventListComponent implements OnInit {
     this.paginator = this.coreService.paginator;
 
     this.model = eventsService.model;
-    this.search.valueChanges.subscribe(value => {
+    this.search.valueChanges.subscribe((value: string | any[]) => {
       if (value.length === 0) {
         this.findByModel();
       }
@@ -67,7 +67,7 @@ export class EventListComponent implements OnInit {
   /** Load Data **/
   findByModel(page: number = 0) {
     this.eventsHttpService.findByModel(this.eventsService.model?.entity?.id, page, this.search.value)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         this.paginator = response.pagination!;
         this.items = response.data;
       });
@@ -121,7 +121,7 @@ export class EventListComponent implements OnInit {
   /** Actions **/
   remove(id: string) {
     this.messageService.questionDelete()
-      .then((result) => {
+      .then((result: { isConfirmed: any; }) => {
         if (result.isConfirmed) {
           this.eventsHttpService.remove(id).subscribe(() => {
             this.items = this.items.filter(item => item.id !== id);
@@ -132,7 +132,7 @@ export class EventListComponent implements OnInit {
   }
 
   removeAll() {
-    this.messageService.questionDelete().then((result) => {
+    this.messageService.questionDelete().then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
         this.eventsHttpService.removeAll(this.selectedItems).subscribe(() => {
           this.selectedItems.forEach(itemDeleted => {
@@ -146,14 +146,14 @@ export class EventListComponent implements OnInit {
   }
 
   hide(id: string) {
-    this.eventsHttpService.hide(id).subscribe(item => {
+    this.eventsHttpService.hide(id).subscribe((item: any) => {
       const index = this.items.findIndex(item => item.id === id);
       this.items[index].isVisible = false;
     });
   }
 
   reactivate(id: string) {
-    this.eventsHttpService.reactivate(id).subscribe(item => {
+    this.eventsHttpService.reactivate(id).subscribe((item: any) => {
       const index = this.items.findIndex(item => item.id === id);
       this.items[index].isVisible = true;
     });

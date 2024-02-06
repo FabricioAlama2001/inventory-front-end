@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MenuItem} from "primeng/api";
 import {UntypedFormControl} from "@angular/forms";
 import {CoreService, MessageService} from "@services/core";
-import {ColumnModel, PaginatorModel} from "@models/core";
+import {ColumnModel} from "@models/core";
 import {debounceTime} from "rxjs";
 
 @Component({
@@ -25,7 +25,7 @@ export class SearchComponent implements OnInit {
   selectedRecords: any[] = [];
 
   constructor(private coreService: CoreService, public messageService: MessageService) {
-    this.search.valueChanges.pipe(debounceTime(600)).subscribe(value => {
+    this.search.valueChanges.pipe(debounceTime(600)).subscribe((value: string | undefined) => {
       this.searchOut.emit(value);
     })
   }

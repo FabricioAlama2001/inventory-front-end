@@ -37,7 +37,7 @@ export class TeacherListComponent implements OnInit {
 
     this.paginator = this.coreService.paginator;
 
-    this.search.valueChanges.subscribe(value => {
+    this.search.valueChanges.subscribe((value: string | any[]) => {
       if (value.length === 0) {
         this.findAll();
       }
@@ -50,7 +50,7 @@ export class TeacherListComponent implements OnInit {
 
   findAll(page: number = 0) {
     this.teachersHttpService.findAll(page, this.search.value)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         this.paginator = response.pagination!;
         this.items = response.data;
       });
@@ -80,9 +80,9 @@ export class TeacherListComponent implements OnInit {
   }
 
   removeAll() {
-    this.messageService.questionDelete().then((result) => {
+    this.messageService.questionDelete().then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
-        this.teachersHttpService.removeAll(this.selectedItems).subscribe((Teachers) => {
+        this.teachersHttpService.removeAll(this.selectedItems).subscribe((Teachers: any) => {
           this.selectedItems.forEach(ItemDeleted => {
             this.items = this.items.filter(item => item.id !== ItemDeleted.id);
             this.paginator.totalItems--;

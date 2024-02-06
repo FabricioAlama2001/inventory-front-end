@@ -54,7 +54,7 @@ export class SchoolPeriodListComponent implements OnInit {
 
     this.paginator = this.coreService.paginator;
 
-    this.search.valueChanges.subscribe(value => {
+    this.search.valueChanges.subscribe((value: string | any[]) => {
       if (value.length === 0) {
         this.find();
       }
@@ -68,7 +68,7 @@ export class SchoolPeriodListComponent implements OnInit {
   /** Load Data **/
   find(page: number = 0) {
     this.schoolPeriodsHttpService.find(page, this.search.value)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         this.paginator = response.pagination!;
         this.items = response.data;
       });
@@ -220,7 +220,7 @@ export class SchoolPeriodListComponent implements OnInit {
   /** Actions **/
   remove(id: string) {
     this.messageService.questionDelete()
-      .then((result) => {
+      .then((result: { isConfirmed: any; }) => {
         if (result.isConfirmed) {
           this.schoolPeriodsHttpService.remove(id).subscribe(() => {
             this.items = this.items.filter(item => item.id !== id);
@@ -231,7 +231,7 @@ export class SchoolPeriodListComponent implements OnInit {
   }
 
   removeAll() {
-    this.messageService.questionDelete().then((result) => {
+    this.messageService.questionDelete().then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
         this.schoolPeriodsHttpService.removeAll(this.selectedItems).subscribe(() => {
           this.selectedItems.forEach(itemDeleted => {
@@ -245,7 +245,7 @@ export class SchoolPeriodListComponent implements OnInit {
   }
 
   hide(id: string) {
-    this.schoolPeriodsHttpService.hide(id).subscribe(item => {
+    this.schoolPeriodsHttpService.hide(id).subscribe((item: any) => {
       const index = this.items.findIndex(item => item.id === id);
       this.items[index].isVisible = false;
     });
@@ -259,13 +259,13 @@ export class SchoolPeriodListComponent implements OnInit {
   }
 
   open(id: string) {
-    this.schoolPeriodsHttpService.open(id).subscribe(item => {
+    this.schoolPeriodsHttpService.open(id).subscribe((item: any) => {
       this.find();
     });
   }
 
   close(id: string) {
-    this.schoolPeriodsHttpService.close(id).subscribe(item => {
+    this.schoolPeriodsHttpService.close(id).subscribe((item: any) => {
       this.find();
     });
   }

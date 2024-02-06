@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Router} from '@angular/router';
-import {MenuItem, PrimeIcons, SelectItem} from 'primeng/api';
+import {MenuItem, PrimeIcons} from 'primeng/api';
 import {
   ColumnModel,
   PaginatorModel,
@@ -33,7 +33,7 @@ export class TeacherDistributionListComponent implements OnInit {
   protected selectedItem: SelectTeacherDistributionDto = {};
   protected selectedItems: TeacherDistributionModel[] = [];
   protected items: TeacherDistributionModel[] = [];
-  protected careerOptions: SelectItem[] = [];
+  protected careerOptions: any;
   protected selectedCareer: any;
   protected isCareerSelected: boolean = false;
 
@@ -55,7 +55,7 @@ export class TeacherDistributionListComponent implements OnInit {
 
     this.paginator = this.coreService.paginator;
 
-    this.search.valueChanges.subscribe(value => {
+    this.search.valueChanges.subscribe((value: string | any[]) => {
       if (value.length === 0) {
         this.findAll();
       }
@@ -74,7 +74,7 @@ export class TeacherDistributionListComponent implements OnInit {
       next: (careers: CareerModel[]) => {
         this.careerOptions = careers.map(career => ({ label: career.name, value: career.name }));
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error("Error loading career options:", error);
       }
     });
@@ -84,7 +84,7 @@ export class TeacherDistributionListComponent implements OnInit {
   /** Load Data **/
   findAll(page: number = 0) {
     this.teacherDistributionsHttpService.findAll(page, this.search.value)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         this.paginator = response.pagination!;
         this.items = response.data;
       });
@@ -129,7 +129,7 @@ export class TeacherDistributionListComponent implements OnInit {
   /** Actions **/
   remove(id: string) {
     this.messageService.questionDelete()
-      .then((result) => {
+      .then((result: { isConfirmed: any; }) => {
         if (result.isConfirmed) {
           this.teacherDistributionsHttpService.remove(id).subscribe(() => {
             this.items = this.items.filter(item => item.id !== id);
@@ -140,7 +140,7 @@ export class TeacherDistributionListComponent implements OnInit {
   }
 
   removeAll() {
-    this.messageService.questionDelete().then((result) => {
+    this.messageService.questionDelete().then((result: { isConfirmed: any; }) => {
       if (result.isConfirmed) {
         this.teacherDistributionsHttpService.removeAll(this.selectedItems).subscribe(() => {
           this.selectedItems.forEach(itemDeleted => {

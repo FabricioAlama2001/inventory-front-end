@@ -49,7 +49,7 @@ export class ConsolidatedNotesListComponent implements OnInit {
 
     this.paginator = this.coreService.paginator;
 
-    this.search.valueChanges.subscribe(value => {
+    this.search.valueChanges.subscribe((value: string | any[]) => {
       if (value.length === 0) {
         this.findAll();
       }
@@ -64,7 +64,7 @@ export class ConsolidatedNotesListComponent implements OnInit {
   /** Load Data **/
   findAll(page: number = 0) {
     this.teacherChargeService.findAll(page, this.search.value)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         this.paginator = response.pagination!;
         this.items = response.data;
       });
@@ -96,7 +96,7 @@ export class ConsolidatedNotesListComponent implements OnInit {
 
 
   export(){
-    this.teacherChargeService.export().subscribe((response)=>{
+    this.teacherChargeService.export().subscribe((response: any)=>{
 
 
     });

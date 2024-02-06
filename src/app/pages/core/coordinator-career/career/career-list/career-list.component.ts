@@ -62,7 +62,7 @@ export class CareerListComponent implements OnInit {
 
     this.selectedInstitution.patchValue(this.institutionsService.institution);
 
-    this.selectedInstitution.valueChanges.subscribe((_) => {
+    this.selectedInstitution.valueChanges.subscribe((_: any) => {
       this.findCareersByInstitution();
     });
   }
@@ -80,7 +80,7 @@ export class CareerListComponent implements OnInit {
   }
 
   refresh() {
-    this.careersHttpService.findCareersByAuthenticatedUser().subscribe(careers => {
+    this.careersHttpService.findCareersByAuthenticatedUser().subscribe((careers: CareerModel[]) => {
       this.careersService.careers = careers;
       this.findCareersByInstitution();
     })
@@ -167,7 +167,7 @@ export class CareerListComponent implements OnInit {
   }
 
   hide(id: string) {
-    this.careersHttpService.hide(id).subscribe(item => {
+    this.careersHttpService.hide(id).subscribe((item: any) => {
       const index = this.items.findIndex(item => item.id === id);
       this.items[index].isVisible = false;
     });

@@ -9,7 +9,7 @@ import {
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {PrimeIcons} from 'primeng/api';
-import {CatalogueModel, CurriculumModel, SelectSubjectDto, SubjectRequirementModel} from '@models/core';
+import {CatalogueModel, CurriculumModel, SelectSubjectDto, SubjectModel, SubjectRequirementModel} from '@models/core';
 import {
   BreadcrumbService,
   CataloguesHttpService,
@@ -95,7 +95,7 @@ export class SubjectFormComponent implements OnInit, OnExitInterface {
     if (this.form.touched && this.form.dirty) {
       return await this.messageService
         .questionOnExit()
-        .then((result) => result.isConfirmed);
+        .then((result: any) => result.isConfirmed);
     }
     return true;
   }
@@ -208,12 +208,12 @@ export class SubjectFormComponent implements OnInit, OnExitInterface {
 
   /** Load Data **/
   get(): void {
-    this.subjectsHttpService.findOne(this.id!).subscribe((item) => {
+    this.subjectsHttpService.findOne(this.id!).subscribe((item: any) => {
       const subjectPrerequisites = item.subjectPrerequisites
-        .map(subjectRequirement => subjectRequirement.requirement);
+        .map((subjectRequirement: { requirement: any; }) => subjectRequirement.requirement);
 
       const subjectCorequisites = item.subjectCorequisites
-        .map(subjectRequirement => subjectRequirement.requirement);
+        .map((subjectRequirement: { requirement: any; }) => subjectRequirement.requirement);
 
       this.form.patchValue({...item, subjectPrerequisites, subjectCorequisites});
 
@@ -223,7 +223,7 @@ export class SubjectFormComponent implements OnInit, OnExitInterface {
 
   findSubjectsByCurriculum() {
     this.curriculumsHttpService.findSubjectsByCurriculum(this.curriculumService.curriculum.id!)
-      .subscribe((subjects) => {
+      .subscribe((subjects: any) => {
         if (this.academicPeriodField.value.code !== this.subjectsService.subject.academicPeriod.code) {
           this.subjectPrerequisitesField.setValue([]);
           this.subjectCorequisitesField.setValue([]);
@@ -232,14 +232,14 @@ export class SubjectFormComponent implements OnInit, OnExitInterface {
         this.subjectsPrerequisites = [];
         this.subjectsCorequisites = [];
 
-        const subjects1 = subjects.filter(subject =>
+        const subjects1 = subjects.filter((subject: { academicPeriod: { code: string; }; id: string; }) =>
           parseInt(subject.academicPeriod.code) < parseInt(this.academicPeriodField.value.code) && subject.id != this.subjectsService.subject.id
         );
-        const subjects2 = subjects.filter(subject =>
+        const subjects2 = subjects.filter((subject: { academicPeriod: { code: string; }; id: string; }) =>
           parseInt(subject.academicPeriod.code) === parseInt(this.academicPeriodField.value.code) && subject.id != this.subjectsService.subject.id
         );
 
-        subjects1.sort(function (a, b) {
+        subjects1.sort(function (a: { academicPeriod: { code: number; }; }, b: { academicPeriod: { code: number; }; }) {
           if (a.academicPeriod.code > b.academicPeriod.code) {
             return 1;
           }
@@ -249,7 +249,7 @@ export class SubjectFormComponent implements OnInit, OnExitInterface {
           return 0;
         });
 
-        subjects2.sort(function (a, b) {
+        subjects2.sort(function (a: { academicPeriod: { code: number; }; }, b: { academicPeriod: { code: number; }; }) {
           if (a.academicPeriod.code > b.academicPeriod.code) {
             return 1;
           }
@@ -259,7 +259,7 @@ export class SubjectFormComponent implements OnInit, OnExitInterface {
           return 0;
         });
 
-        subjects1.forEach(subject => {
+        subjects1.forEach((subject: SubjectModel) => {
           const level = subject.academicPeriod.name;
           const index = this.subjectsPrerequisites.findIndex(item => item.name === level);
 
@@ -272,7 +272,7 @@ export class SubjectFormComponent implements OnInit, OnExitInterface {
           }
         });
 
-        subjects2.forEach(subject => {
+        subjects2.forEach((subject: SubjectModel) => {
           const level = subject.academicPeriod.name;
           const index = this.subjectsCorequisites.findIndex(item => item.name === level);
 

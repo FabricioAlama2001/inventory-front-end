@@ -59,13 +59,13 @@ export class CurriculumListComponent implements OnInit {
 
     this.selectedCareer.patchValue(this.careersService.career);
 
-    this.search.valueChanges.subscribe(value => {
+    this.search.valueChanges.subscribe((value: any[]) => {
       if (value.length === 0) {
         this.findByCareer();
       }
     });
 
-    this.selectedCareer.valueChanges.subscribe(selectCareer => {
+    this.selectedCareer.valueChanges.subscribe((selectCareer: any) => {
       this.findByCareer();
     });
   }
@@ -77,7 +77,7 @@ export class CurriculumListComponent implements OnInit {
   /** Load Data **/
   findByCareer() {
     this.careersHttpService.findCurriculumsByCareer(this.selectedCareer.value.id)
-      .subscribe((response) => {
+      .subscribe((response: CurriculumModel[]) => {
         this.items = response;
       });
   }
@@ -138,14 +138,14 @@ export class CurriculumListComponent implements OnInit {
   /** Actions **/
 
   hide(id: string) {
-    this.curriculumsHttpService.hide(id).subscribe(item => {
+    this.curriculumsHttpService.hide(id).subscribe((item: any) => {
       const index = this.items.findIndex(item => item.id === id);
       this.items[index].isVisible = false;
     });
   }
 
   reactivate(id: string) {
-    this.curriculumsHttpService.reactivate(id).subscribe(item => {
+    this.curriculumsHttpService.reactivate(id).subscribe((item: any) => {
       const index = this.items.findIndex(item => item.id === id);
       this.items[index].isVisible = true;
     });

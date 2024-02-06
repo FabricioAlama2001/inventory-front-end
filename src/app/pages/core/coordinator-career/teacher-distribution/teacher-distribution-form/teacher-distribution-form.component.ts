@@ -80,7 +80,7 @@ export class TeacherDistributionFormComponent implements OnInit, OnExitInterface
 
   async onExit(): Promise<boolean> {
     if (this.form.touched && this.form.dirty) {
-      return await this.messageService.questionOnExit().then(result => result.isConfirmed);
+      return await this.messageService.questionOnExit().then((result: { isConfirmed: any; }) => result.isConfirmed);
     }
     return true;
   }
@@ -145,7 +145,7 @@ export class TeacherDistributionFormComponent implements OnInit, OnExitInterface
 
   /** Load Data **/
   get(): void {
-    this.teacherDistributionsHttpService.findOne(this.id!).subscribe((item) => {
+    this.teacherDistributionsHttpService.findOne(this.id!).subscribe((item: { [key: string]: any; }) => {
       this.form.patchValue(item);
     });
   }
@@ -160,22 +160,22 @@ export class TeacherDistributionFormComponent implements OnInit, OnExitInterface
 
   loadTeachersByCareer(): void {
     this.careersHttpService.findTeachersByCareer('0b54590b-4822-4c18-91b0-24e8ef4627de')
-      .subscribe((items) => this.teachers = items);
+      .subscribe((items: TeacherModel[]) => this.teachers = items);
   }
 
   loadSchoolPeriods(): void {
     this.schoolPeriodsHttpService.getAllSchoolPeriods()
-      .subscribe((items) => this.schoolPeriods = items);
+      .subscribe((items: SchoolPeriodModel[]) => this.schoolPeriods = items);
   }
 
   loadSubjects(): void {
     this.subjectsHttpService.getAllSubjects()
-      .subscribe((items) => this.subjects = items);
+      .subscribe((items: SubjectModel[]) => this.subjects = items);
   }
 
   loadCareers(): void {
     this.careersHttpService.getAllCareers()
-      .subscribe((items) => this.careers = items);
+      .subscribe((items: CareerModel[]) => this.careers = items);
   }
 
   /** Form Getters **/

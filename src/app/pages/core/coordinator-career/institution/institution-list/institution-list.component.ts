@@ -51,7 +51,7 @@ export class InstitutionListComponent implements OnInit {
       {label: BreadcrumbEnum.INSTITUTIONS},
     ]);
 
-    this.search.valueChanges.subscribe(value => {
+    this.search.valueChanges.subscribe((value: string | any[]) => {
       if (value.length === 0) {
         this.findInstitutionsByAuthenticatedUser();
       }
@@ -129,13 +129,13 @@ export class InstitutionListComponent implements OnInit {
   /** Actions **/
   findInstitutionsByAuthenticatedUser() {
     this.institutionsHttpService.findInstitutionsByAuthenticatedUser()
-      .subscribe((response) => {
+      .subscribe((response: InstitutionModel[]) => {
         this.items = response;
       });
   }
 
   refresh() {
-    this.institutionsHttpService.findInstitutionsByAuthenticatedUser().subscribe(institutions => {
+    this.institutionsHttpService.findInstitutionsByAuthenticatedUser().subscribe((institutions: SelectInstitutionDto[]) => {
       this.institutionsService.institutions = institutions;
     })
   }
@@ -147,7 +147,7 @@ export class InstitutionListComponent implements OnInit {
   }
 
   hide(id: string) {
-    this.institutionsHttpService.hide(id).subscribe(item => {
+    this.institutionsHttpService.hide(id).subscribe((item: any) => {
       const index = this.items.findIndex(item => item.id === id);
       this.items[index].isVisible = false;
     });

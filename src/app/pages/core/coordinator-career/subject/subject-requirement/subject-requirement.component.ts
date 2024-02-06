@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {PrimeIcons, TreeNode} from "primeng/api";
+import {PrimeIcons} from "primeng/api";
 import {
   BreadcrumbService, CareersService,
   CataloguesHttpService,
@@ -50,7 +50,7 @@ export class SubjectRequirementComponent implements OnInit {
 
   findSubjectsByCurriculum() {
     this.curriculumsHttpService.findSubjectsByCurriculum(this.curriculumService.curriculum.id!)
-      .subscribe((subjects) => {
+      .subscribe((subjects: any) => {
         this.sourceDataPrequisites = subjects;
         this.sourceDataCorequisites = subjects;
         const prerequisites = this.selectedSubject.subjectPrerequisites;
@@ -59,8 +59,8 @@ export class SubjectRequirementComponent implements OnInit {
         const idsPrerequisitesAccepted = prerequisites.map(subjectRequirement => subjectRequirement.requirement.id);
         const idsCorequisitesAccepted = corequisites.map(subjectRequirement => subjectRequirement.requirement.id);
 
-        this.prerequisites = subjects.filter(subject => idsPrerequisitesAccepted.includes(subject.id));
-        this.corequisites = subjects.filter(subject => idsCorequisitesAccepted.includes(subject.id));
+        this.prerequisites = subjects.filter((subject: { id: string; }) => idsPrerequisitesAccepted.includes(subject.id));
+        this.corequisites = subjects.filter((subject: { id: string; }) => idsCorequisitesAccepted.includes(subject.id));
 
         const idssPrerequisitesForbidden = this.prerequisites.map(prerequisite => prerequisite.id);
         const idssCorequisitesForbidden = this.corequisites.map(corequisite => corequisite.id);

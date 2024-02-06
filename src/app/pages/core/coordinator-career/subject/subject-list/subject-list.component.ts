@@ -90,7 +90,7 @@ export class SubjectListComponent implements OnInit {
       this.findSubjectsAllByCurriculum();
     }
 
-    this.selectedCareer.valueChanges.subscribe(selectedCareer => {
+    this.selectedCareer.valueChanges.subscribe((selectedCareer: { curriculums: any[]; }) => {
       this.items = [];
       this.curriculumsService.curriculum = {};
 
@@ -111,7 +111,7 @@ export class SubjectListComponent implements OnInit {
   /** Load Data **/
   findSubjectsAllByCurriculum() {
     this.curriculumsHttpService.findSubjectsAllByCurriculum(this.selectedCurriculum.value.id)
-      .subscribe(subjects => {
+      .subscribe((subjects: SubjectModel[]) => {
         this.items = subjects;
       });
   }
@@ -181,14 +181,14 @@ export class SubjectListComponent implements OnInit {
 
   /** Actions **/
   hide(id: string) {
-    this.subjectsHttpService.hide(id).subscribe(item => {
+    this.subjectsHttpService.hide(id).subscribe((item: any) => {
       const index = this.items.findIndex(item => item.id === id);
       this.items[index].isVisible = false;
     });
   }
 
   reactivate(id: string) {
-    this.subjectsHttpService.reactivate(id).subscribe(item => {
+    this.subjectsHttpService.reactivate(id).subscribe((item: any) => {
       const index = this.items.findIndex(item => item.id === id);
       this.items[index].isVisible = true;
     });

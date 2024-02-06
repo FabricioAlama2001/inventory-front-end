@@ -43,13 +43,13 @@ export class FileListComponent implements OnInit {
 
     this.paginator = this.coreService.paginator;
 
-    this.search.valueChanges.subscribe(value => {
+    this.search.valueChanges.subscribe((value: string | any[]) => {
       if (value.length === 0) {
         this.findByModel();
       }
     });
 
-    this.type.valueChanges.subscribe(value => {
+    this.type.valueChanges.subscribe((value: CatalogueModel | undefined) => {
       this.selectedType.emit(value);
     });
   }
@@ -60,7 +60,7 @@ export class FileListComponent implements OnInit {
 
   findByModel(page: number = 0) {
     this.filesHttpService.findByModel(this.modelId, page, this.search.value)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
         this.paginator = response.pagination!;
         this.items = response.data;
         this.files.emit(this.items);
