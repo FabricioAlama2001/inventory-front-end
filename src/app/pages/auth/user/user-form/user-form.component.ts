@@ -1,19 +1,21 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {PrimeIcons} from "primeng/api";
 import {CreateUserDto, RoleModel, UpdateUserDto} from '@models/auth';
-import {AuthHttpService, AuthService, RolesHttpService, UsersHttpService} from '@services/auth';
+import {CatalogueModel} from "@models/core";
+import {RolesHttpService, UsersHttpService} from '@services/auth';
 import {BreadcrumbService, CataloguesHttpService, CoreService, MessageService, RoutesService} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
-import {PrimeIcons} from "primeng/api";
 import {
   BreadcrumbEnum,
   CatalogueTypeEnum,
-  ClassButtonActionEnum, IconButtonActionEnum, LabelButtonActionEnum,
-  SkeletonEnum,
+  ClassButtonActionEnum,
+  IconButtonActionEnum,
+  LabelButtonActionEnum,
+  SkeletonEnum, UsersFormEnum,
   UsersIdentificationTypeStateEnum
 } from "@shared/enums";
-import {CatalogueModel} from "@models/core";
 
 @Component({
   selector: 'app-user-form',
@@ -27,32 +29,32 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
-  protected id: string | null = null;
+
+  @Input({required: true}) id: string='';
   protected form: FormGroup;
-  protected isChangePassword: FormControl = new FormControl(false);
+  protected formErrors: string[] = [];
+
   protected roles: RoleModel[] = [];
   protected identificationTypes: CatalogueModel[] = [];
 
+  protected isChangePassword: FormControl = new FormControl(false);
+
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private breadcrumbService: BreadcrumbService,
-    private cataloguesHttpService: CataloguesHttpService,
-    protected coreService: CoreService,
-    private formBuilder: FormBuilder,
-    public messageService: MessageService,
-    private router: Router,
-    private rolesHttpService: RolesHttpService,
-    private routesService: RoutesService,
-    private usersHttpService: UsersHttpService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly breadcrumbService: BreadcrumbService,
+    private readonly cataloguesHttpService: CataloguesHttpService,
+    protected readonly coreService: CoreService,
+    private readonly formBuilder: FormBuilder,
+    public readonly messageService: MessageService,
+    private readonly router: Router,
+    private readonly rolesHttpService: RolesHttpService,
+    private readonly routesService: RoutesService,
+    private readonly usersHttpService: UsersHttpService,
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.USERS, routerLink: [this.routesService.users]},
       {label: BreadcrumbEnum.FORM},
     ]);
-
-    if (this.activatedRoute.snapshot.params['id'] !== 'new') {
-      this.id = this.activatedRoute.snapshot.params['id'];
-    }
 
     this.form = this.newForm;
 
@@ -85,7 +87,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     this.loadIdentificationTypes();
 
     if (this.id) {
-      this.getUser();
+      this.get();
       this.passwordField.clearValidators();
     } else {
       this.isChangePassword.setValue(true);
@@ -108,10 +110,34 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     });
   }
 
+  get validateForm() {
+    this.formErrors = [];
+
+    if (this.emailField.errors) this.formErrors.push(UsersFormEnum.email);
+    if (this.identificationField.errors) this.formErrors.push(UsersFormEnum.identification);
+    if (this.identificationTypeField.errors) this.formErrors.push(UsersFormEnum.identificationType);
+    if (this.lastnameField.errors) this.formErrors.push(UsersFormEnum.lastname);
+    if (this.nameField.errors) this.formErrors.push(UsersFormEnum.name);
+    if (this.passwordField.errors) this.formErrors.push(UsersFormEnum.password);
+    if (this.passwordChangedField.errors) this.formErrors.push(UsersFormEnum.passwordChanged);
+    if (this.rolesField.errors) this.formErrors.push(UsersFormEnum.roles);
+
+    this.formErrors.sort();
+    return this.formErrors.length === 0 && this.form.valid;
+  }
+
+  get(): void {
+    this.usersHttpService.findOne(this.id!).subscribe((user) => {
+      console.log(user);
+      console.log(this.identificationTypes);
+      this.form.patchValue(user);
+    });
+  }
+
   onSubmit(): void {
     this.usernameField.setValue(this.identificationField.value);
 
-    if (this.form.valid) {
+    if (this.validateForm) {
       if (this.id) {
         this.update(this.form.value);
       } else {
@@ -119,7 +145,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
       }
     } else {
       this.form.markAllAsTouched();
-      this.messageService.errorsFields();
+      this.messageService.errorsFields(this.formErrors);
     }
   }
 
@@ -129,20 +155,24 @@ export class UserFormComponent implements OnInit, OnExitInterface {
 
   create(user: CreateUserDto): void {
     user.passwordChanged = !user.passwordChanged;
+
     this.usersHttpService.create(user).subscribe(user => {
       this.form.reset(user);
       this.back();
     });
   }
 
-  loadRoles(): void {
-    this.rolesHttpService.findAll().subscribe((roles) => this.roles = roles);
+  update(user: UpdateUserDto): void {
+    user.passwordChanged = !user.passwordChanged;
+
+    this.usersHttpService.update(this.id!, user).subscribe((user) => {
+      this.form.reset(user);
+      this.back()
+    });
   }
 
-  getUser(): void {
-    this.usersHttpService.findOne(this.id!).subscribe((user) => {
-      this.form.patchValue(user);
-    });
+  loadRoles(): void {
+    this.rolesHttpService.findAll().subscribe((roles) => this.roles = roles);
   }
 
   loadIdentificationTypes(): void {
@@ -163,15 +193,6 @@ export class UserFormComponent implements OnInit, OnExitInterface {
       this.passwordField.clearValidators();
     }
     this.passwordField.updateValueAndValidity();
-  }
-
-  update(user: UpdateUserDto): void {
-    user.passwordChanged = !user.passwordChanged;
-
-    this.usersHttpService.update(this.id!, user).subscribe((user) => {
-      this.form.reset(user);
-      this.back()
-    });
   }
 
   get emailField(): AbstractControl {
@@ -209,4 +230,6 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   get usernameField(): AbstractControl {
     return this.form.controls['username'];
   }
+
+  protected readonly UsersFormEnum = UsersFormEnum;
 }

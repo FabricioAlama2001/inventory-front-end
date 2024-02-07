@@ -24,7 +24,7 @@
 <p-panel *ngIf="!coreService.isLoading" class="p-fluid">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="field">
-      <label appLabel for="roles" label="Roles:" [required]="rolesField"></label>
+      <label appLabel for="roles" [label]="UsersFormEnum.roles" [required]="rolesField"></label>
       <p-multiSelect id="roles"
                      formControlName="roles"
                      dataKey="id"
@@ -34,11 +34,11 @@
                      placeholder="Seleccione...">
         <ng-template pTemplate="selectedItem">
           <div *ngIf="rolesField.value">
-            <div>{{rolesField.value.name}}</div>
+            <div>{{ rolesField.value.name }}</div>
           </div>
         </ng-template>
         <ng-template pTemplate="item" let-item>
-          {{item.name}}
+          {{ item.name }}
         </ng-template>
       </p-multiSelect>
       <small appErrorMessage
@@ -49,16 +49,24 @@
     </div>
     <div class="formgrid grid">
       <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="identificationType" label="Tipo de Documento:"
+        <label appLabel for="identificationType" [label]="UsersFormEnum.identificationType"
                [required]="identificationTypeField"></label>
         <p-dropdown id="identificationType"
-                    formControlName="identificationType"
                     dataKey="id"
+                    formControlName="identificationType"
                     [options]="identificationTypes"
                     optionLabel="name"
                     [filter]="true"
                     filterBy="name"
                     placeholder="Seleccione...">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="identificationTypeField.value">
+              <div>{{ identificationTypeField.value.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-item pTemplate="item">
+            <div>{{ item.name }}</div>
+          </ng-template>
         </p-dropdown>
         <small appErrorMessage
                [errors]="identificationTypeField.errors"
@@ -67,7 +75,8 @@
         </small>
       </div>
       <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="identification" label="Número de Documento:" [required]="identificationField"></label>
+        <label appLabel for="identification" [label]="UsersFormEnum.identification"
+               [required]="identificationField"></label>
         <input pInputText type="text" id="identification" formControlName="identification"/>
         <small appErrorMessage
                [errors]="identificationField.errors"
@@ -78,7 +87,7 @@
     </div>
     <div class="formgrid grid">
       <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="lastname" label="Apellidos:" [required]="lastnameField"></label>
+        <label appLabel for="lastname" [label]="UsersFormEnum.lastname" [required]="lastnameField"></label>
         <input pInputText type="text" id="lastname" formControlName="lastname"/>
         <small appErrorMessage
                [errors]="lastnameField.errors"
@@ -87,7 +96,7 @@
         </small>
       </div>
       <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="name" label="Nombres:" [required]="nameField"></label>
+        <label appLabel for="name" [label]="UsersFormEnum.name" [required]="nameField"></label>
         <input pInputText type="text" id="name" formControlName="name"/>
         <small appErrorMessage
                [errors]="nameField.errors"
@@ -98,7 +107,7 @@
     </div>
     <div class="formgrid grid">
       <div *ngIf="!id || isChangePassword.value" class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="password" label="Contraseña:" [required]="passwordField"></label>
+        <label appLabel for="password" [label]="UsersFormEnum.password" [required]="passwordField"></label>
         <input pPassword type="password" id="password" formControlName="password" [feedback]="false"/>
         <small appErrorMessage
                [errors]="passwordField.errors"
@@ -107,7 +116,7 @@
         </small>
       </div>
       <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="email" label="Correo Electrónico:" [required]="emailField"></label>
+        <label appLabel for="email" [label]="UsersFormEnum.email" [required]="emailField"></label>
         <input pInputText type="email" id="email" formControlName="email"/>
         <small appErrorMessage
                [errors]="emailField.errors"
@@ -129,3 +138,9 @@
     </div>
   </form>
 </p-panel>
+
+<p-overlayPanel #opIsEnabledField>
+  <ng-template pTemplate="content">
+    Se toma en cuenta para realizar procesos
+  </ng-template>
+</p-overlayPanel>
