@@ -76,7 +76,7 @@ export enum ClassButtonActionEnum {
   REDIRECT_SECONDARY = 'p-button-secondary',
   REDIRECT_HELP = 'p-button-help',
   UPDATE = 'Editar',
-  DELETE = 'Eliminar',
+  DELETE = 'p-button-danger',
   HIDE = 'Ocultar',
   SELECT = 'Seleccionar',
   REACTIVATE = 'Mostrar',

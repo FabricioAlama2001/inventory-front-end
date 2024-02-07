@@ -28,13 +28,11 @@ import {ToolbarModule} from "primeng/toolbar";
 // Components
 import {CareerFormComponent} from './career-form/career-form.component';
 import {CareerListComponent} from "./career-list/career-list.component";
-import {ParallelCapacityComponent} from './parallel-capacity/parallel-capacity.component';
 
 @NgModule({
   declarations: [
     CareerFormComponent,
     CareerListComponent,
-    ParallelCapacityComponent,
   ],
   imports: [
     NgCommonModule,

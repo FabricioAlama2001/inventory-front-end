@@ -1,28 +1,26 @@
 <p-toolbar>
   <div class="p-toolbar-group-left">
-    <button pButton type="button" label="Crear"
-            class="p-button-success mr-2"
-            [icon]="PrimeIcons.PLUS"
-            (click)="redirectCreateForm()"></button>
-    <button pButton type="button" label="Refrescar"
-            class="p-button-info mr-2"
-            [icon]="PrimeIcons.REFRESH"
+    <button pButton type="button"
+            (click)="redirectCreateForm()"
+            [icon]="IconButtonActionEnum.CREATE"
+            [label]="LabelButtonActionEnum.CREATE"
             [loading]="coreService.isLoading"
-            (click)="findAll()"></button>
-    <button *ngIf="selectedUsers.length>0" pButton type="button" label="Eliminar Usuarios"
-            class="p-button-danger"
+            [ngClass]="[ClassButtonActionEnum.CREATE]"></button>
+    <button pButton type="button"
+            (click)="findUsers()"
+            [icon]="IconButtonActionEnum.SYNC"
+            [label]="LabelButtonActionEnum.SYNC"
+            [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.SYNC,'ml-2']"></button>
+    <button *ngIf="selectedItems.length>0" pButton type="button"
+            (click)="removeAll()"
             [icon]="PrimeIcons.TRASH"
+            [label]="LabelButtonActionEnum.DELETE"
             [loading]="coreService.isLoading"
-            (click)="removeAll()"></button>
+            [ngClass]="[ClassButtonActionEnum.DELETE,'ml-2']"></button>
   </div>
   <div class="p-toolbar-group-right">
-    <div class="p-inputgroup">
-      <input type="text" pInputText [formControl]="search" placeholder="Buscar...">
-      <button type="button" pButton pRipple
-              [class]="PrimeIcons.SEARCH"
-              [loading]="coreService.isLoading"
-              (click)="findAll()"></button>
-    </div>
+
   </div>
 </p-toolbar>
 
@@ -32,12 +30,34 @@
   (onPageChange)="paginate($event)"></p-paginator>
 
 <p-table
+  #dt1
   dataKey="id"
   styleClass="p-datatable-striped"
-  [value]="users"
+  [value]="items"
   [columns]="columns"
   [loading]="coreService.isLoading"
-  [(selection)]="selectedUsers">
+  [(selection)]="selectedItems">
+  <ng-template pTemplate="caption">
+    <div class="flex">
+      <h1>{{BreadcrumbEnum.USERS}}</h1>
+      <div class="p-input-icon-left ml-auto">
+        <div class="p-inputgroup">
+          <input type="text"
+                 pInputText
+                 [formControl]="search"
+                 placeholder="Buscar...">
+          <button pButton
+                  pRipple
+                  type="button"
+                  [icon]="PrimeIcons.SEARCH"
+                  [loading]="coreService.isLoading"
+                  (click)="findUsers()"
+          >
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th style="width: 3rem">
@@ -90,7 +110,7 @@
       <td class="text-center">
         <div *ngIf="rowData['id']!==authService.auth.id; then thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
-          <button type="button" pButton [icon]="PrimeIcons.ELLIPSIS_V" (click)="selectUser(rowData)"></button>
+          <button type="button" pButton [icon]="PrimeIcons.ELLIPSIS_V" (click)="selectItem(rowData)"></button>
         </ng-template>
         <ng-template #elseBlock>Usuario Actual</ng-template>
       </td>
@@ -108,6 +128,7 @@
   </ng-template>
 </p-table>
 
-<p-sidebar [(visible)]="isButtonActions" position="right">
-  <p-panelMenu [model]="buttonActions" [style]="{'width':'300px'}" (click)="isButtonActions=false"></p-panelMenu>
-</p-sidebar>
+<app-button-action [buttonActions]="buttonActions"
+                   [isVisible]="isButtonActions"
+                   (isHide)="isButtonActions=!$event">
+</app-button-action>

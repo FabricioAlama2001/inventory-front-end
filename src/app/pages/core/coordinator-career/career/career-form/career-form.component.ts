@@ -10,8 +10,6 @@ import {
   CoreService,
   MessageService,
   RoutesService,
-  CareersHttpService,
-  InstitutionsService
 } from '@services/core';
 import {
   BreadcrumbEnum,
@@ -53,8 +51,6 @@ export class CareerFormComponent implements OnInit, OnExitInterface {
     public messageService: MessageService,
     private router: Router,
     private routesService: RoutesService,
-    private careersHttpService: CareersHttpService,
-    private institutionsService: InstitutionsService,
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.INSTITUTIONS, routerLink: routesService.institutions},
@@ -91,7 +87,7 @@ export class CareerFormComponent implements OnInit, OnExitInterface {
       code: [null, [Validators.required]],
       codeSniese: [null, []],
       degree: [null, [Validators.required]],
-      institution: [this.institutionsService.institution, [Validators.required]],
+      institution: [null, [Validators.required]],
       isEnabled: [true, [Validators.required]],
       isVisible: [true, [Validators.required]],
       logo: [null, []],
@@ -123,17 +119,17 @@ export class CareerFormComponent implements OnInit, OnExitInterface {
 
   /** Actions **/
   create(item: CareerModel): void {
-    this.careersHttpService.create(item).subscribe(() => {
-      this.form.reset();
-      this.back();
-    });
+    // this.careersHttpService.create(item).subscribe(() => {
+    //   this.form.reset();
+    //   this.back();
+    // });
   }
 
   update(item: CareerModel): void {
-    this.careersHttpService.update(this.id!, item).subscribe(() => {
-      this.form.reset();
-      this.back();
-    });
+    // this.careersHttpService.update(this.id!, item).subscribe(() => {
+    //   this.form.reset();
+    //   this.back();
+    // });
   }
 
   get validateForm() {
@@ -147,9 +143,9 @@ export class CareerFormComponent implements OnInit, OnExitInterface {
 
   /** Load Data **/
   get(): void {
-    this.careersHttpService.findOne(this.id!).subscribe((item: { [key: string]: any; }) => {
-      this.form.patchValue(item);
-    });
+    // this.careersHttpService.findOne(this.id!).subscribe((item: { [key: string]: any; }) => {
+    //   this.form.patchValue(item);
+    // });
   }
 
   loadStates(): void {

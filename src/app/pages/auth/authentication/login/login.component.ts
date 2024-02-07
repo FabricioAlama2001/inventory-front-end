@@ -3,7 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {PrimeIcons} from "primeng/api";
 import {RolesEnum} from "@shared/enums";
 import {AuthHttpService, AuthService} from '@services/auth';
-import {CoreService, InstitutionsService, MessageService, RoutesService} from '@services/core';
+import {CoreService, MessageService, RoutesService} from '@services/core';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private authHttpService: AuthHttpService,
               protected coreService: CoreService,
-              private institutionsService: InstitutionsService,
               public messageService: MessageService,
               protected authService: AuthService,
               private routesService: RoutesService) {
@@ -49,6 +48,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.authService.removeLogin();
+
     this.authHttpService.login(this.form.value)
       .subscribe(
         response => {
@@ -61,18 +61,12 @@ export class LoginComponent implements OnInit {
           if (this.authService.roles.length === 1) {
             this.authService.role = this.authService.roles[0];
 
-            if (this.institutionsService.institutions.length === 0 && this.authService.role.code !== RolesEnum.ADMIN) {
-              this.messageService.errorCustom('Sin Institución', 'No cuenta con al menos una Institución asignada');
-              this.authService.removeLogin();
-              return;
-            }
-
             if (this.authService.role.code === RolesEnum.ADMIN) {
               this.authService.selectDashboard();
               return;
             }
 
-            this.routesService.institutionSelect();
+            this.authService.selectDashboard();
           } else {
             this.routesService.roleSelect();
           }

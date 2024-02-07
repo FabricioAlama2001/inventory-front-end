@@ -27,13 +27,14 @@ export class UsersHttpService {
     );
   }
 
-  findAll(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findUsers(page: number = 0, search: string = ''): Observable<ServerResponse> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
     const params = new HttpParams()
       .append('page', page)
-      .append('search', search);
+      .append('search', search)
+      .append('limit', '2');
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {

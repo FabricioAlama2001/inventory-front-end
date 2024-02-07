@@ -8,10 +8,6 @@ import {
   CoreService,
   MessageService,
   RoutesService,
-  CareersHttpService,
-  CareersService,
-  InstitutionsService,
-  InstitutionsHttpService
 } from '@services/core';
 import {
     IdButtonActionEnum,
@@ -32,13 +28,16 @@ export class CareerListComponent implements OnInit {
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
+
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
+
   protected buttonActions: MenuItem[] = this.buildButtonActions;
-  protected columns: ColumnModel[] = this.buildColumns;
   protected isButtonActions: boolean = false;
+  protected columns: ColumnModel[] = this.buildColumns;
   protected selectedItem!: CareerModel;
   protected selectedItems: CareerModel[] = [];
   protected items: SelectCareerDto[] = [];
+
   protected selectedInstitution: FormControl = new FormControl();
   protected institutions: SelectInstitutionDto[] = [];
 
@@ -48,19 +47,11 @@ export class CareerListComponent implements OnInit {
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly careersHttpService: CareersHttpService,
-    protected readonly careersService: CareersService,
-    protected readonly institutionsService: InstitutionsService,
-    protected readonly institutionsHttpService: InstitutionsHttpService,
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.INSTITUTIONS, routerLink: routesService.institutions},
       {label: BreadcrumbEnum.CAREERS},
     ]);
-
-    this.institutions = this.institutionsService.institutions;
-
-    this.selectedInstitution.patchValue(this.institutionsService.institution);
 
     this.selectedInstitution.valueChanges.subscribe((_: any) => {
       this.findCareersByInstitution();
@@ -73,17 +64,17 @@ export class CareerListComponent implements OnInit {
 
   /** Load Data **/
   findCareersByInstitution() {
-    this.items = this.careersService.careers.filter(career => career.institution?.id === this.selectedInstitution.value.id);
+    // this.items = this.careersService.careers.filter(career => career.institution?.id === this.selectedInstitution.value.id);
     if (this.items.length === 0) {
       this.messageService.successCustom('No hay registros', 'No tiene carreras asignadas para esta institución');
     }
   }
 
   refresh() {
-    this.careersHttpService.findCareersByAuthenticatedUser().subscribe((careers: CareerModel[]) => {
-      this.careersService.careers = careers;
-      this.findCareersByInstitution();
-    })
+    // this.careersHttpService.findCareersByAuthenticatedUser().subscribe((careers: CareerModel[]) => {
+    //   this.careersService.careers = careers;
+    //   this.findCareersByInstitution();
+    // })
   }
 
   /** Build Data **/
@@ -154,30 +145,26 @@ export class CareerListComponent implements OnInit {
     if (!item.isVisible) {
       this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.HIDE), 1);
     }
-
-    if (item.id === this.careersService.career.id) {
-      this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.SELECT), 1);
-    }
   }
 
   /** Actions **/
   change(item: CareerModel) {
-    this.careersService.career = item;
+    // this.careersService.career = item;
     this.messageService.successCustom('Ha cambiado de Carrera', 'La Carrera seleccionada se configura para todo el sistema');
   }
 
   hide(id: string) {
-    this.careersHttpService.hide(id).subscribe((item: any) => {
-      const index = this.items.findIndex(item => item.id === id);
-      this.items[index].isVisible = false;
-    });
+    // this.careersHttpService.hide(id).subscribe((item: any) => {
+    //   const index = this.items.findIndex(item => item.id === id);
+    //   this.items[index].isVisible = false;
+    // });
   }
 
   reactivate(id: string) {
-    this.careersHttpService.reactivate(id).subscribe(() => {
-      const index = this.items.findIndex(item => item.id === id);
-      this.items[index].isVisible = true;
-    });
+    // this.careersHttpService.reactivate(id).subscribe(() => {
+    //   const index = this.items.findIndex(item => item.id === id);
+    //   this.items[index].isVisible = true;
+    // });
   }
 
   selectItem(item: CareerModel) {

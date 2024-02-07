@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {MenuItem, PrimeIcons} from 'primeng/api';
-import {BreadcrumbService, CoreService, InstitutionsService, RoutesService} from '@services/core';
+import {BreadcrumbService, CoreService, RoutesService} from '@services/core';
 import {AuthHttpService, AuthService} from "@services/auth";
 import {environment} from "@env/environment";
 
@@ -22,7 +22,6 @@ export class BreadcrumbComponent {
               public coreService: CoreService,
               private authHttpService: AuthHttpService,
               protected authService: AuthService,
-              protected institutionsService: InstitutionsService,
               private routesService: RoutesService) {
     this.subscription = breadcrumbService.itemsHandler.subscribe(response => {
       this.items = response as MenuItem[];

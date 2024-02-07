@@ -100,13 +100,6 @@
         <!--Fields-->
         <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
           <div *ngSwitchDefault>{{rowData[col.field]}}</div>
-          <div *ngSwitchCase="'isVisible'">
-            <p-tag [severity]="rowData[col.field]?'success':'danger'" [value]="rowData[col.field]|isVisible"></p-tag>
-            <p-tag *ngIf="careersService.career && rowData['id']===careersService.career.id"
-                   severity="info"
-                   [value]="rowData['id']===careersService.career.id|selected"
-                   class="ml-1"></p-tag>
-          </div>
         </div>
       </td>
       <td class="text-center">

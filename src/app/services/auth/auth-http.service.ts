@@ -8,11 +8,10 @@ import {LoginModel, PasswordChangeModel, PasswordResetModel, RoleModel, UpdateUs
 import {LoginResponse, ServerResponse} from '@models/http-response';
 import {AuthService} from '@services/auth';
 import {
-  CareersService, CataloguesHttpService,
+  CataloguesHttpService,
   CoreService,
-  InstitutionsService, LocationsHttpService,
+  LocationsHttpService,
   MessageService,
-  SchoolPeriodsService
 } from '@services/core';
 // import {AuthRoutesEnum, RoutesEnum} from "@shared/enums";
 import {RoutesService} from "@services/core/routes.service";
@@ -32,11 +31,8 @@ export class AuthHttpService {
               private readonly coreService: CoreService,
               private readonly cataloguesHttpService: CataloguesHttpService,
               private readonly locationsHttpService: LocationsHttpService,
-              private readonly institutionsService: InstitutionsService,
-              private readonly careersService: CareersService,
               private readonly router: Router,
               private readonly routesService: RoutesService,
-              private readonly schoolPeriodsService: SchoolPeriodsService,
               private readonly messageService: MessageService) {
   }
 
@@ -81,9 +77,6 @@ export class AuthHttpService {
           this.authService.token = response.data.accessToken;
           this.authService.auth = response.data.user;
           this.authService.roles = response.data.user.roles;
-          this.institutionsService.institutions = response.data.user.institutions;
-          this.careersService.careers = response.data.user.careers;
-          this.schoolPeriodsService.openSchoolPeriod = response.data.schoolPeriod;
           return response;
         })
       );

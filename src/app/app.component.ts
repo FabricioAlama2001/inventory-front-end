@@ -1,12 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {PrimeNGConfig} from 'primeng/api';
-import {
-  BreadcrumbService,
-  CataloguesHttpService,
-  CoreService,
-  SchoolPeriodsHttpService,
-  SchoolPeriodsService
-} from "@services/core";
+import {BreadcrumbService, CoreService} from "@services/core";
 import {BreadcrumbEnum, CoreMessageEnum} from "@shared/enums";
 import {DOCUMENT} from "@angular/common";
 
