@@ -15,10 +15,6 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.COORDINATOR_CAREER]}
   },
-  {
-    path: 'events',
-    loadChildren: () => import('./event/event.module').then(m => m.EventModule)
-  },
 ];
 
 @NgModule({

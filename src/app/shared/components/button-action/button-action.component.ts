@@ -8,7 +8,7 @@ import {MenuItem} from "primeng/api";
   styleUrls: ['./button-action.component.scss']
 })
 export class ButtonActionComponent {
-  @Input() isVisible: boolean = false;
+  @Input() enabled: boolean = false;
   @Input() buttonActions: MenuItem[] = [];
   @Output() isHide: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;

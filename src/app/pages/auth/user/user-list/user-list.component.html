@@ -30,7 +30,6 @@
   (onPageChange)="paginate($event)"></p-paginator>
 
 <p-table
-  #dt1
   dataKey="id"
   styleClass="p-datatable-striped"
   [value]="items"
@@ -51,8 +50,7 @@
                   type="button"
                   [icon]="PrimeIcons.SEARCH"
                   [loading]="coreService.isLoading"
-                  (click)="findUsers()"
-          >
+                  (click)="findUsers()">
           </button>
         </div>
       </div>
@@ -129,6 +127,6 @@
 </p-table>
 
 <app-button-action [buttonActions]="buttonActions"
-                   [isVisible]="isButtonActions"
+                   [enabled]="isButtonActions"
                    (isHide)="isButtonActions=!$event">
 </app-button-action>

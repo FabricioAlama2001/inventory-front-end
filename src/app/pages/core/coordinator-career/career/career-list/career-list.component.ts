@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Router} from '@angular/router';
 import {MenuItem, PrimeIcons} from 'primeng/api';
-import {ColumnModel, CareerModel, SelectCareerDto, SelectInstitutionDto} from '@models/core';
+import {ColumnModel, CareerModel, SelectCareerDto} from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
@@ -39,7 +39,7 @@ export class CareerListComponent implements OnInit {
   protected items: SelectCareerDto[] = [];
 
   protected selectedInstitution: FormControl = new FormControl();
-  protected institutions: SelectInstitutionDto[] = [];
+  protected institutions: any[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,

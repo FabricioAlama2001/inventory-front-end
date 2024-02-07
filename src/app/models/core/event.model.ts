@@ -4,7 +4,7 @@ export interface EventModel {
   createAt: Date;
   updateAt: Date;
   deleteAt: Date;
-  isVisible: boolean;
+  enabled: boolean;
 
   state: CatalogueModel;
   schoolPeriod: CatalogueModel;

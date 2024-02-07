@@ -1,44 +1,81 @@
-<div class="login-form">
-  <div class="p-fluid panel-auth">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="field text-center">
-        <h1>Seleccione un Rol</h1>
-        <img src="assets/images/logo/logo-sm.png" alt="">
-        <h2>{{authService.system}}</h2>
-      </div>
+<div class="login-page">
+  <div class="login-form">
+    <div class="p-fluid panel-auth">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="field text-center">
+          <img src="assets/images/logo/logo-sm.png" alt="">
+          <h1>Seleccione un Rol</h1>
+        </div>
 
-      <div class="field">
-        <label for="role" appLabel label="Seleccione un Rol:" [required]="roleField"></label>
-        <p-dropdown id="role"
-                    formControlName="role"
-                    dataKey="id"
-                    [options]="roles"
-                    optionLabel="name"
-                    [filter]="true"
-                    filterBy="name"
-                    placeholder="Seleccione...">
-        </p-dropdown>
-        <small appErrorMessage
-               [errors]="roleField.errors"
-               [touched]="roleField.touched"
-               [dirty]="roleField.dirty">
-        </small>
-      </div>
+        <div class="field">
+          <label for="role" appLabel label="Seleccione un Rol:" [required]="roleField"></label>
+          <p-dropdown id="role"
+                      formControlName="role"
+                      dataKey="id"
+                      [options]="roles"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="roleField.errors"
+                 [touched]="roleField.touched"
+                 [dirty]="roleField.dirty">
+          </small>
+        </div>
 
-      <div class="field">
-        <button pButton pRipple
-                label="Continuar"
-                [icon]="PrimeIcons.SIGN_IN"></button>
-      </div>
+        <div class="field">
+          <label for="unit" appLabel label="Seleccione una Unidad:" [required]="unitField"></label>
+          <p-dropdown id="unit"
+                      formControlName="unit"
+                      dataKey="id"
+                      [options]="units"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="roleField.errors"
+                 [touched]="roleField.touched"
+                 [dirty]="roleField.dirty">
+          </small>
+        </div>
 
-      <div class="field">
-        <button pButton pRipple type="button"
-                class="p-button-outlined"
-                label="Regresar al login"
-                [icon]="PrimeIcons.ARROW_LEFT"
-                (click)="routesService.login()"></button>
-      </div>
-    </form>
+        <div class="field">
+          <label for="fiscalYear" appLabel label="Seleccione un año fiscal:" [required]="fiscalYearField"></label>
+          <p-dropdown id="fiscalYear"
+                      formControlName="fiscalYear"
+                      dataKey="id"
+                      [options]="fiscalYears"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="roleField.errors"
+                 [touched]="roleField.touched"
+                 [dirty]="roleField.dirty">
+          </small>
+        </div>
+
+        <div class="field">
+          <button pButton pRipple
+                  label="Continuar"
+                  [icon]="PrimeIcons.SIGN_IN"></button>
+        </div>
+
+        <div class="field">
+          <button pButton pRipple type="button"
+                  class="p-button-outlined"
+                  label="Regresar al login"
+                  [icon]="PrimeIcons.ARROW_LEFT"
+                  (click)="routesService.login()"></button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 

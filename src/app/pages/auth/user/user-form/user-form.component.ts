@@ -28,9 +28,11 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
+  protected readonly UsersFormEnum = UsersFormEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
+  protected helpText: string = '';
 
-  @Input({required: true}) id: string='';
+  @Input() id: string = '';
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
@@ -40,15 +42,14 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   protected isChangePassword: FormControl = new FormControl(false);
 
   constructor(
-    private readonly activatedRoute: ActivatedRoute,
     private readonly breadcrumbService: BreadcrumbService,
-    private readonly cataloguesHttpService: CataloguesHttpService,
     protected readonly coreService: CoreService,
     private readonly formBuilder: FormBuilder,
     public readonly messageService: MessageService,
     private readonly router: Router,
-    private readonly rolesHttpService: RolesHttpService,
     private readonly routesService: RoutesService,
+    private readonly rolesHttpService: RolesHttpService,
+    private readonly cataloguesHttpService: CataloguesHttpService,
     private readonly usersHttpService: UsersHttpService,
   ) {
     this.breadcrumbService.setItems([
@@ -58,6 +59,10 @@ export class UserFormComponent implements OnInit, OnExitInterface {
 
     this.form = this.newForm;
 
+    this.validateFormFields();
+  }
+
+  validateFormFields() {
     this.identificationTypeField.valueChanges.subscribe(value => {
       if (value) {
         this.identificationField.enable();
@@ -66,9 +71,9 @@ export class UserFormComponent implements OnInit, OnExitInterface {
       }
 
       if (value.code === UsersIdentificationTypeStateEnum.IDENTIFICATION) {
-        this.identificationField.setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(10)])
+        this.identificationField.setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
       } else {
-        this.identificationField.clearValidators();
+        this.identificationField.setValidators([Validators.required]);
       }
 
       this.identificationField.updateValueAndValidity();
@@ -86,7 +91,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     this.loadRoles();
     this.loadIdentificationTypes();
 
-    if (this.id) {
+    if (this.id != 'new') {
       this.get();
       this.passwordField.clearValidators();
     } else {
@@ -99,7 +104,10 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   get newForm(): FormGroup {
     return this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
-      identification: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      identification: [{
+        value: null,
+        disabled: true
+      }, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       identificationType: [null, [Validators.required]],
       lastname: [null, [Validators.required]],
       name: [null, [Validators.required]],
@@ -110,7 +118,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     });
   }
 
-  get validateForm() {
+  get validateFormErrors() {
     this.formErrors = [];
 
     if (this.emailField.errors) this.formErrors.push(UsersFormEnum.email);
@@ -123,13 +131,12 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     if (this.rolesField.errors) this.formErrors.push(UsersFormEnum.roles);
 
     this.formErrors.sort();
+
     return this.formErrors.length === 0 && this.form.valid;
   }
 
   get(): void {
     this.usersHttpService.findOne(this.id!).subscribe((user) => {
-      console.log(user);
-      console.log(this.identificationTypes);
       this.form.patchValue(user);
     });
   }
@@ -137,7 +144,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   onSubmit(): void {
     this.usernameField.setValue(this.identificationField.value);
 
-    if (this.validateForm) {
+    if (this.validateFormErrors) {
       if (this.id) {
         this.update(this.form.value);
       } else {
@@ -157,7 +164,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     user.passwordChanged = !user.passwordChanged;
 
     this.usersHttpService.create(user).subscribe(user => {
-      this.form.reset(user);
+      //this.form.reset(user);
       this.back();
     });
   }
@@ -166,7 +173,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     user.passwordChanged = !user.passwordChanged;
 
     this.usersHttpService.update(this.id!, user).subscribe((user) => {
-      this.form.reset(user);
+      //this.form.reset(user);
       this.back()
     });
   }
@@ -230,6 +237,4 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   get usernameField(): AbstractControl {
     return this.form.controls['username'];
   }
-
-  protected readonly UsersFormEnum = UsersFormEnum;
 }

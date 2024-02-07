@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
       this.login();
     } else {
       this.form.markAllAsTouched();
+      this.messageService.errorsFields();
     }
   }
 
@@ -58,18 +59,7 @@ export class LoginComponent implements OnInit {
             return;
           }
 
-          if (this.authService.roles.length === 1) {
-            this.authService.role = this.authService.roles[0];
-
-            if (this.authService.role.code === RolesEnum.ADMIN) {
-              this.authService.selectDashboard();
-              return;
-            }
-
-            this.authService.selectDashboard();
-          } else {
-            this.routesService.roleSelect();
-          }
+          this.routesService.roleSelect();
         });
   }
 

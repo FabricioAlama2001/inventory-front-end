@@ -4,7 +4,7 @@ import {PrimeIcons} from "primeng/api";
 import {RolesEnum} from "@shared/enums";
 import {RoleModel} from "@models/auth";
 import {AuthService} from '@services/auth';
-import { CoreService, MessageService, RoutesService} from '@services/core';
+import {CoreService, MessageService, RoutesService} from '@services/core';
 
 @Component({
   selector: 'app-role-select',
@@ -15,6 +15,8 @@ export class RoleSelectComponent implements OnInit {
   protected readonly PrimeIcons = PrimeIcons;
   protected form: FormGroup;
   protected roles: RoleModel[] = [];
+  protected fiscalYears: RoleModel[] = [];
+  protected units: RoleModel[] = [];
 
   constructor(
     protected coreService: CoreService,
@@ -30,7 +32,12 @@ export class RoleSelectComponent implements OnInit {
   }
 
   newForm(): FormGroup {
-    return this.formBuilder.group({role: [null, [Validators.required]]});
+    return this.formBuilder.group({
+        role: [null, [Validators.required]],
+        fiscalYear: [null, []],
+        unit: [null, []],
+      }
+    );
   }
 
   onSubmit() {
@@ -38,6 +45,7 @@ export class RoleSelectComponent implements OnInit {
       this.selectRole();
     } else {
       this.form.markAllAsTouched();
+      this.messageService.errorsFields();
     }
   }
 
@@ -52,5 +60,13 @@ export class RoleSelectComponent implements OnInit {
 
   get roleField() {
     return this.form.controls['role'];
+  }
+
+  get fiscalYearField() {
+    return this.form.controls['fiscalYear'];
+  }
+
+  get unitField() {
+    return this.form.controls['unit'];
   }
 }

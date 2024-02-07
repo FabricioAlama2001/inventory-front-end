@@ -33,7 +33,7 @@
         <li>
           <a class="link_name" [routerLink]="item.routerLink">{{item.label}}</a>
           <div *ngFor="let subItem of item.children">
-            <a *ngIf="subItem.isVisible" [routerLink]="subItem.routerLink">
+            <a *ngIf="subItem.enabled" [routerLink]="subItem.routerLink">
               {{subItem.label}}
             </a>
           </div>

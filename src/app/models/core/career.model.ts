@@ -1,4 +1,4 @@
-import {CatalogueModel, CurriculumModel, InstitutionModel} from '@models/core';
+import {CatalogueModel} from '@models/core';
 
 export interface CareerModel {
   id: string;
@@ -7,11 +7,11 @@ export interface CareerModel {
   deleteAt: Date;
   isVisible: boolean;
 
-  institution: InstitutionModel;
+  institution: any;
   modality: CatalogueModel;
   state: CatalogueModel;
   type: CatalogueModel;
-  curriculums: CurriculumModel[];
+  curriculums: any[];
 
   acronym: string;
   code: string;

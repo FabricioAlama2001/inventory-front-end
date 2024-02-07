@@ -3,7 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {ActivatedRoute, Router} from '@angular/router';
 import {PrimeIcons} from 'primeng/api';
 import {OnExitInterface} from '@shared/interfaces';
-import {CareerModel, CatalogueModel, InstitutionModel} from '@models/core';
+import {CareerModel, CatalogueModel} from '@models/core';
 import {
   BreadcrumbService,
   CataloguesHttpService,
@@ -35,7 +35,7 @@ export class CareerFormComponent implements OnInit, OnExitInterface {
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
 
   // Foreign Keys
-  protected institutions: InstitutionModel[] = [];
+  protected institutions: any[] = [];
   protected states: CatalogueModel[] = [];
   protected modality: CatalogueModel[] = [];
   protected type: CatalogueModel[] = [];
