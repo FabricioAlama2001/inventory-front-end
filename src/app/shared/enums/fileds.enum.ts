@@ -10,3 +10,9 @@ export enum UsersFormEnum {
   bloodType = 'Tipo de sangre:',
   ethnicOrigin = 'Etnia:',
 }
+
+export enum ProjectFormEnum{
+  name = 'Nombre',
+  code = 'Código',
+  description = 'Descripción'
+}

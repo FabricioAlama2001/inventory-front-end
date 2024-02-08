@@ -33,6 +33,10 @@ export class RoutesService {
     return this.admin + 'users';
   }
 
+  get projects(): string {
+    return this.admin + 'projects';
+  }
+
   /** Coordinator Career Role **/
   get institutions(): string {
     return this.core + '/coordinator-career/institutions';

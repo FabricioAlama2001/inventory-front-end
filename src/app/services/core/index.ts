@@ -9,3 +9,5 @@ export * from './events.service';
 export * from './files-http.service';
 export * from './overlays.service';
 export * from './locations-http.service';
+export * from './projects-http.service';
+
