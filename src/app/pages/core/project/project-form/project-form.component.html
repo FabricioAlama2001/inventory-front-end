@@ -1,1 +1,80 @@
-<p>project-form works!</p>
+<app-skeleton *ngIf="coreService.isLoading" [type]="SkeletonEnum.CARD"></app-skeleton>
+
+<p-toolbar *ngIf="!coreService.isLoading">
+    <div class="p-toolbar-group-left">
+        <app-header-form [id]="id"></app-header-form>
+    </div>
+    <div class="p-toolbar-group-right">
+        <button pButton pRipple type="button" (click)="back()" [icon]="IconButtonActionEnum.CANCEL"
+            [label]="LabelButtonActionEnum.CANCEL" [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.CANCEL]"></button>
+        <p-divider layout="vertical"></p-divider>
+        <button pButton pRipple type="button" (click)="onSubmit()" [icon]="IconButtonActionEnum.SAVE"
+            [label]="LabelButtonActionEnum.SAVE" [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
+    </div>
+</p-toolbar>
+
+<p-panel *ngIf="!coreService.isLoading" class="p-fluid">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="formgrid grid">
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+                <label 
+                    appLabel for="code" 
+                    [label]="UsersFormEnum.code"
+                    [required]="codeField">
+                </label>
+
+                <input pInputText type="text" id="code" formControlName="code" />
+                <small 
+                    appErrorMessage 
+                    [errors]="codeField.errors" 
+                    [touched]="codeField.touched"
+                    [dirty]="codeField.dirty">
+                </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+                <label 
+                    appLabel for="name" 
+                    [label]="UsersFormEnum.name"
+                    [required]="nameField">
+                </label>
+
+                <input pInputText type="text" id="name" formControlName="name" />
+                <small 
+                    appErrorMessage 
+                    [errors]="nameField.errors" 
+                    [touched]="nameField.touched"
+                    [dirty]="nameField.dirty">
+                </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+                <label 
+                    appLabel 
+                    for="description" 
+                    [label]="UsersFormEnum.description"
+                    [required]="descriptionField">
+                </label>
+
+                <app-help-field 
+                    (mouseenter)="opDescription.toggle($event)"
+                    (mouseleave)="opDescription.hide()">
+                </app-help-field>
+
+                <input pInputText type="text" id="description" formControlName="description" />
+                <small 
+                    appErrorMessage 
+                    [errors]="descriptionField.errors" 
+                    [touched]="descriptionField.touched"
+                    [dirty]="descriptionField.dirty">
+                </small>
+            </div>
+        </div>
+    </form>
+</p-panel>
+
+<p-overlayPanel #opDescription>
+    <ng-template pTemplate="content">
+     Ingrese una descripción
+    </ng-template>
+</p-overlayPanel>

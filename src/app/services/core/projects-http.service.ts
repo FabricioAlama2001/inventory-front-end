@@ -10,7 +10,7 @@ import {MessageService} from "@services/core";
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectHttpService {
+export class ProjectsHttpService {
   API_URL = `${environment.API_URL}/projects`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
