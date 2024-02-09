@@ -5,6 +5,11 @@ import {RolesEnum} from "@shared/enums";
 
 const routes: Routes = [
   {
+    path: '',
+    loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
+    canActivate: [TokenGuard]
+  },
+  {
     path: 'dashboards',
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivate: [TokenGuard]

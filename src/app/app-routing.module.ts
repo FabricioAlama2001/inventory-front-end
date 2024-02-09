@@ -7,7 +7,11 @@ const routes: Routes = [
     path: '',
     component: MainComponent,
     children: [
-      {path: '', redirectTo: '/', pathMatch: 'full'},
+      {
+        path: '',
+        title: 'Core',
+        loadChildren: () => import('./pages/core/core.module').then(m => m.CoreModule),
+      },
       {
         path: 'admin',
         title: 'Admin',
