@@ -126,35 +126,19 @@ export enum UsersIdentificationTypeStateEnum {
   PASSPORT = '2',
 }
 
-export enum CatalogueMaritalStatusEnum {
-  SINGLE = 'single',
-  MARRIED = 'married',
-  WIDOWER = 'widower',
-  DIVORCED = 'divorced',
-  FREE_UNION = 'free_union'
-}
-
-export enum CatalogueEthnicOriginEnum {
-  INDIGENOUS = 'indigenous',
-  AFRO_ECUADORIAN = 'afro_ecuadorian',
-  MONTUBIO = 'montubio',
-  HALF_BLOOD = 'half_blood',
-  WHITE = 'white'
-}
-
-export enum CatalogueTypeSchoolEnum {
-  FISCAL = 'fiscal',
-  FISCOMISIONAL = 'fiscomisional',
-  PARTICULAR = 'particular',
-  MUNICIPAL = 'municipal',
-}
-
-export enum CatalogueStudentLiveEnum {
-  ALONE = 'alone',
-  BOTH_PARENTS = 'both_parents',
-  MOTHER = 'mother',
-  FATHER = 'father',
-  SPOUSE = 'spouse',
-  GRANDPARENTS = 'grandparents',
-  OTHER = 'other',
+export enum CatalogueEnum {
+  INDICATOR_SUBACTIVITY = 'INDICATOR_SUBACTIVITY',
+  INSTITUTIONAL_STRATEGIC_PLAN = 'INSTITUTIONAL_STRATEGIC_PLAN',
+  STRATEGIC_AXIS = 'STRATEGIC_AXIS',
+  STRATEGY = 'STRATEGY',
+  CONTINENT = 'CONTINENT',
+  COUNTRY = 'COUNTRY',
+  PROVINCE = 'PROVINCE',
+  CANTON = 'CANTON',
+  PARISH = 'PARISH',
+  POA = 'POA',
+  UNIT = 'UNIT',
+  PND_OBJECTIVE = 'PND_OBJECTIVE',
+  PND_POLICE = 'PND_POLICE',
+  EXPENSE_TYPE = 'EXPENSE_TYPE',
 }

@@ -3,22 +3,20 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {CreateProjectDto, UpdateProjectDto, ProjectModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueEnum } from '@shared/enums';
-import { CatalogueModel } from '@models/core';
+import { CreateSubactivityDto, SubactivityModel, UpdateSubactivityDto } from '@models/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectsHttpService {
-  API_URL = `${environment.API_URL}/projects`;
+export class SubactivitiesHttpService {
+  API_URL = `${environment.API_URL}/subactivities`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
 
-  create(payload: CreateProjectDto): Observable<ProjectModel> {
+  create(payload: CreateSubactivityDto): Observable<SubactivityModel> {
     const url = `${this.API_URL}`;
 
     return this.httpClient.post<ServerResponse>(url, payload).pipe(
@@ -29,13 +27,14 @@ export class ProjectsHttpService {
     );
   }
 
-  findProjects(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findSubactivities(page: number = 0, search: string = ''): Observable<ServerResponse> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
     const params = new HttpParams()
       .append('page', page)
       .append('search', search)
+      .append('limit', '2');
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
@@ -44,7 +43,7 @@ export class ProjectsHttpService {
     );
   }
 
-  findOne(id: string): Observable<ProjectModel> {
+  findOne(id: string): Observable<SubactivityModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -54,7 +53,7 @@ export class ProjectsHttpService {
     );
   }
 
-  update(id: string, payload: UpdateProjectDto): Observable<ProjectModel> {
+  update(id: string, payload: UpdateSubactivityDto): Observable<SubactivityModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.put<ServerResponse>(url, payload).pipe(
@@ -65,7 +64,7 @@ export class ProjectsHttpService {
     );
   }
 
-  reactivate(id: string): Observable<ProjectModel> {
+  reactivate(id: string): Observable<SubactivityModel> {
     const url = `${this.API_URL}/${id}/reactivate`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
@@ -76,7 +75,7 @@ export class ProjectsHttpService {
     );
   }
 
-  remove(id: string): Observable<ProjectModel> {
+  remove(id: string): Observable<SubactivityModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.delete<ServerResponse>(url).pipe(
@@ -87,10 +86,10 @@ export class ProjectsHttpService {
     );
   }
 
-  removeAll(projects: ProjectModel[]): Observable<ProjectModel[]> {
+  removeAll(subactivities: SubactivityModel[]): Observable<SubactivityModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, projects).pipe(
+    return this.httpClient.patch<ServerResponse>(url, subactivities).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -98,7 +97,7 @@ export class ProjectsHttpService {
     );
   }
 
-  suspend(id: string): Observable<ProjectModel> {
+  suspend(id: string): Observable<SubactivityModel> {
     const url = `${this.API_URL}/${id}/suspend`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
@@ -107,11 +106,5 @@ export class ProjectsHttpService {
         return response.data;
       })
     );
-  }
-
-  findCatalogue(name: CatalogueEnum): CatalogueModel[] {
-    const catalogues: CatalogueModel[] = JSON.parse(String(sessionStorage.getItem('catalogues')));
-
-    return catalogues.filter(catalogue => catalogue.name === name);
   }
 }

@@ -21,5 +21,6 @@ export enum BreadcrumbEnum {
   USERS = 'Usuarios',
   TEACHER_CHARGE = 'Consolidado de notas',
   SUBJECT_REQUIREMENTS = 'Pre y Co Requisitos',
-  PROJECTS = 'Proyectos'
+  PROJECTS = 'Proyectos',
+  SUBACTIVITIES = 'Sub-actividades'
 }
