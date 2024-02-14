@@ -19,11 +19,11 @@ import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
 // Components
-import {DashboardComponent} from './dashboard/dashboard.component';
+import { PlannerComponent } from './planner/planner.component';
 
 @NgModule({
   declarations: [
-    DashboardComponent,
+    PlannerComponent
   ],
   imports: [
     NgCommonModule,

@@ -1,8 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule as NgCommonModule} from '@angular/common';
+import { ActivityRoutingModule } from './activity-routing.module';
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "@shared/shared.module";
-import { SubactivityRoutingModule } from './subactivity-routing.module';
+
 
 // PrimeNg Modules
 import {ButtonModule} from "primeng/button";
@@ -24,20 +25,21 @@ import {SplitButtonModule} from "primeng/splitbutton";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
+import { ActivityFormComponent } from './activity-form/activity-form.component';
+import { ActivityListComponent } from './activity-list/activity-list.component';
 
 // Components
 
-import { SubactivityFormComponent } from './subactivity-form/subactivity-form.component';
-import { SubactivityListComponent } from './subactivity-list/subactivity-list.component';
+
 
 @NgModule({
   declarations: [
-    SubactivityFormComponent,
-    SubactivityListComponent,
+    ActivityFormComponent,
+    ActivityListComponent,
   ],
   imports: [
     NgCommonModule,
-    SubactivityRoutingModule,
+    ActivityRoutingModule,
     ReactiveFormsModule,
     SharedModule,
     ButtonModule,
@@ -61,5 +63,5 @@ import { SubactivityListComponent } from './subactivity-list/subactivity-list.co
     ToolbarModule,
   ]
 })
-export class SubactivityModule {
+export class ActivityModule {
 }

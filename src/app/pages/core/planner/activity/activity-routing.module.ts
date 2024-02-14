@@ -1,17 +1,17 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ExitGuard} from "@shared/guards";
-import { BudgetItemFormComponent } from './budget-item-form/budget-item-form.component';
-import { BudgetItemListComponent } from './budget-item-list/budget-item-list.component';
+import { ActivityFormComponent } from './activity-form/activity-form.component';
+import { ActivityListComponent } from './activity-list/activity-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: BudgetItemListComponent
+    component: ActivityListComponent
   },
   {
     path: ':id',
-    component: BudgetItemFormComponent,
+    component: ActivityFormComponent,
     canDeactivate: [ExitGuard]
   },
 ];
@@ -20,5 +20,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class BudgetItemRoutingModule {
+export class ActivityRoutingModule {
 }
