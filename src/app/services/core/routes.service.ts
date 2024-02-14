@@ -37,6 +37,11 @@ export class RoutesService {
     return this.admin + 'projects';
   }
 
+  /** Planner Role **/
+  get subactivities(): string {
+    return this.core + '/planner/subactivities';
+  }
+
   /** Coordinator Career Role **/
   get institutions(): string {
     return this.core + '/coordinator-career/institutions';
@@ -56,20 +61,6 @@ export class RoutesService {
 
   get schoolPeriods(): string {
     return this.core + '/coordinator-career/school-periods';
-  }
-
-  /** Secretary Role **/
-  get enrollments(): string
-  {
-    return this.core + '/secretary/enrollments';
-  }
-
-  enrollmentsDetailList(enrollmentId: string): string {
-    return this.core + `/secretary/enrollments/${enrollmentId}/enrollment-details`;
-  }
-
-  enrollmentsDetailForm(enrollmentId: string): string {
-    return this.core + `/secretary/enrollments/${enrollmentId}/enrollment-details`;
   }
 
   /** Reviewer Role **/

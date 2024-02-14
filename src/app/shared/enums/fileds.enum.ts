@@ -11,8 +11,28 @@ export enum UsersFormEnum {
   ethnicOrigin = 'Etnia:',
 }
 
-export enum ProjectFormEnum{
+export enum SubactivitiesFormEnum {
   name = 'Nombre',
-  code = 'Código',
-  description = 'Descripción'
+  type = 'Tipo',
+  fiscalYear = 'Año fiscal',
+  indicatorSubactivity = 'Indicador de la sub-actividad',
+  institutionalStrategicPlan = 'Plan estrategico institucional',
+  strategicAxis = 'Eje estrategico',
+  strategy = 'Estrategia',
+  continent = 'Continente',
+  country = 'Pais',
+  province = 'Provincia',
+  canton = 'Canton',
+  parish = 'Parroquia',
+  poa = 'POA',
+  unit = 'unidad'
+}
+
+export enum ProjectsFormEnum {
+  name= 'Nombre',
+  fiscalYear = 'Año Fiscal',
+  enabled = 'Disponible',
+  pndObjective = 'Objetivo',
+  pndPolice = 'Politica',
+  expenseType = 'Tipo de gasto',
 }
