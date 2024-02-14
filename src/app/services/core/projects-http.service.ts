@@ -65,8 +65,8 @@ export class ProjectsHttpService {
     );
   }
 
-  reactivate(id: string): Observable<ProjectModel> {
-    const url = `${this.API_URL}/${id}/reactivate`;
+  enable(id: string): Observable<ProjectModel> {
+    const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -98,8 +98,8 @@ export class ProjectsHttpService {
     );
   }
 
-  suspend(id: string): Observable<ProjectModel> {
-    const url = `${this.API_URL}/${id}/suspend`;
+  disable(id: string): Observable<ProjectModel> {
+    const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {

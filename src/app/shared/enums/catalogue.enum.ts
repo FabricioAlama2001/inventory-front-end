@@ -21,7 +21,7 @@ export enum CatalogueTypeEnum {
   ETHNIC_ORIGIN = 'ETHNIC_ORIGIN',
   EVENTS_STATE = 'EVENTS_STATE',
   ELECTRONIC_DEVICE = 'ELECTRONIC_DEVICE',
-  ELECTRIC_SERVICE_BLACKOUT='ELECTRIC_SERVICE_BLACKOUT',
+  ELECTRIC_SERVICE_BLACKOUT = 'ELECTRIC_SERVICE_BLACKOUT',
   ECONOMIC_CONTRIBUTION = 'ECONOMIC_CONTRIBUTION',
   FAMILY_KINSHIP_DISABILITY = "FAMILY_KINSHIP_DISABILITY",
   FOREIGN_LANGUAGE_NAME = 'FOREIGN_LANGUAGE_NAME',
@@ -61,7 +61,7 @@ export enum CatalogueTypeEnum {
   STUDENT_OCCUPATION = 'STUDENT_OCCUPATION',
   SUBJECTS_STATE = 'SUBJECTS_STATE',
   SUBJECTS_TYPE = 'SUBJECTS_TYPE',
-  SEWERAGE_SERVICE_TYPE= 'SEWERAGE_SERVICE_TYPE',
+  SEWERAGE_SERVICE_TYPE = 'SEWERAGE_SERVICE_TYPE',
   SOCIAL_GROUP = 'SOCIAL_GROUP',
   TOWN = 'TOWN',
   TYPE_STUDY_OTHER_CAREER = 'TYPE_STUDY_OTHER_CAREER',
@@ -79,46 +79,6 @@ export enum CatalogueTypeEnum {
 export enum CatalogueStateEnum {
   ENABLED = 'enabled',
   DISABLED = 'disabled',
-}
-
-export enum CatalogueEnrollmentStateEnum {
-  REQUEST_SENT = 'request_sent',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
-  ENROLLED = 'enrolled',
-  REVOKED = 'revoked',
-  PAID = 'paid',
-  REGISTERED = 'registered',
-}
-
-export enum CatalogueSchoolPeriodStateEnum {
-  OPEN = 'open',
-  CLOSE = 'close',
-}
-
-export enum CatalogueSchoolPeriodTypeEnum {
-  ORDINARY = 'ordinary',
-  EXTRAORDINARY = 'extraordinary',
-  ESPECIAL = 'especial',
-}
-
-export enum CatalogueSubjectRequirementTypeEnum {
-  PREREQUISITE = 'prerequisite',
-  CO_REQUISITE = 'co_requisite',
-}
-
-export enum CatalogueCareersModalityEnum {
-  ON_SITE = 'on-site',
-  SEMI_ON_SITE = 'semi-on-site',
-  DISTANCE = 'distance',
-  DUAL = 'dual',
-  ONLINE = 'online',
-  HYBRID = 'hybrid',
-}
-
-export enum CatalogueYesNoEnum {
-  YES = '1',
-  NO = '2',
 }
 
 export enum UsersIdentificationTypeStateEnum {
@@ -141,4 +101,8 @@ export enum CatalogueEnum {
   PND_OBJECTIVE = 'PND_OBJECTIVE',
   PND_POLICE = 'PND_POLICE',
   EXPENSE_TYPE = 'EXPENSE_TYPE',
+}
+
+export enum RoutesEnum {
+  NEW = 'new',
 }

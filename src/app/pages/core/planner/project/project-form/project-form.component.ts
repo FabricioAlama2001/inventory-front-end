@@ -1,4 +1,3 @@
-
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -6,10 +5,17 @@ import {PrimeIcons} from "primeng/api";
 
 import {CreateProjectDto, UpdateProjectDto} from '@models/core';
 import {CatalogueModel} from "@models/core";
-import { PndObjectivesHttpService } from '@services/core/pnd-objectives-http.services';
-import { PndPolicesHttpService } from '@services/core/pnd-polices-http.service';
-import { ExpenseTypesHttpService } from '@services/core/expense-types-http.services';
-import {BreadcrumbService, CataloguesHttpService, CoreService, MessageService, ProjectsHttpService, RoutesService} from '@services/core';
+import {PndObjectivesHttpService} from '@services/core/pnd-objectives-http.services';
+import {PndPolicesHttpService} from '@services/core/pnd-polices-http.service';
+import {ExpenseTypesHttpService} from '@services/core/expense-types-http.services';
+import {
+  BreadcrumbService,
+  CataloguesHttpService,
+  CoreService,
+  MessageService,
+  ProjectsHttpService,
+  RoutesService
+} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
   BreadcrumbEnum,
@@ -21,10 +27,8 @@ import {
   SkeletonEnum, UsersFormEnum,
   UsersIdentificationTypeStateEnum,
   CatalogueEnum,
-  ProjectsFormEnum
+  ProjectsFormEnum, RoutesEnum
 } from "@shared/enums";
-
-
 
 @Component({
   selector: 'app-project-form',
@@ -38,7 +42,7 @@ export class ProjectFormComponent {
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
-  protected readonly SubactivitiesFormEnum = SubactivitiesFormEnum;
+  protected readonly ProjectsFormEnum = ProjectsFormEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
 
@@ -57,14 +61,10 @@ export class ProjectFormComponent {
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-
     private readonly projectsHttpService: ProjectsHttpService,
     private readonly pndObjectivesHttpService: PndObjectivesHttpService,
     private readonly pndPolicesHttpService: PndPolicesHttpService,
-    private readonly expenseTypesHttpService: ExpenseTypesHttpService,
-  
-
-
+    private readonly expenseTypesHttpService: ExpenseTypesHttpService
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.SUBACTIVITIES, routerLink: [this.routesService.subactivities]},
@@ -73,6 +73,7 @@ export class ProjectFormComponent {
 
     this.form = this.newForm;
   }
+
   async onExit(): Promise<boolean> {
     if (this.form.touched || this.form.dirty) {
       return await this.messageService.questionOnExit().then(result => result.isConfirmed);
@@ -81,7 +82,11 @@ export class ProjectFormComponent {
   }
 
   ngOnInit(): void {
-    if (this.id != 'new') {
+    this.loadExpenseTypes();
+    this.loadPndObjectives();
+    this.loadPndPolices();
+
+    if (this.id != RoutesEnum.NEW) {
       this.get();
     }
   }
@@ -91,12 +96,12 @@ export class ProjectFormComponent {
       name: [null, []],
       fiscalYear: [null, []],
       enabled: [null, []],
-      pndObjectives: [null, []],
-      pndPolices: [null, []],
-      expenseTypes: [null, []],
-    
+      pndObjective: [null, []],
+      pndPolice: [null, []],
+      expenseType: [null, []],
     });
   }
+
   get validateFormErrors() {
     this.formErrors = [];
 
@@ -106,11 +111,12 @@ export class ProjectFormComponent {
     if (this.pndObjectiveField.errors) this.formErrors.push(ProjectsFormEnum.pndObjective);
     if (this.pndPoliceField.errors) this.formErrors.push(ProjectsFormEnum.pndPolice);
     if (this.expenseTypeField.errors) this.formErrors.push(ProjectsFormEnum.expenseType);
-  
+
     this.formErrors.sort();
 
     return this.formErrors.length === 0 && this.form.valid;
   }
+
   get(): void {
     this.projectsHttpService.findOne(this.id!).subscribe((project) => {
       this.form.patchValue(project);
@@ -119,10 +125,10 @@ export class ProjectFormComponent {
 
   onSubmit(): void {
     if (this.validateFormErrors) {
-      if (this.id) {
-        this.update(this.form.value);
-      } else {
+      if (this.id === RoutesEnum.NEW) {
         this.create(this.form.value);
+      } else {
+        this.update(this.form.value);
       }
     } else {
       this.form.markAllAsTouched();
@@ -131,7 +137,7 @@ export class ProjectFormComponent {
   }
 
   back(): void {
-    this.router.navigate([this.routesService.projects]);
+    this.router.navigate([this.routesService.projectsList]);
   }
 
   create(project: CreateProjectDto): void {
@@ -148,16 +154,16 @@ export class ProjectFormComponent {
     });
   }
 
+  loadExpenseTypes(): void {
+    this.expenseTypes = this.expenseTypesHttpService.findCatalogue(CatalogueEnum.EXPENSE_TYPE);
+  }
+
   loadPndObjectives(): void {
     this.pndObjectives = this.pndObjectivesHttpService.findCatalogue(CatalogueEnum.PND_OBJECTIVE);
   }
 
   loadPndPolices(): void {
     this.pndPolices = this.pndPolicesHttpService.findCatalogue(CatalogueEnum.PND_POLICE);
-  }
-
-  loadExpeseTypes(): void {
-    this.expenseTypes = this.expenseTypesHttpService.findCatalogue(CatalogueEnum.EXPENSE_TYPE);
   }
 
   get nameField(): AbstractControl {

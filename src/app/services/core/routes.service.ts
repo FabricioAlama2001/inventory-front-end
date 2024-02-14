@@ -16,13 +16,14 @@ export class RoutesService {
   }
 
   get core(): string {
-    return '/core';
+    return '/core/';
   }
 
   /** Admin Role **/
   /** Teacher Role **/
   /** Student Role **/
   /** Coordinator Administrative Role **/
+
   /** Rector Role**/
   /** Welfare Role **/
   get admin(): string {
@@ -33,8 +34,12 @@ export class RoutesService {
     return this.admin + 'users';
   }
 
-  get projects(): string {
-    return this.admin + 'projects';
+  get projectsList(): string {
+    return this.core + 'projects';
+  }
+
+  projectsForm(id: string): string {
+    return this.core + `projects/${id}`;
   }
 
   /** Planner Role **/
@@ -43,35 +48,8 @@ export class RoutesService {
   }
 
   /** Coordinator Career Role **/
-  get institutions(): string {
-    return this.core + '/coordinator-career/institutions';
-  }
-
-  get careers(): string {
-    return this.core + '/coordinator-career/careers';
-  }
-
-  get curriculums(): string {
-    return this.core + '/coordinator-career/curriculums';
-  }
-
-  get subjects(): string {
-    return this.core + '/coordinator-career/subjects';
-  }
-
-  get schoolPeriods(): string {
-    return this.core + '/coordinator-career/school-periods';
-  }
 
   /** Reviewer Role **/
-  get inscriptions(): string {
-    return this.core + '/reviewer/inscriptions';
-  }
-
-  inscriptionsDetailList(enrollmentId: string): string {
-    return this.core + `/reviewer/inscriptions/${enrollmentId}/inscription-details`;
-  }
-
   inscriptionsDetailForm(enrollmentId: string): string {
     return this.core + `/reviewer/inscriptions/${enrollmentId}/inscription-details`;
   }

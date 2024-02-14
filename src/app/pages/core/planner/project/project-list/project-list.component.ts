@@ -1,24 +1,23 @@
-import { Component } from '@angular/core';
-import { FormControl } from "@angular/forms";
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {FormControl} from "@angular/forms";
+import {Router} from '@angular/router';
 
-import { MenuItem, PrimeIcons } from "primeng/api";
+import {debounceTime} from "rxjs";
 
-import { ColumnModel, PaginatorModel, ProjectModel } from '@models/core';
-import { BreadcrumbService, CoreService, MessageService, ProjectsHttpService } from '@services/core';
+import {MenuItem, PrimeIcons} from "primeng/api";
+
+import {ColumnModel, PaginatorModel, ProjectModel} from '@models/core';
+import {BreadcrumbService, CoreService, MessageService, ProjectsHttpService, RoutesService} from '@services/core';
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
-  LabelButtonActionEnum
+  LabelButtonActionEnum, RoutesEnum
 } from "@shared/enums";
-import { debounceTime } from "rxjs";
 
 @Component({
   selector: 'app-project-list',
-  standalone: true,
-  imports: [],
   templateUrl: './project-list.component.html',
   styleUrl: './project-list.component.scss'
 })
@@ -28,6 +27,7 @@ export class ProjectListComponent {
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
+
   protected paginator: PaginatorModel;
 
   protected buttonActions: MenuItem[] = this.buildButtonActions;
@@ -40,25 +40,31 @@ export class ProjectListComponent {
   protected selectedItem!: ProjectModel;
   protected selectedItems: ProjectModel[] = [];
   protected items: ProjectModel[] = [];
+
   constructor(
-    protected readonly coreService: CoreService,
     private readonly breadcrumbService: BreadcrumbService,
+    protected readonly coreService: CoreService,
     protected readonly messageService: MessageService,
     private readonly router: Router,
+    private readonly routesService: RoutesService,
     private readonly projectsHttpService: ProjectsHttpService,
   ) {
-    this.breadcrumbService.setItems([{ label: BreadcrumbEnum.PROJECTS }]);
+    this.breadcrumbService.setItems([{label: BreadcrumbEnum.PROJECTS}]);
 
     this.paginator = this.coreService.paginator;
+  }
 
+  ngOnInit() {
+    this.checkValueChanges();
+    this.findProjects();
+  }
+
+  checkValueChanges() {
     this.search.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(value => {
       this.findProjects();
     });
-  }
-  ngOnInit() {
-    this.findProjects();
   }
 
   findProjects(page: number = 0) {
@@ -68,13 +74,15 @@ export class ProjectListComponent {
         this.items = response.data;
       });
   }
+
   get buildColumns(): ColumnModel[] {
     return [
-      { field: 'name', header: 'Nombre' },
-      { field: 'fiscalYear', header: 'Año fiscal' },
-      { field: 'enabled', header: 'Disponible' },
+      {field: 'name', header: 'Nombre'},
+      {field: 'fiscalYear', header: 'Año fiscal'},
+      {field: 'enabled', header: 'Disponible'},
     ];
   }
+
   get buildButtonActions(): MenuItem[] {
     return [
       {
@@ -94,29 +102,56 @@ export class ProjectListComponent {
         },
       },
       {
-        id: IdButtonActionEnum.SUSPEND,
-        label: LabelButtonActionEnum.SUSPEND,
-        icon: IconButtonActionEnum.SUSPEND,
+        id: IdButtonActionEnum.DISABLE,
+        label: LabelButtonActionEnum.DISABLE,
+        icon: IconButtonActionEnum.DISABLE,
         command: () => {
-          if (this.selectedItem?.id) this.suspend(this.selectedItem.id);
+          if (this.selectedItem?.id) this.disable(this.selectedItem.id);
         },
       },
       {
-        id: IdButtonActionEnum.REACTIVATE,
-        label: LabelButtonActionEnum.REACTIVATE,
-        icon: IconButtonActionEnum.REACTIVATE,
+        id: IdButtonActionEnum.ENABLE,
+        label: LabelButtonActionEnum.ENABLE,
+        icon: IconButtonActionEnum.ENABLE,
         command: () => {
-          if (this.selectedItem?.id) this.reactivate(this.selectedItem.id);
+          if (this.selectedItem?.id) this.enable(this.selectedItem.id);
         },
       },
     ];
   }
+
+  validateButtonActions(item: ProjectModel): void {
+    this.buttonActions = this.buildButtonActions;
+
+    if (item.enabled) {
+      this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.DISABLE), 1);
+    }
+
+    if (!item.enabled) {
+      this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.ENABLE), 1);
+    }
+  }
+
   redirectCreateForm() {
-    this.router.navigate(['/planner/project', 'new']);
+    this.router.navigate([this.routesService.projectsForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate(['/planner/project', id]);
+    this.router.navigate([this.routesService.projectsForm(id)]);
+  }
+
+  disable(id: string) {
+    this.projectsHttpService.disable(id).subscribe(project => {
+      const index = this.items.findIndex(project => project.id === id);
+      this.items[index] = project;
+    });
+  }
+
+  enable(id: string) {
+    this.projectsHttpService.enable(id).subscribe(project => {
+      const index = this.items.findIndex(project => project.id === id);
+      this.items[index] = project;
+    });
   }
 
   remove(id: string) {
@@ -129,46 +164,6 @@ export class ProjectListComponent {
           });
         }
       });
-  }
-
-  removeAll() {
-    this.messageService.questionDelete().then((result) => {
-      if (result.isConfirmed) {
-        this.projectsHttpService.removeAll(this.selectedItems).subscribe((subactivities) => {
-          this.selectedItems.forEach(subactivityDeleted => {
-            this.items = this.items.filter(subactivity => subactivity.id !== subactivityDeleted.id);
-            this.paginator.totalItems--;
-          });
-          this.selectedItems = [];
-        });
-      }
-    });
-  }
-
-  suspend(id: string) {
-    this.projectsHttpService.suspend(id).subscribe(project => {
-      const index = this.items.findIndex(project => project.id === id);
-      this.items[index] = project;
-    });
-  }
-
-  reactivate(id: string) {
-    this.projectsHttpService.reactivate(id).subscribe(project => {
-      const index = this.items.findIndex(project => project.id === id);
-      this.items[index] = project;
-    });
-  }
-
-  validateButtonActions(item: ProjectModel): void {
-    this.buttonActions = this.buildButtonActions;
-
-    if (item.enabled) {
-      this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.SUSPEND), 1);
-    }
-
-    if (!item.enabled) {
-      this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.REACTIVATE), 1);
-    }
   }
 
   paginate(event: any) {
