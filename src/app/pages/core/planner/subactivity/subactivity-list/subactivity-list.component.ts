@@ -17,8 +17,6 @@ import { debounceTime } from "rxjs";
 
 @Component({
   selector: 'app-subactivity-list',
-  standalone: true,
-  imports: [],
   templateUrl: './subactivity-list.component.html',
   styleUrl: './subactivity-list.component.scss'
 })

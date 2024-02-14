@@ -22,8 +22,6 @@ import {
 
 @Component({
   selector: 'app-subactivity-form',
-  standalone: true,
-  imports: [],
   templateUrl: './subactivity-form.component.html',
   styleUrl: './subactivity-form.component.scss'
 })

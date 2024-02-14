@@ -6,9 +6,10 @@ export interface IndicatorComponentModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
-
+  sort: number;
 }
 
 export interface CreateIndicatorComponentDto extends Omit<IndicatorComponentModel, 'id'> {}

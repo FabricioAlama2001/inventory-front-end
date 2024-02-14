@@ -6,9 +6,11 @@ export interface PndPoliceModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
-
+  sort: number;
+  
   pndObjective: PndObjectiveModel;
 }
 

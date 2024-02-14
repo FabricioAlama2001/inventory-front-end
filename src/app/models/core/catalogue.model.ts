@@ -1,5 +1,9 @@
 export interface CatalogueModel {
   id: string;
+  parentId: string;
+  code: string;
   name: string;
-  enabled: boolean;
+  required: boolean;
+  sort: number;
+  type: string;
 }

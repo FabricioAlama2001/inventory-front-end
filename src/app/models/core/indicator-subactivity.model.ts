@@ -6,8 +6,10 @@ export interface IndicatorSubactivityModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
+  sort: number;
 }
 
 export interface CreateIndicatorSubactivityDto extends Omit<IndicatorSubactivityModel, 'id'> {}

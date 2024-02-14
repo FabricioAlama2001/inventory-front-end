@@ -19,6 +19,8 @@ export enum IdButtonActionEnum {
   CLOSE_SCHOOL_PERIOD = 'close_school_period',
   FILE_LIST = 'file_list',
   SUBJECT_REQUIREMENTS = 'subject_requirements',
+  SUSPEND = 'suspend',
+  REACTIVATE = 'reactivate'
 }
 
 export enum LabelButtonActionEnum {
@@ -45,6 +47,7 @@ export enum LabelButtonActionEnum {
   CURRICULUMS = 'Mallas Curriculares',
   SUBJECTS = 'Asignaturas',
   PARALLEL_CAPACITY = 'Capacidad Paralelos',
+  REACTIVATE = 'Reactivar'
 }
 
 export enum IconButtonActionEnum {
@@ -67,6 +70,7 @@ export enum IconButtonActionEnum {
   CLOSE_SCHOOL_PERIOD = 'Cerrar Periodo Lectivo',
   FILE_LIST = 'pi pi-file',
   SUBJECT_REQUIREMENTS = 'Pre y Co Requisitos',
+  REACTIVATE = 'Reactivar'
 }
 
 export enum ClassButtonActionEnum {

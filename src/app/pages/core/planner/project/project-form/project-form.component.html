@@ -19,7 +19,7 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="formgrid grid">
             <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="name" [label]="UsersFormEnum.name"
+                <label appLabel for="name" [label]="ProjectsFormEnum.name"
                     [required]="nameField"></label>
                     <app-help-field (mouseenter)="opName.toggle($event)"
                         (mouseleave)="opName.hide()"></app-help-field>
@@ -29,7 +29,7 @@
                 </small>
             </div>
             <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="fiscalYear" [label]="UsersFormEnum.fiscalYear"
+                <label appLabel for="fiscalYear" [label]="ProjectsFormEnum.fiscalYear"
                     [required]="fiscalYearField"></label>
                     <app-help-field (mouseenter)="opFiscalYear.toggle($event)"
                         (mouseleave)="opFiscalYear.hide()"></app-help-field>
@@ -39,7 +39,7 @@
                 </small>
             </div>
             <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="enabled" [label]="UsersFormEnum.enabled"
+                <label appLabel for="enabled" [label]="ProjectsFormEnum.enabled"
                     [required]="enabledField"></label>
                 <input pInputText enabled="text" id="enabled" formControlName="enabled" />
                 <small appErrorMessage [errors]="enabledField.errors" [touched]="enabledField.touched"
@@ -68,7 +68,7 @@
                 </small>
             </div>
             <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="pndPolice" [label]="UsersFormEnum.pndPolice"
+                <label appLabel for="pndPolice" [label]="ProjectsFormEnum.pndPolice"
                     [required]="pndPoliceField"></label>
                 <p-dropdown id="pndPolice" dataKey="id" formControlName="pndPolice"
                     [options]="pndPolices" optionLabel="name" [filter]="true" filterBy="name"
@@ -87,7 +87,7 @@
                 </small>
             </div>
             <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="expenseType" [label]="UsersFormEnum.expenseType"
+                <label appLabel for="expenseType" [label]="ProjectsFormEnum.expenseType"
                     [required]="expenseTypeField"></label>
                 <p-dropdown id="expenseType" dataKey="id" formControlName="expenseType"
                     [options]="expenseTypes" optionLabel="name" [filter]="true" filterBy="name"

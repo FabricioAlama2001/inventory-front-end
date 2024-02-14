@@ -21,11 +21,6 @@ const routes: Routes = [
         path: 'core',
         title: 'Core',
         loadChildren: () => import('./pages/core/core.module').then(m => m.CoreModule),
-      },
-      {
-        path: 'moodle',
-        title: 'Moodle',
-        loadChildren: () => import('./pages/moodle/moodle.module').then(m => m.MoodleModule),
       }
     ]
   },

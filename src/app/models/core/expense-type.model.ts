@@ -6,8 +6,10 @@ export interface ExpenseTypeModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
+  sort: number;
 }
 
 export interface CreateExpenseTypeDto extends Omit<ExpenseTypeModel, 'id'> {}

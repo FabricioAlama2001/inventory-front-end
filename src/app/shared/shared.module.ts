@@ -33,7 +33,6 @@ import {
   StatePipe
 } from '@shared/pipes';
 import {UserStatePipe} from "@shared/pipes/auth/userState.pipe";
-import {SchoolPeriodsStatePipe} from "@shared/pipes/core/school-periods-state.pipe";
 import {LocationComponent} from './components/location/location.component';
 import {TagModule} from "primeng/tag";
 import {FileListComponent} from './components/file-list/file-list.component';
@@ -50,13 +49,10 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {HelpFieldComponent} from './components/help-field/help-field.component';
 import {ErrorsFieldComponent} from './components/errors-field/errors-field.component';
 import {PanelModule} from "primeng/panel";
-import {IsVisiblePipe} from "@shared/pipes/core/is-visible.pipe";
 import {VisibleComponent} from './components/visible/visible.component';
 import {DialogModule} from "primeng/dialog";
 import {ButtonActionComponent} from './components/button-action/button-action.component';
 import {MapComponent} from './components/map/map.component';
-import {AcademicStatePipe} from "@shared/pipes/core/academic-state.pipe";
-import {EnrollmentStatePipe} from "@shared/pipes/core/enrollment-state.pipe";
 
 @NgModule({
   declarations: [
@@ -72,7 +68,6 @@ import {EnrollmentStatePipe} from "@shared/pipes/core/enrollment-state.pipe";
     RolePipe,
     ActivePipe,
     UserStatePipe,
-    SchoolPeriodsStatePipe,
     SizesPipe,
     LocationComponent,
     FileListComponent,
@@ -82,13 +77,10 @@ import {EnrollmentStatePipe} from "@shared/pipes/core/enrollment-state.pipe";
     StatePipe,
     HelpFieldComponent,
     ErrorsFieldComponent,
-    IsVisiblePipe,
     SelecetedPipe,
     VisibleComponent,
     ButtonActionComponent,
     MapComponent,
-    AcademicStatePipe,
-    EnrollmentStatePipe,
     RequiredPipe,
     RequiredSeverityPipe
   ],
@@ -106,7 +98,6 @@ import {EnrollmentStatePipe} from "@shared/pipes/core/enrollment-state.pipe";
     RolePipe,
     ActivePipe,
     UserStatePipe,
-    SchoolPeriodsStatePipe,
     SizesPipe,
     FileListComponent,
     FileUploadComponent,
@@ -115,13 +106,10 @@ import {EnrollmentStatePipe} from "@shared/pipes/core/enrollment-state.pipe";
     StatePipe,
     HelpFieldComponent,
     ErrorsFieldComponent,
-    IsVisiblePipe,
     SelecetedPipe,
     VisibleComponent,
     ButtonActionComponent,
     MapComponent,
-    AcademicStatePipe,
-    EnrollmentStatePipe,
     RequiredPipe,
     RequiredSeverityPipe,
   ],

@@ -108,9 +108,9 @@ export class InsitutionalStrategicPlansHttpService {
     );
   }
 
-  findCatalogue(name: CatalogueEnum): CatalogueModel[] {
+  findCatalogue(type: CatalogueEnum): CatalogueModel[] {
     const catalogues: CatalogueModel[] = JSON.parse(String(sessionStorage.getItem('catalogues')));
 
-    return catalogues.filter(catalogue => catalogue.name === name);
+    return catalogues.filter(catalogue => catalogue.type === type);
   }
 }

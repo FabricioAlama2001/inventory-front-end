@@ -6,9 +6,10 @@ export interface FundingSourceModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
-
+  sort: number;
 }
 
 export interface CreateFundingSourceDto extends Omit<FundingSourceModel, 'id'> {}

@@ -6,9 +6,10 @@ export interface PndObjectiveModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
-
+  sort: number;
 }
 
 export interface CreatePndObjectiveDto extends Omit<PndObjectiveModel, 'id'> {}

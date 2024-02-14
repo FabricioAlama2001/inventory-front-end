@@ -6,8 +6,10 @@ export interface StrategicAxisModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
+  sort: number;
 }
 
 export interface CreateStrategicAxisDto extends Omit<StrategicAxisModel, 'id'> {}
