@@ -15,8 +15,8 @@ const routes: Routes = [
     canActivate: [TokenGuard]
   },
   {
-    path: 'coordinator-career',
-    loadChildren: () => import('./coordinator-career/coordinator-career.module').then(m => m.CoordinatorCareerModule),
+    path: 'planner',
+    loadChildren: () => import('./planner/planner.module').then(m => m.PlannerModule),
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.COORDINATOR_CAREER]}
   },

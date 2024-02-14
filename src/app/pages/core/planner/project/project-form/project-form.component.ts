@@ -32,8 +32,6 @@ import {
 
 @Component({
   selector: 'app-project-form',
-  standalone: true,
-  imports: [],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss'
 })

@@ -25,12 +25,10 @@ import {SplitButtonModule} from "primeng/splitbutton";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
-import { ActivityFormComponent } from './activity-form/activity-form.component';
-import { ActivityListComponent } from './activity-list/activity-list.component';
 
 // Components
-
-
+import { ActivityFormComponent } from './activity-form/activity-form.component';
+import { ActivityListComponent } from './activity-list/activity-list.component';
 
 @NgModule({
   declarations: [

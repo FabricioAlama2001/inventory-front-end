@@ -4,8 +4,6 @@ import {ExitGuard} from "@shared/guards";
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 
-
-
 const routes: Routes = [
   {
     path: '',

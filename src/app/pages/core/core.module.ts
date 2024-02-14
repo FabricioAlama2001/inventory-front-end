@@ -18,12 +18,10 @@ import {SplitButtonModule} from "primeng/splitbutton";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
-// Components
-import { PlannerComponent } from './planner/planner.component';
 
 @NgModule({
   declarations: [
-    PlannerComponent
+
   ],
   imports: [
     NgCommonModule,
