@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AdminComponent} from "./admin/admin.component";
-import {RectorComponent} from "./rector/rector.component";
+import {PlannerComponent} from "./planner/planner.component";
 import {TeacherComponent} from "./teacher/teacher.component";
 import {StudentComponent} from "./student/student.component";
 import {CoordinatorAdministrativeComponent} from "./coordinator-administrative/coordinator-administrative.component";
@@ -18,8 +18,8 @@ const routes: Routes = [
     component: AdminComponent
   },
   {
-    path: 'rector',
-    component: RectorComponent
+    path: 'planner',
+    component: PlannerComponent
   },
   {
     path: 'teacher',

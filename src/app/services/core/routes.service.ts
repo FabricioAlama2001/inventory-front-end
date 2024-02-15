@@ -100,8 +100,8 @@ export class RoutesService {
     this.router.navigateByUrl(`/core/dashboards/admin`);
   }
 
-  dashboardRector() {
-    this.router.navigateByUrl(`/core/dashboards/rector`);
+  dashboardPlanner() {
+    this.router.navigateByUrl(`/core/dashboards/planner`);
   }
 
   dashboardTeacher() {

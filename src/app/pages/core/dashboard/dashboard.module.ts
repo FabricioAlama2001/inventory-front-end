@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { AdminComponent } from './admin/admin.component';
-import { RectorComponent } from './rector/rector.component';
+import { PlannerComponent } from './planner/planner.component';
 import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
 import { CoordinatorAdministrativeComponent } from './coordinator-administrative/coordinator-administrative.component';
@@ -13,7 +13,7 @@ import { CoordinatorCareerComponent } from './coordinator-career/coordinator-car
 @NgModule({
   declarations: [
     AdminComponent,
-    RectorComponent,
+    PlannerComponent,
     TeacherComponent,
     StudentComponent,
     CoordinatorAdministrativeComponent,

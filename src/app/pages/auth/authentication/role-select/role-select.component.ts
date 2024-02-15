@@ -52,10 +52,7 @@ export class RoleSelectComponent implements OnInit {
   selectRole() {
     this.authService.role = this.roleField.value;
 
-    if (this.authService.role.code === RolesEnum.ADMIN) {
-      this.authService.selectDashboard();
-      return;
-    }
+    this.authService.selectDashboard();
   }
 
   get roleField() {
