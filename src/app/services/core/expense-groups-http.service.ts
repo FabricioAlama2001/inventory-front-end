@@ -3,16 +3,17 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {CreateExpenseGroupDto, UpdateExpenseGroupDto, ExpenseGroupModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueModel, CreateExpenseGroupDto, ExpenseGroupModel, UpdateExpenseGroupDto } from '@models/core';
 import { CatalogueEnum } from '@shared/enums';
+import { CatalogueModel } from '@models/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpenseGroupsHttpService {
-  API_URL = `${environment.API_URL}/expense-groups`;
+  API_URL = `${environment.API_URL}/core/expense-groups`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
@@ -28,7 +29,7 @@ export class ExpenseGroupsHttpService {
     );
   }
 
-  findAll(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findExpenseGroups(page: number = 0, search: string = ''): Observable<ExpenseGroupModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -38,7 +39,7 @@ export class ExpenseGroupsHttpService {
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response;
+        return response.data;
       })
     );
   }
@@ -64,8 +65,8 @@ export class ExpenseGroupsHttpService {
     );
   }
 
-  reactivate(id: string): Observable<ExpenseGroupModel> {
-    const url = `${this.API_URL}/${id}/reactivate`;
+  enable(id: string): Observable<ExpenseGroupModel> {
+    const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -97,8 +98,8 @@ export class ExpenseGroupsHttpService {
     );
   }
 
-  suspend(id: string): Observable<ExpenseGroupModel> {
-    const url = `${this.API_URL}/${id}/suspend`;
+  disable(id: string): Observable<ExpenseGroupModel> {
+    const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {

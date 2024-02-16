@@ -23,5 +23,6 @@ export enum BreadcrumbEnum {
   SUBJECT_REQUIREMENTS = 'Pre y Co Requisitos',
   PROJECTS = 'Proyectos',
   SUBACTIVITIES = 'Sub-actividades',
-  BUDGET_ITEMS = 'Items Presupuestarios'
+  BUDGET_ITEMS = 'Items Presupuestarios',
+  EXPENSE_GROUP = 'Grupo de gasto'
 }

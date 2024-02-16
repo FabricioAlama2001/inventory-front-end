@@ -1,4 +1,3 @@
-import {ActivityModel, CatalogueModel} from '@models/core';
 
 export interface ExpenseGroupModel {
   id: string;

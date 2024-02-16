@@ -44,3 +44,11 @@ export enum BudgetItemsFormEnum {
   sort = 'Orden',
   expenseGroup = 'Grupo de gasto'
 }
+
+export enum ExpenseGroupsFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}
+

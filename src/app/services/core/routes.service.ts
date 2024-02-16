@@ -38,12 +38,16 @@ export class RoutesService {
     return this.core + 'projects';
   }
 
-  projectsForm(id: string): string {
+  projectForm(id: string): string {
     return this.core + `projects/${id}`;
   }
 
-  budgetItemsForm(id: string): string {
+  budgetItemForm(id: string): string {
     return this.core + `planner/budget-items/${id}`;
+  }
+
+  expenseGroupForm(id: string): string {
+    return this.core + `planner/expense-group/${id}`;
   }
 
   /** Planner Role **/
@@ -57,6 +61,10 @@ export class RoutesService {
 
   get projects(): string {
     return this.core + '/planner/projects';
+  }
+
+  get expenseGroups(): string {
+    return this.core + '/planner/expense-group';
   }
 
 

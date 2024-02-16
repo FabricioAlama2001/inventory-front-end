@@ -3,7 +3,7 @@ import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@a
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import {CreateBudgetItemDto, UpdateBudgetItemDto} from '@models/core';
+import {CreateBudgetItemDto, CreateExpenseGroupDto, UpdateBudgetItemDto, UpdateExpenseGroupDto} from '@models/core';
 import {CatalogueModel} from "@models/core";
 import {
   BreadcrumbService,
@@ -23,30 +23,27 @@ import {
   SkeletonEnum,
   CatalogueEnum,
    RoutesEnum, 
-   BudgetItemsFormEnum
+   ExpenseGroupsFormEnum
 } from "@shared/enums";
 import {debounceTime} from "rxjs";
-
-
 @Component({
-  selector: 'app-budget-item-form',
-  templateUrl: './budget-item-form.component.html',
-  styleUrl: './budget-item-form.component.scss'
+  selector: 'app-expense-group-form',
+  templateUrl: './expense-group-form.component.html',
+  styleUrl: './expense-group-form.component.scss'
 })
-export class BudgetItemFormComponent {
+export class ExpenseGroupFormComponent {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
-  protected readonly BudgetItemsFormEnum = BudgetItemsFormEnum;
+  protected readonly ExpenseGroupsFormEnum = ExpenseGroupsFormEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
+  private saving: boolean = true;
 
   @Input() id: string = '';
   protected form: FormGroup;
   protected formErrors: string[] = [];
-
-  protected expenseGroups: CatalogueModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -55,11 +52,10 @@ export class BudgetItemFormComponent {
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly budgetItemsHttpService: BudgetItemsHttpService,
     private readonly expenseGroupsHttpService: ExpenseGroupsHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.BUDGET_ITEMS, routerLink: [this.routesService.budgetItems]},
+      {label: BreadcrumbEnum.EXPENSE_GROUP, routerLink: [this.routesService.expenseGroups]},
       {label: BreadcrumbEnum.FORM},
     ]);
 
@@ -69,15 +65,13 @@ export class BudgetItemFormComponent {
   }
 
   async onExit(): Promise<boolean> {
-    if (this.form.touched || this.form.dirty) {
+    if ((this.form.touched || this.form.dirty) && this.saving) {
       return await this.messageService.questionOnExit().then(result => result.isConfirmed);
     }
     return true;
   }
 
   ngOnInit(): void {
-    this.loadExpenseGroups();
-
     if (this.id != RoutesEnum.NEW) {
       this.get();
     }
@@ -89,7 +83,6 @@ export class BudgetItemFormComponent {
       name: [null, []],
       enabled: [null, []],
       sort: [null, []],
-      expenseGroup: [null, []],
     });
   }
 
@@ -108,20 +101,20 @@ export class BudgetItemFormComponent {
   get validateFormErrors() {
     this.formErrors = [];
 
-    if (this.codeField.errors) this.formErrors.push(BudgetItemsFormEnum.code);
-    if (this.nameField.errors) this.formErrors.push(BudgetItemsFormEnum.name);
-    if (this.enabledField.errors) this.formErrors.push(BudgetItemsFormEnum.enabled);
-    if (this.sortField.errors) this.formErrors.push(BudgetItemsFormEnum.sort);
-    if (this.expenseGroupField.errors) this.formErrors.push(BudgetItemsFormEnum.expenseGroup);
+    if (this.codeField.errors) this.formErrors.push(ExpenseGroupsFormEnum.code);
+    if (this.nameField.errors) this.formErrors.push(ExpenseGroupsFormEnum.name);
+    if (this.enabledField.errors) this.formErrors.push(ExpenseGroupsFormEnum.enabled);
+    if (this.sortField.errors) this.formErrors.push(ExpenseGroupsFormEnum.sort);
 
     this.formErrors.sort();
 
     return this.formErrors.length === 0 && this.form.valid;
   }
 
+
   get(): void {
-    this.budgetItemsHttpService.findOne(this.id!).subscribe((budgetItem) => {
-      this.form.patchValue(budgetItem);
+    this.expenseGroupsHttpService.findOne(this.id!).subscribe((expenseGroup) => {
+      this.form.patchValue(expenseGroup);
     });
   }
 
@@ -139,25 +132,23 @@ export class BudgetItemFormComponent {
   }
 
   back(): void {
-    this.router.navigate([this.routesService.budgetItems]);
+    this.router.navigate([this.routesService.expenseGroups]);
   }
 
-  create(budgetItem: CreateBudgetItemDto): void {
-    this.budgetItemsHttpService.create(budgetItem).subscribe(budgetItem => {
-      //this.form.reset(budgetItem);
+  create(expenseGroup: CreateExpenseGroupDto): void {
+    this.expenseGroupsHttpService.create(expenseGroup).subscribe(expenseGroup => {
+      //this.form.reset(expenseGroup);
+      this.saving = false;
       this.back();
     });
   }
 
-  update(budgetItem: UpdateBudgetItemDto): void {
-    this.budgetItemsHttpService.update(this.id!, budgetItem).subscribe((budgetItem) => {
-      //this.form.reset(budgetItem);
+  update(expenseGroup: UpdateExpenseGroupDto): void {
+    this.expenseGroupsHttpService.update(this.id!, expenseGroup).subscribe((expenseGroup) => {
+      //this.form.reset(expenseGroup);
+      this.saving = false;
       this.back()
     });
-  }
-
-  loadExpenseGroups(): void {
-    this.expenseGroups = this.expenseGroupsHttpService.findCatalogue(CatalogueEnum.EXPENSE_GROUP);
   }
 
   get codeField(): AbstractControl {
@@ -174,9 +165,5 @@ export class BudgetItemFormComponent {
 
   get sortField(): AbstractControl {
     return this.form.controls['sort'];
-  }
-
-  get expenseGroupField(): AbstractControl {
-    return this.form.controls['expenseGroup'];
   }
 }

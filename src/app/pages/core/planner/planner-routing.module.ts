@@ -34,6 +34,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.PLANNER]}
   },
+  {
+    path: 'expense-group',
+    loadChildren: () => import('./expense-group/expense-group.module').then(m => m.ExpenseGroupModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.PLANNER]}
+  },
 ];
 
 @NgModule({

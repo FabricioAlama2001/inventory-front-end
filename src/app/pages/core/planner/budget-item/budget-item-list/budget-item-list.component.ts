@@ -129,11 +129,11 @@ export class BudgetItemListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.budgetItemsForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.budgetItemForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.budgetItemsForm(id)]);
+    this.router.navigate([this.routesService.budgetItemForm(id)]);
   }
 
   disable(id: string) {
