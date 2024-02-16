@@ -30,6 +30,7 @@ import {
   CatalogueEnum,
   ProjectsFormEnum, RoutesEnum, BudgetItemsFormEnum
 } from "@shared/enums";
+import {debounceTime} from "rxjs";
 
 
 @Component({
@@ -68,6 +69,8 @@ export class BudgetItemFormComponent {
     ]);
 
     this.form = this.newForm;
+
+    this.checkValueChanges();
   }
 
   async onExit(): Promise<boolean> {
@@ -92,6 +95,18 @@ export class BudgetItemFormComponent {
       enabled: [null, []],
       sort: [null, []],
       expenseGroup: [null, []],
+    });
+  }
+
+  checkValueChanges() {
+    this.nameField.valueChanges.subscribe(value => {
+      const str = value.toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+      this.codeField.setValue(str);
     });
   }
 

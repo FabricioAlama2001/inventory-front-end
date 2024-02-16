@@ -23,7 +23,7 @@ const routes: Routes = [
     data: {roles: [RolesEnum.PLANNER]}
   },
   {
-    path: 'budget-item',
+    path: 'budget-items',
     loadChildren: () => import('./budget-item/budget-item.module').then(m => m.BudgetItemModule),
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.PLANNER]}

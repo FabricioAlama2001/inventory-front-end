@@ -38,9 +38,9 @@ export enum ProjectsFormEnum {
 }
 
 export enum BudgetItemsFormEnum {
-  code = 'Codigo',
+  code = 'Código',
   name = 'Nombre',
-  enabled = 'Disponible',
-  sort = 'Clasificación',
+  enabled = 'Estado',
+  sort = 'Orden',
   expenseGroup = 'Grupo de gasto'
 }

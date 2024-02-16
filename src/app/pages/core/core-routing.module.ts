@@ -18,7 +18,7 @@ const routes: Routes = [
     path: 'planner',
     loadChildren: () => import('./planner/planner.module').then(m => m.PlannerModule),
     canActivate: [RoleGuard],
-    data: {roles: [RolesEnum.COORDINATOR_CAREER]}
+    data: {roles: [RolesEnum.PLANNER]}
   },
 ];
 

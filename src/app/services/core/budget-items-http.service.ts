@@ -13,7 +13,7 @@ import { CatalogueModel } from '@models/core';
   providedIn: 'root'
 })
 export class BudgetItemsHttpService {
-  API_URL = `${environment.API_URL}/budget-items`;
+  API_URL = `${environment.API_URL}/core/budget-items`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
@@ -29,7 +29,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  findBudgetItems(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findBudgetItems(page: number = 0, search: string = ''): Observable<BudgetItemModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -39,7 +39,7 @@ export class BudgetItemsHttpService {
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response;
+        return response.data;
       })
     );
   }

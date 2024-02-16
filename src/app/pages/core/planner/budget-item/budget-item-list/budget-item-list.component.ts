@@ -28,8 +28,6 @@ export class BudgetItemListComponent {
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
 
-  protected paginator: PaginatorModel;
-
   protected buttonActions: MenuItem[] = this.buildButtonActions;
   protected isButtonActions: boolean = false;
 
@@ -50,8 +48,6 @@ export class BudgetItemListComponent {
     private readonly budgetItemsHttpService: BudgetItemsHttpService,
   ) {
     this.breadcrumbService.setItems([{label: BreadcrumbEnum.BUDGET_ITEMS}]);
-
-    this.paginator = this.coreService.paginator;
   }
 
   ngOnInit() {
@@ -70,8 +66,7 @@ export class BudgetItemListComponent {
   findBudgetItems(page: number = 0) {
     this.budgetItemsHttpService.findBudgetItems(page, this.search.value)
       .subscribe((response) => {
-        this.paginator = response.pagination!;
-        this.items = response.data;
+        this.items = response;
       });
   }
 
@@ -161,14 +156,9 @@ export class BudgetItemListComponent {
         if (result.isConfirmed) {
           this.budgetItemsHttpService.remove(id).subscribe((budgetItem) => {
             this.items = this.items.filter(item => item.id !== budgetItem.id);
-            this.paginator.totalItems--;
           });
         }
       });
-  }
-
-  paginate(event: any) {
-    this.findBudgetItems(event.page);
   }
 
   selectItem(item: BudgetItemModel) {

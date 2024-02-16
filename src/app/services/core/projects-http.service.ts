@@ -13,7 +13,7 @@ import { CatalogueModel } from '@models/core';
   providedIn: 'root'
 })
 export class ProjectsHttpService {
-  API_URL = `${environment.API_URL}/projects`;
+  API_URL = `${environment.API_URL}/core/projects`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
