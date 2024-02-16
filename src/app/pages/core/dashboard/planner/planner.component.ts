@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import {BreadcrumbService} from "@services/core";
 
 @Component({
-  selector: 'app-rector',
-  templateUrl: './rector.component.html',
-  styleUrls: ['./rector.component.scss']
+  selector: 'app-planner',
+  templateUrl: './planner.component.html',
+  styleUrls: ['./planner.component.scss']
 })
-export class RectorComponent {
+export class PlannerComponent {
   constructor(private breadcrumbService:BreadcrumbService) {
     breadcrumbService.setItems([{label: 'Dashboard'}])
   }
