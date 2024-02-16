@@ -7,7 +7,7 @@ import {CreateProjectDto, UpdateProjectDto} from '@models/core';
 import {CatalogueModel} from "@models/core";
 import {PndObjectivesHttpService} from '@services/core/pnd-objectives-http.services';
 import {PndPolicesHttpService} from '@services/core/pnd-polices-http.service';
-import {ExpenseTypesHttpService} from '@services/core/expense-types-http.services';
+import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
 import {
   BreadcrumbService,
   CataloguesHttpService,
@@ -65,7 +65,7 @@ export class ProjectFormComponent {
     private readonly expenseTypesHttpService: ExpenseTypesHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.SUBACTIVITIES, routerLink: [this.routesService.subactivities]},
+      {label: BreadcrumbEnum.PROJECTS, routerLink: [this.routesService.projects]},
       {label: BreadcrumbEnum.FORM},
     ]);
 

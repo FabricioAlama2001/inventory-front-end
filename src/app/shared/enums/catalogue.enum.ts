@@ -101,6 +101,7 @@ export enum CatalogueEnum {
   PND_OBJECTIVE = 'PND_OBJECTIVE',
   PND_POLICE = 'PND_POLICE',
   EXPENSE_TYPE = 'EXPENSE_TYPE',
+  EXPENSE_GROUP = 'EXPENSE_GROUP',
 }
 
 export enum RoutesEnum {

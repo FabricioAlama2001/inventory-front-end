@@ -5,19 +5,19 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueModel, CreateExpenseTypeDto, ExpenseTypeModel, UpdateExpenseTypeDto } from '@models/core';
+import { CatalogueModel, CreateExpenseGroupDto, ExpenseGroupModel, UpdateExpenseGroupDto } from '@models/core';
 import { CatalogueEnum } from '@shared/enums';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ExpenseTypesHttpService {
-  API_URL = `${environment.API_URL}/pnd-polices`;
+export class ExpenseGroupsHttpService {
+  API_URL = `${environment.API_URL}/expense-groups`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
 
-  create(payload: CreateExpenseTypeDto): Observable<ExpenseTypeModel> {
+  create(payload: CreateExpenseGroupDto): Observable<ExpenseGroupModel> {
     const url = `${this.API_URL}`;
 
     return this.httpClient.post<ServerResponse>(url, payload).pipe(
@@ -43,7 +43,7 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  findOne(id: string): Observable<ExpenseTypeModel> {
+  findOne(id: string): Observable<ExpenseGroupModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -53,7 +53,7 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  update(id: string, payload: UpdateExpenseTypeDto): Observable<ExpenseTypeModel> {
+  update(id: string, payload: UpdateExpenseGroupDto): Observable<ExpenseGroupModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.put<ServerResponse>(url, payload).pipe(
@@ -64,7 +64,7 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  reactivate(id: string): Observable<ExpenseTypeModel> {
+  reactivate(id: string): Observable<ExpenseGroupModel> {
     const url = `${this.API_URL}/${id}/reactivate`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
@@ -75,7 +75,7 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  remove(id: string): Observable<ExpenseTypeModel> {
+  remove(id: string): Observable<ExpenseGroupModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.delete<ServerResponse>(url).pipe(
@@ -86,10 +86,10 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  removeAll(projects: ExpenseTypeModel[]): Observable<ExpenseTypeModel[]> {
+  removeAll(expenseGroups: ExpenseGroupModel[]): Observable<ExpenseGroupModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, projects).pipe(
+    return this.httpClient.patch<ServerResponse>(url, expenseGroups).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -97,7 +97,7 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  suspend(id: string): Observable<ExpenseTypeModel> {
+  suspend(id: string): Observable<ExpenseGroupModel> {
     const url = `${this.API_URL}/${id}/suspend`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(

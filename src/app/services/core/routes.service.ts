@@ -42,12 +42,23 @@ export class RoutesService {
     return this.core + `projects/${id}`;
   }
 
+  budgetItemsForm(id: string): string {
+    return this.core + `budget-items/${id}`;
+  }
+
   /** Planner Role **/
   get subactivities(): string {
     return this.core + '/planner/subactivities';
   }
 
-  /** Coordinator Career Role **/
+  get budgetItems(): string {
+    return this.core + '/planner/budget-items';
+  }
+
+  get projects(): string {
+    return this.core + '/planner/projects';
+  }
+
 
   /** Reviewer Role **/
   inscriptionsDetailForm(enrollmentId: string): string {

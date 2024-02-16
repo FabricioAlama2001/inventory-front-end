@@ -36,3 +36,11 @@ export enum ProjectsFormEnum {
   pndPolice = 'Politica',
   expenseType = 'Tipo de gasto',
 }
+
+export enum BudgetItemsFormEnum {
+  code = 'Codigo',
+  name = 'Nombre',
+  enabled = 'Disponible',
+  sort = 'Clasificación',
+  expenseGroup = 'Grupo de gasto'
+}

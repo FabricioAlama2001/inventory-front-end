@@ -158,8 +158,8 @@ export class ProjectListComponent {
     this.messageService.questionDelete()
       .then((result) => {
         if (result.isConfirmed) {
-          this.projectsHttpService.remove(id).subscribe((subactivity) => {
-            this.items = this.items.filter(item => item.id !== subactivity.id);
+          this.projectsHttpService.remove(id).subscribe((project) => {
+            this.items = this.items.filter(item => item.id !== project.id);
             this.paginator.totalItems--;
           });
         }

@@ -6,8 +6,10 @@ export interface BudgetItemModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
+  sort: number;
 
   expenseGroup: ExpenseGroupModel;
 }

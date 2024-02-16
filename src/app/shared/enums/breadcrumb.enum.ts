@@ -22,5 +22,6 @@ export enum BreadcrumbEnum {
   TEACHER_CHARGE = 'Consolidado de notas',
   SUBJECT_REQUIREMENTS = 'Pre y Co Requisitos',
   PROJECTS = 'Proyectos',
-  SUBACTIVITIES = 'Sub-actividades'
+  SUBACTIVITIES = 'Sub-actividades',
+  BUDGET_ITEMS = 'Partidas de presupuesto'
 }

@@ -1,1 +1,92 @@
-<p>budget-item-form works!</p>
+<app-skeleton *ngIf="coreService.isLoading" [type]="SkeletonEnum.CARD"></app-skeleton>
+
+<p-toolbar *ngIf="!coreService.isLoading">
+    <div class="p-toolbar-group-left">
+        <app-header-form [id]="id"></app-header-form>
+    </div>
+    <div class="p-toolbar-group-right">
+        <button pButton pRipple type="button" (click)="back()" [icon]="IconButtonActionEnum.CANCEL"
+            [label]="LabelButtonActionEnum.CANCEL" [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.CANCEL]"></button>
+        <p-divider layout="vertical"></p-divider>
+        <button pButton pRipple type="button" (click)="onSubmit()" [icon]="IconButtonActionEnum.SAVE"
+            [label]="LabelButtonActionEnum.SAVE" [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
+    </div>
+</p-toolbar>
+
+<p-panel *ngIf="!coreService.isLoading" class="p-fluid">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="formgrid grid">
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+                <label appLabel for="code" [label]="BudgetItemsFormEnum.code"
+                    [required]="codeField"></label>
+                <input pInputText type="text" id="code" formControlName="code" />
+                <small appErrorMessage [errors]="codeField.errors" [touched]="codeField.touched"
+                    [dirty]="codeField.dirty">
+                </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+                <label appLabel for="name" [label]="BudgetItemsFormEnum.name"
+                    [required]="nameField"></label>
+                    <app-help-field (mouseenter)="opName.toggle($event)"
+                        (mouseleave)="opName.hide()"></app-help-field>
+                <input pInputText name="text" id="name" formControlName="name" />
+                <small appErrorMessage [errors]="nameField.errors" [touched]="nameField.touched"
+                    [dirty]="nameField.dirty">
+                </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+                <label appLabel for="enabled" [label]="BudgetItemsFormEnum.enabled"
+                    [required]="enabledField"></label>
+                <input pInputText enabled="text" id="enabled" formControlName="enabled" />
+                <small appErrorMessage [errors]="enabledField.errors" [touched]="enabledField.touched"
+                    [dirty]="enabledField.dirty">
+                </small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+                <label appLabel for="sort" [label]="BudgetItemsFormEnum.sort"
+                    [required]="sortField"></label>
+                <input pInputText sort="text" id="sort" formControlName="sort" />
+                <small appErrorMessage [errors]="sortField.errors" [touched]="sortField.touched"
+                    [dirty]="sortField.dirty">
+                </small>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+                <label appLabel for="expenseGroup" [label]="BudgetItemsFormEnum.expenseGroup"
+                    [required]="expenseGroupField"></label>
+                <p-dropdown id="expenseGroup" dataKey="id" formControlName="expenseGroup"
+                    [options]="expenseGroups" optionLabel="name" [filter]="true" filterBy="name"
+                    placeholder="Seleccione...">
+                    <ng-template pTemplate="selectedItem">
+                        <div *ngIf="expenseGroupField.value">
+                            <div>{{ expenseGroupField.value.name }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-item pTemplate="item">
+                        <div>{{ item.name }}</div>
+                    </ng-template>
+                </p-dropdown>
+                <small appErrorMessage [errors]="expenseGroupField.errors"
+                    [touched]="expenseGroupField.touched" [dirty]="expenseGroupField.dirty">
+                </small>
+            </div>
+        </div>
+    </form>
+</p-panel>
+
+<p-overlayPanel #opName>
+    <ng-template pTemplate="content">
+        Ingrese el nombre de la partida presupuestaria
+    </ng-template>
+</p-overlayPanel>
+
+<p-overlayPanel #opFiscalYear>
+    <ng-template pTemplate="content">
+        Ingrese el año fiscal de la partida presupuestaria
+    </ng-template>
+</p-overlayPanel>
+
+

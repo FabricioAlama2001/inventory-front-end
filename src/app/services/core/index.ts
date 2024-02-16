@@ -22,6 +22,8 @@ export * from './cantons-http.service';
 export * from './parishes-http.service';
 export * from './poas-http.service';
 export * from './units-http.service';
-
+export * from './budget-items-http.service';
+export * from './expense-groups-http.service';
+export * from './expense-types-http.service';
 
 
