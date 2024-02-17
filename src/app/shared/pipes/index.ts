@@ -6,4 +6,8 @@ export * from './core/state.pipe';
 export * from './core/seleceted.pipe';
 export * from './core/required.pipe';
 export * from './core/required-severity.pipe';
+export * from './core/enabled.pipe';
+export * from './core/enabled-severity.pipe';
+
+
 

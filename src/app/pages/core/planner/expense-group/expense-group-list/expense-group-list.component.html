@@ -65,7 +65,11 @@
           <!--Fields-->
           <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
             <div *ngSwitchDefault>{{ rowData[col.field] }}</div>
-            <div *ngSwitchCase="'updatedAt'">{{ rowData[col.field]|date }}</div>
+            <div *ngSwitchCase="'enabled'">
+              {{rowData['enabled']}}
+              {{rowData.enabled}}
+              <p-tag [value]="rowData[col.field]|enabled" [severity]="rowData[col.field]|enabledSeverity"></p-tag>
+            </div>
           </div>
         </td>
         <td class="text-center">
@@ -89,8 +93,3 @@
                    [enabled]="isButtonActions"
                    (isHide)="isButtonActions=!$event">
 </app-button-action>
-
-<p-panelMenu [model]="buttonActions"
-                 [style]="{'width':'300px'}"
-                 ></p-panelMenu>
-  

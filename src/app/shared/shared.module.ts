@@ -26,6 +26,8 @@ import {SearchComponent} from './components/search/search.component';
 import {
   ActivePipe,
   DateFormatPipe,
+  EnabledPipe,
+  EnabledSeverityPipe,
   ExtensionsPipe,
   RequiredPipe, RequiredSeverityPipe,
   RolePipe,
@@ -82,7 +84,9 @@ import {MapComponent} from './components/map/map.component';
     ButtonActionComponent,
     MapComponent,
     RequiredPipe,
-    RequiredSeverityPipe
+    RequiredSeverityPipe,
+    EnabledPipe,
+    EnabledSeverityPipe
   ],
   exports: [
     SkeletonComponent,
@@ -112,6 +116,8 @@ import {MapComponent} from './components/map/map.component';
     MapComponent,
     RequiredPipe,
     RequiredSeverityPipe,
+    EnabledPipe,
+    EnabledSeverityPipe
   ],
   imports: [
     CommonModule,

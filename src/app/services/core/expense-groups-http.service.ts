@@ -68,7 +68,7 @@ export class ExpenseGroupsHttpService {
   enable(id: string): Observable<ExpenseGroupModel> {
     const url = `${this.API_URL}/${id}/enable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -101,7 +101,7 @@ export class ExpenseGroupsHttpService {
   disable(id: string): Observable<ExpenseGroupModel> {
     const url = `${this.API_URL}/${id}/disable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;

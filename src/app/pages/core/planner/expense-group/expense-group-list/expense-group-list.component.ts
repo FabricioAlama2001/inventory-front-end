@@ -11,6 +11,7 @@ import {BreadcrumbService, CoreService, MessageService, RoutesService, ExpenseGr
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
+  ExpenseGroupsFormEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
   LabelButtonActionEnum, RoutesEnum
@@ -73,7 +74,7 @@ export class ExpenseGroupListComponent {
     return [
       {field: 'code', header: 'Codigo'},
       {field: 'name', header: 'Nombre'},
-      {field: 'enabled', header: 'Disponible'},
+      {field: 'enabled', header: ExpenseGroupsFormEnum.enabled},
       {field: 'sort', header: 'Orden'}
     ];
   }
@@ -119,11 +120,11 @@ export class ExpenseGroupListComponent {
     this.buttonActions = this.buildButtonActions;
 
     if (item.enabled) {
-      this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.DISABLE), 1);
+      this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.ENABLE), 1);
     }
 
     if (!item.enabled) {
-      this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.ENABLE), 1);
+      this.buttonActions.splice(this.buttonActions.findIndex(actionButton => actionButton.id === IdButtonActionEnum.DISABLE), 1);
     }
   }
 
