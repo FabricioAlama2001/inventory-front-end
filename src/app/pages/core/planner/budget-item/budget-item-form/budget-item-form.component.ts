@@ -3,7 +3,7 @@ import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@a
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import {CreateBudgetItemDto, UpdateBudgetItemDto} from '@models/core';
+import {CreateBudgetItemDto, ExpenseGroupModel, UpdateBudgetItemDto} from '@models/core';
 import {CatalogueModel} from "@models/core";
 import {
   BreadcrumbService,
@@ -46,7 +46,7 @@ export class BudgetItemFormComponent {
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
-  protected expenseGroups: CatalogueModel[] = [];
+  protected expenseGroups: ExpenseGroupModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -157,7 +157,9 @@ export class BudgetItemFormComponent {
   }
 
   loadExpenseGroups(): void {
-    this.expenseGroups = this.expenseGroupsHttpService.findCatalogue(CatalogueEnum.EXPENSE_GROUP);
+    this.expenseGroupsHttpService.findCatalogue().subscribe((expenseGroups) => {
+      this.expenseGroups = expenseGroups;
+    });
   }
 
   get codeField(): AbstractControl {
