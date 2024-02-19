@@ -1,6 +1,9 @@
-<app-skeleton *ngIf="coreService.isLoading" [type]="SkeletonEnum.CARD"></app-skeleton>
+@if (coreService.isLoading){
+  <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
+  }
 
-<p-toolbar *ngIf="!coreService.isLoading">
+@if (!coreService.isLoading){
+<p-toolbar>
   <div class="p-toolbar-group-left">
     <app-header-form [id]="id"></app-header-form>
   </div>
@@ -14,8 +17,10 @@
             [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
   </div>
 </p-toolbar>
+}
 
-<p-panel *ngIf="!coreService.isLoading" class="p-fluid">
+@if (!coreService.isLoading) {
+<p-panel class="p-fluid">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="formgrid grid">
       <div class="field xl:col-4 lg:col-4 md:col-6 sm:col-12">
@@ -57,7 +62,7 @@
     </div>
   </form>
 </p-panel>
-
+}
 <p-overlayPanel #opName>
   <ng-template pTemplate="content">
     Ingrese el nombre del grupo de gasto

@@ -6,10 +6,11 @@ import {debounceTime} from "rxjs";
 
 import {MenuItem, PrimeIcons} from "primeng/api";
 
-import {BudgetItemModel, ColumnModel, PaginatorModel} from '@models/core';
+import {BudgetItemModel, ColumnModel} from '@models/core';
 import {BreadcrumbService, CoreService, MessageService, BudgetItemsHttpService, RoutesService} from '@services/core';
 import {
   BreadcrumbEnum,
+  BudgetItemsFormEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
@@ -27,6 +28,7 @@ export class BudgetItemListComponent {
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
+  protected readonly BudgetItemsFormEnum = BudgetItemsFormEnum;
 
   protected buttonActions: MenuItem[] = this.buildButtonActions;
   protected isButtonActions: boolean = false;
@@ -72,10 +74,11 @@ export class BudgetItemListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'expenseGroup', header: 'Grupo de gasto'},
-      {field: 'code', header: 'Codigo'},
-      {field: 'name', header: 'Nombre'},
-      {field: 'enabled', header: 'Disponible'}
+      {field: 'expenseGroup', header: BudgetItemsFormEnum.expenseGroup},
+      {field: 'code', header: BudgetItemsFormEnum.code},
+      {field: 'name', header: BudgetItemsFormEnum.name},
+      {field: 'sort', header: BudgetItemsFormEnum.sort},
+      {field: 'enabled', header: BudgetItemsFormEnum.enabled}
     ];
   }
 
