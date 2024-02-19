@@ -1,14 +1,12 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, Input, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
 import {CreateBudgetItemDto, ExpenseGroupModel, UpdateBudgetItemDto} from '@models/core';
-import {CatalogueModel} from "@models/core";
 import {
   BreadcrumbService,
   BudgetItemsHttpService,
-  CataloguesHttpService,
   CoreService,
   ExpenseGroupsHttpService,
   MessageService,
@@ -21,19 +19,16 @@ import {
   IconButtonActionEnum,
   LabelButtonActionEnum,
   SkeletonEnum,
-  CatalogueEnum,
-   RoutesEnum, 
+   RoutesEnum,
    BudgetItemsFormEnum
 } from "@shared/enums";
-import {debounceTime} from "rxjs";
-
 
 @Component({
   selector: 'app-budget-item-form',
   templateUrl: './budget-item-form.component.html',
   styleUrl: './budget-item-form.component.scss'
 })
-export class BudgetItemFormComponent {
+export class BudgetItemFormComponent implements OnInit, OnExitInterface{
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -41,6 +36,7 @@ export class BudgetItemFormComponent {
   protected readonly BudgetItemsFormEnum = BudgetItemsFormEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
+  private saving: boolean = true;
 
   @Input() id: string = '';
   protected form: FormGroup;
@@ -69,7 +65,7 @@ export class BudgetItemFormComponent {
   }
 
   async onExit(): Promise<boolean> {
-    if (this.form.touched || this.form.dirty) {
+    if ((this.form.touched || this.form.dirty) && this.saving) {
       return await this.messageService.questionOnExit().then(result => result.isConfirmed);
     }
     return true;
@@ -88,7 +84,7 @@ export class BudgetItemFormComponent {
       code: [null, []],
       name: [null, []],
       enabled: [null, []],
-      sort: [null, []],
+      sort: [this.coreService.higherSort, []],
       expenseGroup: [null, []],
     });
   }
@@ -145,6 +141,7 @@ export class BudgetItemFormComponent {
   create(budgetItem: CreateBudgetItemDto): void {
     this.budgetItemsHttpService.create(budgetItem).subscribe(budgetItem => {
       //this.form.reset(budgetItem);
+      this.saving = false;
       this.back();
     });
   }
@@ -152,6 +149,7 @@ export class BudgetItemFormComponent {
   update(budgetItem: UpdateBudgetItemDto): void {
     this.budgetItemsHttpService.update(this.id!, budgetItem).subscribe((budgetItem) => {
       //this.form.reset(budgetItem);
+      this.saving = false;
       this.back()
     });
   }

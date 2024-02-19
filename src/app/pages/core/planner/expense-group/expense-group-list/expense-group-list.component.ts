@@ -14,7 +14,7 @@ import {
   ExpenseGroupsFormEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
-  LabelButtonActionEnum, RoutesEnum, TableEnum
+  LabelButtonActionEnum, RoutesEnum
 } from "@shared/enums";
 import {getHigherSort} from "@shared/helpers";
 
@@ -29,7 +29,7 @@ export class ExpenseGroupListComponent {
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
-  protected readonly TableEnum = TableEnum;
+  protected readonly ExpenseGroupsFormEnum = ExpenseGroupsFormEnum;
 
   protected buttonActions: MenuItem[] = this.buildButtonActions;
   protected isButtonActions: boolean = false;
@@ -76,10 +76,10 @@ export class ExpenseGroupListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'code', header: 'Codigo'},
-      {field: 'name', header: 'Nombre'},
+      {field: 'code', header: ExpenseGroupsFormEnum.code},
+      {field: 'name', header: ExpenseGroupsFormEnum.name},
       {field: 'enabled', header: ExpenseGroupsFormEnum.enabled},
-      {field: 'sort', header: 'Orden'}
+      {field: 'sort', header: ExpenseGroupsFormEnum.sort}
     ];
   }
 
