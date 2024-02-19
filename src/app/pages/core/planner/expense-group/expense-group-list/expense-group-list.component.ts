@@ -16,6 +16,8 @@ import {
   IdButtonActionEnum,
   LabelButtonActionEnum, RoutesEnum
 } from "@shared/enums";
+import {getHigherSort} from "@shared/helpers";
+
 @Component({
   selector: 'app-expense-group-list',
   templateUrl: './expense-group-list.component.html',
@@ -52,21 +54,22 @@ export class ExpenseGroupListComponent {
 
   ngOnInit() {
     this.checkValueChanges();
-    this.findExpenseGroups();
+    this.findAll();
   }
 
   checkValueChanges() {
     this.search.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(value => {
-      this.findExpenseGroups();
+      this.findAll();
     });
   }
 
-  findExpenseGroups(page: number = 0) {
-    this.expenseGroupsHttpService.findExpenseGroups(page, this.search.value)
+  findAll() {
+    this.expenseGroupsHttpService.findAll()
       .subscribe((response) => {
         this.items = response;
+        this.coreService.higherSort = getHigherSort(this.items);
       });
   }
 

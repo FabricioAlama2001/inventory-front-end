@@ -10,7 +10,7 @@
     </button>
     <button
       pButton type="button"
-      (click)="findBudgetItems()"
+      (click)="findAll()"
       [icon]="IconButtonActionEnum.SYNC"
       [label]="LabelButtonActionEnum.SYNC"
       [loading]="coreService.isLoading"
@@ -28,6 +28,7 @@
   styleClass="p-datatable-striped"
   [value]="items"
   [columns]="columns"
+  [globalFilterFields]="['code', 'name', 'expenseGroup.name']"
   [loading]="coreService.isLoading"
   [(selection)]="selectedItems">
   <ng-template pTemplate="caption">
@@ -55,19 +56,32 @@
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
     <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
-      <td *ngFor="let col of columns">
+      @for (col of columns; track col) {
         <!--Objects-->
-        <div *ngIf="rowData[col.field]?.id" [ngSwitch]="col.field">
-          <div *ngSwitchCase="'object'">
-            {{ rowData[col.field].name }}
-          </div>
-        </div>
+        @if (rowData[col.field]?.id) {
+          <td>
+            @switch (col.field) {
+              @case ('expenseGroup') {
+                {{ rowData.expenseGroup.name }}
+              }
+            }
+          </td>
+        }
+
         <!--Fields-->
-        <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
-          <div *ngSwitchDefault>{{ rowData[col.field] }}</div>
-          <div *ngSwitchCase="'updatedAt'">{{ rowData[col.field]|date }}</div>
-        </div>
-      </td>
+        @if (!rowData[col.field]?.id) {
+          <td>
+            @switch (col.field) {
+              @default {
+                {{ rowData[col.field] }}
+              }
+              @case ('enabled') {
+                <p-tag [value]="rowData[col.field]|enabled" [severity]="rowData[col.field]|enabledSeverity"></p-tag>
+              }
+            }
+          </td>
+        }
+      }
       <td class="text-center">
         <button type="button" pButton [icon]="PrimeIcons.ELLIPSIS_V" (click)="selectItem(rowData)"></button>
       </td>

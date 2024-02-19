@@ -44,6 +44,16 @@ export class ExpenseGroupsHttpService {
     );
   }
 
+  findAll(): Observable<ExpenseGroupModel[]> {
+    const url = this.API_URL;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
   findOne(id: string): Observable<ExpenseGroupModel> {
     const url = `${this.API_URL}/${id}`;
 

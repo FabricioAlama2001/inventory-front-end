@@ -3,18 +3,16 @@ import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@a
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import {CreateBudgetItemDto, CreateExpenseGroupDto, UpdateBudgetItemDto, UpdateExpenseGroupDto} from '@models/core';
-import {CatalogueModel} from "@models/core";
+import { CreateExpenseGroupDto, UpdateExpenseGroupDto} from '@models/core';
+
 import {
   BreadcrumbService,
-  BudgetItemsHttpService,
-  CataloguesHttpService,
   CoreService,
   ExpenseGroupsHttpService,
   MessageService,
   RoutesService
 } from '@services/core';
-import {OnExitInterface} from '@shared/interfaces';
+
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
@@ -22,16 +20,17 @@ import {
   LabelButtonActionEnum,
   SkeletonEnum,
   CatalogueEnum,
-   RoutesEnum, 
+   RoutesEnum,
    ExpenseGroupsFormEnum
 } from "@shared/enums";
-import {debounceTime} from "rxjs";
+import {OnExitInterface} from "@shared/interfaces";
+
 @Component({
   selector: 'app-expense-group-form',
   templateUrl: './expense-group-form.component.html',
   styleUrl: './expense-group-form.component.scss'
 })
-export class ExpenseGroupFormComponent {
+export class ExpenseGroupFormComponent implements OnInit, OnExitInterface{
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -81,8 +80,8 @@ export class ExpenseGroupFormComponent {
     return this.formBuilder.group({
       code: [null, []],
       name: [null, []],
-      enabled: [null, []],
-      sort: [null, []],
+      enabled: [true, []],
+      sort: [this.coreService.higherSort, []],
     });
   }
 
@@ -110,7 +109,6 @@ export class ExpenseGroupFormComponent {
 
     return this.formErrors.length === 0 && this.form.valid;
   }
-
 
   get(): void {
     this.expenseGroupsHttpService.findOne(this.id!).subscribe((expenseGroup) => {

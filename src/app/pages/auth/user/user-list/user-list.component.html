@@ -90,6 +90,7 @@
             {{rowData[col.field].name}}
           </div>
         </div>
+
         <!--Fields-->
         <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
           <div *ngSwitchCase="'roles'">

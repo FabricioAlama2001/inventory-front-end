@@ -29,6 +29,16 @@ export class BudgetItemsHttpService {
     );
   }
 
+  findAll(): Observable<BudgetItemModel[]> {
+    const url = this.API_URL;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
   findBudgetItems(page: number = 0, search: string = ''): Observable<BudgetItemModel[]> {
     const url = this.API_URL;
 

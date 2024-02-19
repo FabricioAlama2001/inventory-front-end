@@ -52,19 +52,19 @@ export class BudgetItemListComponent {
 
   ngOnInit() {
     this.checkValueChanges();
-    this.findBudgetItems();
+    this.findAll();
   }
 
   checkValueChanges() {
     this.search.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(value => {
-      this.findBudgetItems();
+      this.findAll();
     });
   }
 
-  findBudgetItems(page: number = 0) {
-    this.budgetItemsHttpService.findBudgetItems(page, this.search.value)
+  findAll() {
+    this.budgetItemsHttpService.findAll()
       .subscribe((response) => {
         this.items = response;
       });
@@ -72,10 +72,10 @@ export class BudgetItemListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
+      {field: 'expenseGroup', header: 'Grupo de gasto'},
       {field: 'code', header: 'Codigo'},
       {field: 'name', header: 'Nombre'},
-      {field: 'enabled', header: 'Disponible'},
-      {field: 'expenseGroup', header: 'Grupo de gasto'}
+      {field: 'enabled', header: 'Disponible'}
     ];
   }
 

@@ -9,7 +9,7 @@ import {CataloguesHttpService, LocationsHttpService} from "@services/core";
 export class CoreService {
   private _isLoading: boolean = false;
   private _isProcessing: boolean = false;
-  private _sort: number = 1;
+  private _higherSort: number = 1;
 
   constructor(private readonly cataloguesHttpService: CataloguesHttpService,
               private readonly locationsHttpService: LocationsHttpService
@@ -81,11 +81,11 @@ export class CoreService {
     // sessionStorage.setItem('newVersion', JSON.stringify(value));
   }
 
-  get sort() {
-    return this._sort;
+  get higherSort() {
+    return this._higherSort;
   }
 
-  set sort(value: number) {
-    this._sort = value;
+  set higherSort(value: number) {
+    this._higherSort = value;
   }
 }
