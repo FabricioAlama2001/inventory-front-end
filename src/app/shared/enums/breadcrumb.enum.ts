@@ -24,5 +24,6 @@ export enum BreadcrumbEnum {
   PROJECTS = 'Proyectos',
   SUBACTIVITIES = 'Sub-actividades',
   BUDGET_ITEMS = 'Items Presupuestarios',
-  EXPENSE_GROUP = 'Grupo de gasto'
+  EXPENSE_GROUPS = 'Grupo de gasto',
+  EXPENSE_TYPES = 'Tipo de gastos'
 }

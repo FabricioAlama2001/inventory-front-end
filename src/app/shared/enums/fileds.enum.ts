@@ -38,7 +38,6 @@ export enum ProjectsFormEnum {
 }
 
 export enum BudgetItemsFormEnum {
-  actions = 'Acciones',
   code = 'Código',
   name = 'Nombre',
   enabled = 'Estado',
@@ -47,7 +46,13 @@ export enum BudgetItemsFormEnum {
 }
 
 export enum ExpenseGroupsFormEnum {
-  actions = 'Acciones',
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}
+
+export enum ExpenseTypesFormEnum {
   code = 'Código',
   name = 'Nombre',
   enabled = 'Estado',

@@ -50,6 +50,10 @@ export class RoutesService {
     return this.core + `planner/expense-group/${id}`;
   }
 
+  expenseTypeForm(id: string): string {
+    return this.core + `catalogue/expense-type/${id}`;
+  }
+
   /** Planner Role **/
   get subactivities(): string {
     return this.core + '/planner/subactivities';
@@ -64,7 +68,14 @@ export class RoutesService {
   }
 
   get expenseGroups(): string {
-    return this.core + '/planner/expense-group';
+    return this.core + '/planner/expense-groups';
+  }
+
+
+  /** Catalogue Role **/
+
+  get expenseTypes(): string {
+    return this.core + '/catalogue/expense-types';
   }
 
 

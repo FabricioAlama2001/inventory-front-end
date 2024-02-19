@@ -3,16 +3,17 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {CreateExpenseTypeDto, UpdateExpenseTypeDto, ExpenseTypeModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueModel, CreateExpenseTypeDto, ExpenseTypeModel, UpdateExpenseTypeDto } from '@models/core';
 import { CatalogueEnum } from '@shared/enums';
+import { CatalogueModel } from '@models/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpenseTypesHttpService {
-  API_URL = `${environment.API_URL}/expense-types`;
+  API_URL = `${environment.API_URL}/core/expense-types`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
@@ -28,7 +29,17 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  findAll(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findAll(): Observable<ExpenseTypeModel[]> {
+    const url = this.API_URL;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
+  findExpenseTypes(page: number = 0, search: string = ''): Observable<ExpenseTypeModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -38,7 +49,7 @@ export class ExpenseTypesHttpService {
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response;
+        return response.data;
       })
     );
   }
@@ -64,8 +75,8 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  reactivate(id: string): Observable<ExpenseTypeModel> {
-    const url = `${this.API_URL}/${id}/reactivate`;
+  enable(id: string): Observable<ExpenseTypeModel> {
+    const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -86,10 +97,10 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  removeAll(expenseTypes: ExpenseTypeModel[]): Observable<ExpenseTypeModel[]> {
+  removeAll(ExpenseTypes: ExpenseTypeModel[]): Observable<ExpenseTypeModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, expenseTypes).pipe(
+    return this.httpClient.patch<ServerResponse>(url, ExpenseTypes).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -97,8 +108,8 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  suspend(id: string): Observable<ExpenseTypeModel> {
-    const url = `${this.API_URL}/${id}/suspend`;
+  disable(id: string): Observable<ExpenseTypeModel> {
+    const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {

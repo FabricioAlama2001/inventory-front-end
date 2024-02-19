@@ -14,7 +14,7 @@ import {
   ClassButtonActionEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
-  LabelButtonActionEnum, RoutesEnum
+  LabelButtonActionEnum, RoutesEnum, TableEnum
 } from "@shared/enums";
 import {getHigherSort} from "@shared/helpers";
 
@@ -31,6 +31,8 @@ export class BudgetItemListComponent {
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
   protected readonly BudgetItemsFormEnum = BudgetItemsFormEnum;
+  protected readonly IdButtonActionEnum = IdButtonActionEnum;
+  protected readonly TableEnum = TableEnum;
 
   protected buttonActions: MenuItem[] = this.buildButtonActions;
   protected isButtonActions: boolean = false;

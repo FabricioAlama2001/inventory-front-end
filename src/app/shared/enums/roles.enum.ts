@@ -8,5 +8,6 @@ export enum RolesEnum {
   REVIEWER = 'reviewer',
   SECRETARY = 'secretary',
   WELFARE = 'welfare',
-  PLANNER = 'planner'
+  PLANNER = 'planner',
+  CATALOGUE = 'catalogue'
 }
