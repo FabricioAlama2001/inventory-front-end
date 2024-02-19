@@ -1,45 +1,57 @@
-<app-skeleton *ngIf="coreService.isLoading" [type]="SkeletonEnum.CARD"></app-skeleton>
-<form *ngIf="!coreService.isLoading" [formGroup]="form" (ngSubmit)="onSubmit()" class="p-fluid">
-  <!--username-->
-  <div class="field">
-    <label appLabel for="username" label="Usuario:" [required]="usernameField"></label>
-    <input pInputText type="text" id="username" formControlName="username" pKeyFilter="alphanum"/>
-    <small appErrorMessage
-           [errors]="usernameField.errors"
-           [touched]="usernameField.touched"
-           [dirty]="usernameField.dirty">
-    </small>
-  </div>
+@if (coreService.isLoading) {
+  <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
+}
 
-  <!--email && phone-->
-  <div class="formgrid grid">
-    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-      <label appLabel for="email" label="Correo Electrónico:" [required]="emailField"></label>
-      <input pInputText type="email" id="email" formControlName="email" class="mb-1"/>
+@if (!coreService.isLoading) {
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-fluid">
+    <!--username-->
+    <div class="field">
+      <label appLabel for="username" label="Usuario:" [required]="usernameField"></label>
+      <input pInputText type="text" id="username" formControlName="username" pKeyFilter="alphanum"/>
       <small appErrorMessage
-             [errors]="emailField.errors"
-             [touched]="emailField.touched"
-             [dirty]="emailField.dirty">
-      </small>
-      <p-tag *ngIf="emailVerifiedAtField.value" value="Verified Email" [icon]="PrimeIcons.CHECK" severity="success"></p-tag>
-      <p-tag *ngIf="!emailVerifiedAtField.value" value="Correo no Verificado" [icon]="PrimeIcons.TIMES" severity="danger"></p-tag>
-    </div>
-    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-      <label appLabel for="phone" label="Teléfono:" [required]="phoneField"></label>
-      <input pInputText type="text" id="phone" formControlName="phone"/>
-      <small appErrorMessage
-             [errors]="phoneField.errors"
-             [touched]="phoneField.touched"
-             [dirty]="phoneField.dirty">
+             [errors]="usernameField.errors"
+             [touched]="usernameField.touched"
+             [dirty]="usernameField.dirty">
       </small>
     </div>
-  </div>
 
-  <!--submit-->
-  <div class="field">
-    <button pButton pRipple type="submit" id="submitUserInformation"
-            label="Actualizar"
-            [icon]="PrimeIcons.SAVE"
-            [loading]="coreService.isLoading"></button>
-  </div>
-</form>
+    <!--email && phone-->
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="email" label="Correo Electrónico:" [required]="emailField"></label>
+        <input pInputText type="email" id="email" formControlName="email" class="mb-1"/>
+        <small appErrorMessage
+               [errors]="emailField.errors"
+               [touched]="emailField.touched"
+               [dirty]="emailField.dirty">
+        </small>
+        @if (emailVerifiedAtField.value) {
+          <p-tag value="Verified Email" [icon]="PrimeIcons.CHECK"
+                 severity="success"></p-tag>
+        }
+
+        @if (!emailVerifiedAtField.value) {
+          <p-tag value="Correo no Verificado" [icon]="PrimeIcons.TIMES"
+                 severity="danger"></p-tag>
+        }
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="phone" label="Teléfono:" [required]="phoneField"></label>
+        <input pInputText type="text" id="phone" formControlName="phone"/>
+        <small appErrorMessage
+               [errors]="phoneField.errors"
+               [touched]="phoneField.touched"
+               [dirty]="phoneField.dirty">
+        </small>
+      </div>
+    </div>
+
+    <!--submit-->
+    <div class="field">
+      <button pButton pRipple type="submit" id="submitUserInformation"
+              label="Actualizar"
+              [icon]="PrimeIcons.SAVE"
+              [loading]="coreService.isLoading"></button>
+    </div>
+  </form>
+}

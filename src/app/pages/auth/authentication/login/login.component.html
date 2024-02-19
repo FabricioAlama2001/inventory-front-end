@@ -4,7 +4,7 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="field text-center">
           <img src="assets/images/logo/logo-sm.png" alt="">
-          <h2>{{authService.system}}</h2>
+          <h2>{{ authService.system }}</h2>
         </div>
 
         <div class="field">
@@ -27,10 +27,11 @@
           </small>
         </div>
 
-        <div *ngIf="coreService.isLoading" class="field">
-          <app-progress-bar [message]="messageService.progressBarLogin"></app-progress-bar>
-        </div>
-
+        @if (coreService.isLoading) {
+          <div class="field">
+            <app-progress-bar [message]="messageService.progressBarLogin"></app-progress-bar>
+          </div>
+        }
         <div class="field">
           <button pButton pRipple
                   label="Continuar"
