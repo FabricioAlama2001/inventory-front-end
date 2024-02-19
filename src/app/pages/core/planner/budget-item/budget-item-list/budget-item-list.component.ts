@@ -16,6 +16,8 @@ import {
   IdButtonActionEnum,
   LabelButtonActionEnum, RoutesEnum
 } from "@shared/enums";
+import {getHigherSort} from "@shared/helpers";
+
 
 @Component({
   selector: 'app-budget-item-list',
@@ -69,6 +71,7 @@ export class BudgetItemListComponent {
     this.budgetItemsHttpService.findAll()
       .subscribe((response) => {
         this.items = response;
+        this.coreService.higherSort = getHigherSort(this.items);
       });
   }
 
