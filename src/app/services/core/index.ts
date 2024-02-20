@@ -27,6 +27,10 @@ export * from './expense-groups-http.service';
 export * from './expense-types-http.service';
 export * from './pnd-objectives-http.service';
 export * from './pnd-polices-http.service';
+export * from './indicator-components-http.service';
+export * from './funding-sources-http.service';
+
+
 
 
 

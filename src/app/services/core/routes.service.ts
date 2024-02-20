@@ -82,6 +82,22 @@ export class RoutesService {
     return this.core + `catalogue/pnd-polices/${id}`;
   }
 
+  get indicatorComponentsList(): string {
+    return this.core + '/catalogue/indicator-components';
+  }
+
+  indicatorComponentsForm(id: string): string {
+    return this.core + `catalogue/indicator-components/${id}`;
+  }
+
+  get fundingSourcesList(): string {
+    return this.core + '/catalogue/funding-sources';
+  }
+
+  fundingSourcesForm(id: string): string {
+    return this.core + `catalogue/funding-sources/${id}`;
+  }
+
   get common(): string {
     return '/common';
   }

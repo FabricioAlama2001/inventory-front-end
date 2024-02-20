@@ -34,6 +34,18 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.CATALOGUE]}
   },
+  {
+    path: 'indicator-components',
+    loadChildren: () => import('./indicator-component/indicator-component.module').then(m => m.IndicatorComponentModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
+  {
+    path: 'funding-sources',
+    loadChildren: () => import('./funding-source/funding-source.module').then(m => m.FundingSourceModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
 ];
 
 @NgModule({

@@ -27,5 +27,7 @@ export enum BreadcrumbEnum {
   EXPENSE_GROUPS = 'Grupo de gasto',
   EXPENSE_TYPES = 'Tipo de gastos',
   PND_OBJECTIVES = 'Objetivos',
-  PND_POLICES = 'Políticas'
+  PND_POLICES = 'Políticas',
+  INDICATOR_COMPONENTS = 'Indicador de componente',
+  FUNDING_SOURCES = 'Fuentes de financiamiento'
 }

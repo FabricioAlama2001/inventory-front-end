@@ -3,20 +3,21 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {CreateBudgetItemDto, UpdateBudgetItemDto, BudgetItemModel} from '@models/core';
+import {CreateFundingSourceDto, UpdateFundingSourceDto, FundingSourceModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class BudgetItemsHttpService {
-  API_URL = `${environment.API_URL}/core/budget-items`;
+export class FundingSourcesHttpService {
+  API_URL = `${environment.API_URL}/core/funding-sources`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
 
-  create(payload: CreateBudgetItemDto): Observable<BudgetItemModel> {
+  create(payload: CreateFundingSourceDto): Observable<FundingSourceModel> {
     const url = `${this.API_URL}`;
 
     return this.httpClient.post<ServerResponse>(url, payload).pipe(
@@ -27,7 +28,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  findAll(): Observable<BudgetItemModel[]> {
+  findAll(): Observable<FundingSourceModel[]> {
     const url = this.API_URL;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -37,7 +38,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  findBudgetItems(page: number = 0, search: string = ''): Observable<BudgetItemModel[]> {
+  findFundingSources(page: number = 0, search: string = ''): Observable<FundingSourceModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -52,7 +53,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  findOne(id: string): Observable<BudgetItemModel> {
+  findOne(id: string): Observable<FundingSourceModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -62,7 +63,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  update(id: string, payload: UpdateBudgetItemDto): Observable<BudgetItemModel> {
+  update(id: string, payload: UpdateFundingSourceDto): Observable<FundingSourceModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.put<ServerResponse>(url, payload).pipe(
@@ -73,7 +74,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  enable(id: string): Observable<BudgetItemModel> {
+  enable(id: string): Observable<FundingSourceModel> {
     const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
@@ -84,7 +85,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  remove(id: string): Observable<BudgetItemModel> {
+  remove(id: string): Observable<FundingSourceModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.delete<ServerResponse>(url).pipe(
@@ -95,10 +96,10 @@ export class BudgetItemsHttpService {
     );
   }
 
-  removeAll(budgetItems: BudgetItemModel[]): Observable<BudgetItemModel[]> {
+  removeAll(fundingSources: FundingSourceModel[]): Observable<FundingSourceModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, budgetItems).pipe(
+    return this.httpClient.patch<ServerResponse>(url, fundingSources).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -106,7 +107,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  disable(id: string): Observable<BudgetItemModel> {
+  disable(id: string): Observable<FundingSourceModel> {
     const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
@@ -117,7 +118,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  findCatalogue(): Observable<BudgetItemModel[]> {
+  findCatalogue(): Observable<FundingSourceModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

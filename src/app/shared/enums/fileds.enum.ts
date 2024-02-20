@@ -74,3 +74,17 @@ export enum PndPolicesFormEnum {
   sort = 'Orden'
 }
 
+export enum IndicatorComponentsFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}
+
+export enum FundingSourcesFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}
+
