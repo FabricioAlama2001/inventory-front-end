@@ -19,22 +19,22 @@
     "@angular/platform-browser": "^17.1.2",
     "@angular/platform-browser-dynamic": "^17.1.2",
     "@angular/router": "^17.1.2",
-    "date-fns": "^2.30.0",
-    "leaflet": "^1.9.4",
-    "ng2-pdf-viewer": "^10.0.0",
-    "primeflex": "^3.3.1",
-    "primeicons": "^6.0.1",
-    "primeng": "^17.7.0",
-    "rxjs": "~7.8.1",
-    "sweetalert2": "^11.6.13",
-    "tslib": "^2.6.0"
+    "date-fns": "3.3.1",
+    "leaflet": "1.9.4",
+    "ng2-pdf-viewer": "10.0.0",
+    "primeflex": "3.3.1",
+    "primeicons": "6.0.1",
+    "primeng": "17.7.0",
+    "rxjs": "7.8.1",
+    "sweetalert2": "11.10.5",
+    "tslib": "2.6.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.1.2",
     "@angular/cli": "^17.1.2",
     "@angular/compiler-cli": "^17.1.2",
     "@types/jasmine": "~4.3.5",
-    "@types/leaflet": "^1.9.7",
+    "@types/leaflet": "1.9.8",
     "@types/node": "^20.4.2",
     "jasmine-core": "~5.0.1",
     "karma": "~6.4.2",
@@ -42,6 +42,6 @@
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.3.3"
+    "typescript": "5.3.3"
   }
 }

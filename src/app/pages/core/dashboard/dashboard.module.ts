@@ -8,10 +8,12 @@ import { TeacherComponent } from './teacher/teacher.component';
 import { StudentComponent } from './student/student.component';
 import { CoordinatorAdministrativeComponent } from './coordinator-administrative/coordinator-administrative.component';
 import { CoordinatorCareerComponent } from './coordinator-career/coordinator-career.component';
+import {DashboardComponent} from "./dashboard.component";
 
 
 @NgModule({
   declarations: [
+    DashboardComponent,
     AdminComponent,
     PlannerComponent,
     TeacherComponent,
