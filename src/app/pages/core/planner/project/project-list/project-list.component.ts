@@ -133,11 +133,11 @@ export class ProjectListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.projectForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.projectsForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.projectForm(id)]);
+    this.router.navigate([this.routesService.projectsForm(id)]);
   }
 
   disable(id: string) {

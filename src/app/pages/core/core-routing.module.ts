@@ -20,6 +20,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.PLANNER]}
   },
+  {
+    path: 'catalogue',
+    loadChildren: () => import('./catalogue/catalogue.module').then(m => m.CatalogueModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
 ];
 
 @NgModule({

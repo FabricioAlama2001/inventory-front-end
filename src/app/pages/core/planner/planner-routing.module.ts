@@ -23,20 +23,8 @@ const routes: Routes = [
     data: {roles: [RolesEnum.PLANNER]}
   },
   {
-    path: 'budget-items',
-    loadChildren: () => import('./budget-item/budget-item.module').then(m => m.BudgetItemModule),
-    canActivate: [RoleGuard],
-    data: {roles: [RolesEnum.PLANNER]}
-  },
-  {
     path: 'activity',
     loadChildren: () => import('./activity/activity.module').then(m => m.ActivityModule),
-    canActivate: [RoleGuard],
-    data: {roles: [RolesEnum.PLANNER]}
-  },
-  {
-    path: 'expense-group',
-    loadChildren: () => import('./expense-group/expense-group.module').then(m => m.ExpenseGroupModule),
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.PLANNER]}
   },

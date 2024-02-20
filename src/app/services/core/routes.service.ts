@@ -20,12 +20,6 @@ export class RoutesService {
   }
 
   /** Admin Role **/
-  /** Teacher Role **/
-  /** Student Role **/
-  /** Coordinator Administrative Role **/
-
-  /** Rector Role**/
-  /** Welfare Role **/
   get admin(): string {
     return '/admin/';
   }
@@ -34,74 +28,42 @@ export class RoutesService {
     return this.admin + 'users';
   }
 
+  /** Planner Role **/
   get projectsList(): string {
     return this.core + 'projects';
   }
 
-  projectForm(id: string): string {
+  projectsForm(id: string): string {
     return this.core + `projects/${id}`;
   }
 
-  budgetItemForm(id: string): string {
-    return this.core + `planner/budget-items/${id}`;
-  }
-
-  expenseGroupForm(id: string): string {
-    return this.core + `planner/expense-group/${id}`;
-  }
-
-  expenseTypeForm(id: string): string {
-    return this.core + `catalogue/expense-type/${id}`;
-  }
-
-  /** Planner Role **/
   get subactivities(): string {
     return this.core + '/planner/subactivities';
   }
 
-  get budgetItems(): string {
-    return this.core + '/planner/budget-items';
-  }
-
-  get projects(): string {
-    return this.core + '/planner/projects';
-  }
-
-  get expenseGroups(): string {
-    return this.core + '/planner/expense-groups';
-  }
-
-
   /** Catalogue Role **/
+  get budgetItemsList(): string {
+    return this.core + 'catalogue/budget-items';
+  }
 
-  get expenseTypes(): string {
+  budgetItemsForm(id: string): string {
+    return this.core + `catalogue/budget-items/${id}`;
+  }
+
+  get expenseGroupsList(): string {
+    return this.core + '/catalogue/expense-groups';
+  }
+
+  expenseGroupsForm(id: string): string {
+    return this.core + `catalogue/expense-groups/${id}`;
+  }
+
+  get expenseTypesList(): string {
     return this.core + '/catalogue/expense-types';
   }
 
-
-  /** Reviewer Role **/
-  inscriptionsDetailForm(enrollmentId: string): string {
-    return this.core + `/reviewer/inscriptions/${enrollmentId}/inscription-details`;
-  }
-
-  get events(): string {
-    return this.core + '/events';
-  }
-
-  get studentsCoordinatorCareer(): string {
-    return this.core + '/coordinator-career/students';
-  }
-
-  get parallelCapacity(): string {
-    return this.core + '/careers/parallel-capacity';
-  }
-
-  get teachersCoordinatorCareer(): string {
-    return this.core + '/coordinator-career/teachers';
-  }
-
-  get teacherDistributions(): string {
-    return this.core + '/teacher-distributions';
+  expenseTypesForm(id: string): string {
+    return this.core + `catalogue/expense-types/${id}`;
   }
 
   get common(): string {
@@ -111,10 +73,6 @@ export class RoutesService {
   /** Login **/
   login() {
     this.router.navigateByUrl(`/login`);
-  }
-
-  institutionSelect() {
-    this.router.navigateByUrl(`/auth/authentication/institution-select`);
   }
 
   roleSelect() {

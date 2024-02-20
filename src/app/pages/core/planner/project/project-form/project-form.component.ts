@@ -65,7 +65,7 @@ export class ProjectFormComponent {
     private readonly expenseTypesHttpService: ExpenseTypesHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.PROJECTS, routerLink: [this.routesService.projects]},
+      {label: BreadcrumbEnum.PROJECTS, routerLink: [this.routesService.projectsList]},
       {label: BreadcrumbEnum.FORM},
     ]);
 

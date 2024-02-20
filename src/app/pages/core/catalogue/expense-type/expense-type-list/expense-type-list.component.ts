@@ -134,11 +134,11 @@ export class ExpenseTypeListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.expenseTypeForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.expenseTypesForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.expenseTypeForm(id)]);
+    this.router.navigate([this.routesService.expenseTypesForm(id)]);
   }
 
   disable(id: string) {

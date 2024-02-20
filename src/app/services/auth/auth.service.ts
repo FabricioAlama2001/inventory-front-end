@@ -108,8 +108,8 @@ export class AuthService {
         this.routesService.dashboardPlanner();
         break;
       }
-      case RolesEnum.TEACHER: {
-        this.routesService.dashboardTeacher();
+      case RolesEnum.CATALOGUE: {
+        this.routesService.dashboardPlanner();
         break;
       }
       case RolesEnum.STUDENT: {

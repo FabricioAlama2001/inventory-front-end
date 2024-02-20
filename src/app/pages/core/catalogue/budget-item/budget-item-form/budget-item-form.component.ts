@@ -55,7 +55,7 @@ export class BudgetItemFormComponent implements OnInit, OnExitInterface{
     private readonly expenseGroupsHttpService: ExpenseGroupsHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.BUDGET_ITEMS, routerLink: [this.routesService.budgetItems]},
+      {label: BreadcrumbEnum.BUDGET_ITEMS, routerLink: [this.routesService.budgetItemsList]},
       {label: BreadcrumbEnum.FORM},
     ]);
 
@@ -135,7 +135,7 @@ export class BudgetItemFormComponent implements OnInit, OnExitInterface{
   }
 
   back(): void {
-    this.router.navigate([this.routesService.budgetItems]);
+    this.router.navigate([this.routesService.budgetItemsList]);
   }
 
   create(budgetItem: CreateBudgetItemDto): void {

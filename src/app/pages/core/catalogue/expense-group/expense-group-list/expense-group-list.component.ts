@@ -133,11 +133,11 @@ export class ExpenseGroupListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.expenseGroupForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.expenseGroupsForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.expenseGroupForm(id)]);
+    this.router.navigate([this.routesService.expenseGroupsForm(id)]);
   }
 
   disable(id: string) {

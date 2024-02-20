@@ -53,7 +53,7 @@ export class ExpenseTypeFormComponent implements OnInit, OnExitInterface{
     private readonly expenseTypesHttpService: ExpenseTypesHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.EXPENSE_TYPES, routerLink: [this.routesService.expenseTypes]},
+      {label: BreadcrumbEnum.EXPENSE_TYPES, routerLink: [this.routesService.expenseTypesList]},
       {label: BreadcrumbEnum.FORM},
     ]);
 
@@ -130,7 +130,7 @@ export class ExpenseTypeFormComponent implements OnInit, OnExitInterface{
   }
 
   back(): void {
-    this.router.navigate([this.routesService.expenseTypes]);
+    this.router.navigate([this.routesService.expenseTypesList]);
   }
 
   create(expenseType: CreateExpenseTypeDto): void {

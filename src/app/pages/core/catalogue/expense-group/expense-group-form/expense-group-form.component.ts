@@ -54,7 +54,7 @@ export class ExpenseGroupFormComponent implements OnInit, OnExitInterface{
     private readonly expenseGroupsHttpService: ExpenseGroupsHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.EXPENSE_GROUPS, routerLink: [this.routesService.expenseGroups]},
+      {label: BreadcrumbEnum.EXPENSE_GROUPS, routerLink: [this.routesService.expenseGroupsList]},
       {label: BreadcrumbEnum.FORM},
     ]);
 
@@ -130,7 +130,7 @@ export class ExpenseGroupFormComponent implements OnInit, OnExitInterface{
   }
 
   back(): void {
-    this.router.navigate([this.routesService.expenseGroups]);
+    this.router.navigate([this.routesService.expenseGroupsList]);
   }
 
   create(expenseGroup: CreateExpenseGroupDto): void {
