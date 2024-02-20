@@ -97,10 +97,10 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  removeAll(ExpenseTypes: ExpenseTypeModel[]): Observable<ExpenseTypeModel[]> {
+  removeAll(expenseTypes: ExpenseTypeModel[]): Observable<ExpenseTypeModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, ExpenseTypes).pipe(
+    return this.httpClient.patch<ServerResponse>(url, expenseTypes).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -119,9 +119,13 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  findCatalogue(type: CatalogueEnum): CatalogueModel[] {
-    const catalogues: CatalogueModel[] = JSON.parse(String(sessionStorage.getItem('catalogues')));
+  findCatalogue(): Observable<ExpenseTypeModel[]> {
+    const url = `${this.API_URL}/catalogues`;
 
-    return catalogues.filter(catalogue => catalogue.type === type);
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map(response => {
+        return response.data;
+      })
+    );
   }
 }

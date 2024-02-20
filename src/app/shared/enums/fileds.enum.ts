@@ -59,3 +59,18 @@ export enum ExpenseTypesFormEnum {
   sort = 'Orden'
 }
 
+export enum PndObjectivesFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}
+
+export enum PndPolicesFormEnum {
+  pndObjective = 'Objetivo',
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}
+

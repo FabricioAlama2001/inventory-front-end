@@ -1,38 +1,39 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { PrimeIcons } from "primeng/api";
+import {Component, Input, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
+import {PrimeIcons} from "primeng/api";
 
-import { CreatePndObjectiveDto, UpdatePndObjectiveDto } from '@models/core';
+import {CreatePndPoliceDto, PndObjectiveModel, UpdatePndPoliceDto} from '@models/core';
 import {
   BreadcrumbService,
-  PndObjectivesHttpService,
   CoreService,
   MessageService,
+  PndObjectivesHttpService,
+  PndPolicesHttpService,
   RoutesService
 } from '@services/core';
-import { OnExitInterface } from '@shared/interfaces';
+import {OnExitInterface} from '@shared/interfaces';
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   LabelButtonActionEnum,
   SkeletonEnum,
-  RoutesEnum,
-  PndObjectivesFormEnum
+   RoutesEnum,
+   PndPolicesFormEnum
 } from "@shared/enums";
 
 @Component({
-  selector: 'app-pnd-objective-form',
-  templateUrl: './pnd-objective-form.component.html',
-  styleUrl: './pnd-objective-form.component.scss'
+  selector: 'app-pnd-police-form',
+  templateUrl: './pnd-police-form.component.html',
+  styleUrl: './pnd-police-form.component.scss'
 })
-export class PndObjectiveFormComponent implements OnInit, OnExitInterface{
+export class PndPoliceFormComponent implements OnInit, OnExitInterface{
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
-  protected readonly PndObjectivesFormEnum = PndObjectivesFormEnum;
+  protected readonly PndPolicesFormEnum = PndPolicesFormEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
   private saving: boolean = true;
@@ -41,6 +42,8 @@ export class PndObjectiveFormComponent implements OnInit, OnExitInterface{
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
+  protected pndObjectives: PndObjectiveModel[] = [];
+
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
     protected readonly coreService: CoreService,
@@ -48,11 +51,12 @@ export class PndObjectiveFormComponent implements OnInit, OnExitInterface{
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
+    private readonly pndPolicesHttpService: PndPolicesHttpService,
     private readonly pndObjectivesHttpService: PndObjectivesHttpService
   ) {
     this.breadcrumbService.setItems([
-      { label: BreadcrumbEnum.PND_OBJECTIVES, routerLink: [this.routesService.pndObjectivesList] },
-      { label: BreadcrumbEnum.FORM },
+      {label: BreadcrumbEnum.PND_POLICES, routerLink: [this.routesService.pndPolicesList]},
+      {label: BreadcrumbEnum.FORM},
     ]);
 
     this.form = this.newForm;
@@ -68,6 +72,8 @@ export class PndObjectiveFormComponent implements OnInit, OnExitInterface{
   }
 
   ngOnInit(): void {
+    this.loadExpenseGroups();
+
     if (this.id != RoutesEnum.NEW) {
       this.get();
     }
@@ -79,6 +85,7 @@ export class PndObjectiveFormComponent implements OnInit, OnExitInterface{
       name: [null, []],
       enabled: [null, []],
       sort: [this.coreService.higherSort, []],
+      expenseGroup: [null, []],
     });
   }
 
@@ -97,10 +104,11 @@ export class PndObjectiveFormComponent implements OnInit, OnExitInterface{
   get validateFormErrors() {
     this.formErrors = [];
 
-    if (this.codeField.errors) this.formErrors.push(PndObjectivesFormEnum.code);
-    if (this.nameField.errors) this.formErrors.push(PndObjectivesFormEnum.name);
-    if (this.enabledField.errors) this.formErrors.push(PndObjectivesFormEnum.enabled);
-    if (this.sortField.errors) this.formErrors.push(PndObjectivesFormEnum.sort);
+    if (this.codeField.errors) this.formErrors.push(PndPolicesFormEnum.code);
+    if (this.nameField.errors) this.formErrors.push(PndPolicesFormEnum.name);
+    if (this.enabledField.errors) this.formErrors.push(PndPolicesFormEnum.enabled);
+    if (this.sortField.errors) this.formErrors.push(PndPolicesFormEnum.sort);
+    if (this.pndObjectiveField.errors) this.formErrors.push(PndPolicesFormEnum.pndObjective);
 
     this.formErrors.sort();
 
@@ -108,8 +116,8 @@ export class PndObjectiveFormComponent implements OnInit, OnExitInterface{
   }
 
   get(): void {
-    this.pndObjectivesHttpService.findOne(this.id!).subscribe((pndObjective) => {
-      this.form.patchValue(pndObjective);
+    this.pndPolicesHttpService.findOne(this.id!).subscribe((pndPolice) => {
+      this.form.patchValue(pndPolice);
     });
   }
 
@@ -127,22 +135,28 @@ export class PndObjectiveFormComponent implements OnInit, OnExitInterface{
   }
 
   back(): void {
-    this.router.navigate([this.routesService.pndObjectivesList]);
+    this.router.navigate([this.routesService.pndPolicesList]);
   }
 
-  create(pndObjective: CreatePndObjectiveDto): void {
-    this.pndObjectivesHttpService.create(pndObjective).subscribe(pndObjective => {
-      //this.form.reset(pndObjective);
+  create(pndPolice: CreatePndPoliceDto): void {
+    this.pndPolicesHttpService.create(pndPolice).subscribe(pndPolice => {
+      //this.form.reset(pndPolice);
       this.saving = false;
       this.back();
     });
   }
 
-  update(pndObjective: UpdatePndObjectiveDto): void {
-    this.pndObjectivesHttpService.update(this.id!, pndObjective).subscribe((pndObjective) => {
-      //this.form.reset(pndObjective);
+  update(pndPolice: UpdatePndPoliceDto): void {
+    this.pndPolicesHttpService.update(this.id!, pndPolice).subscribe((pndPolice) => {
+      //this.form.reset(pndPolice);
       this.saving = false;
       this.back()
+    });
+  }
+
+  loadExpenseGroups(): void {
+    this.pndObjectivesHttpService.findCatalogue().subscribe((pndObjectives) => {
+      this.pndObjectives = pndObjectives;
     });
   }
 
@@ -160,5 +174,9 @@ export class PndObjectiveFormComponent implements OnInit, OnExitInterface{
 
   get sortField(): AbstractControl {
     return this.form.controls['sort'];
+  }
+
+  get pndObjectiveField(): AbstractControl {
+    return this.form.controls['pndObjective'];
   }
 }

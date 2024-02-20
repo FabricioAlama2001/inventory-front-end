@@ -66,6 +66,22 @@ export class RoutesService {
     return this.core + `catalogue/expense-types/${id}`;
   }
 
+  get pndObjectivesList(): string {
+    return this.core + '/catalogue/pnd-objectives';
+  }
+
+  pndObjectivesForm(id: string): string {
+    return this.core + `catalogue/pnd-objectives/${id}`;
+  }
+
+  get pndPolicesList(): string {
+    return this.core + '/catalogue/pnd-polices';
+  }
+
+  pndPolicesForm(id: string): string {
+    return this.core + `catalogue/pnd-polices/${id}`;
+  }
+
   get common(): string {
     return '/common';
   }

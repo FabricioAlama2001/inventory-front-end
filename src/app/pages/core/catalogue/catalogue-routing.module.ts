@@ -22,6 +22,18 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.CATALOGUE]}
   },
+  {
+    path: 'pnd-objectives',
+    loadChildren: () => import('./pnd-objective/pnd-objective.module').then(m => m.PndObjectiveModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
+  {
+    path: 'pnd-polices',
+    loadChildren: () => import('./pnd-police/pnd-police.module').then(m => m.PndPoliceModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
 ];
 
 @NgModule({

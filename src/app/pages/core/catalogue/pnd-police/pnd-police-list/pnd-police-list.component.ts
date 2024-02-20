@@ -6,11 +6,11 @@ import {debounceTime} from "rxjs";
 
 import {MenuItem, PrimeIcons} from "primeng/api";
 
-import { ColumnModel, PndObjectiveModel} from '@models/core';
-import {BreadcrumbService, CoreService, MessageService, PndObjectivesHttpService, RoutesService} from '@services/core';
+import {PndPoliceModel, ColumnModel} from '@models/core';
+import {BreadcrumbService, CoreService, MessageService, PndPolicesHttpService, RoutesService} from '@services/core';
 import {
   BreadcrumbEnum,
-  PndObjectivesFormEnum,
+  PndPolicesFormEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
@@ -18,18 +18,19 @@ import {
 } from "@shared/enums";
 import {getHigherSort} from "@shared/helpers";
 
+
 @Component({
-  selector: 'app-pnd-objective-list',
-  templateUrl: './pnd-objective-list.component.html',
-  styleUrl: './pnd-objective-list.component.scss'
+  selector: 'app-pnd-police-list',
+  templateUrl: './pnd-police-list.component.html',
+  styleUrl: './pnd-police-list.component.scss'
 })
-export class PndObjectiveListComponent {
+export class PndPoliceListComponent {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
-  protected readonly PndObjectivesFormEnum = PndObjectivesFormEnum;
+  protected readonly PndPolicesFormEnum = PndPolicesFormEnum;
   protected readonly IdButtonActionEnum = IdButtonActionEnum;
   protected readonly TableEnum = TableEnum;
 
@@ -40,9 +41,9 @@ export class PndObjectiveListComponent {
 
   protected search: FormControl = new FormControl('');
 
-  protected selectedItem!: PndObjectiveModel;
-  protected selectedItems: PndObjectiveModel[] = [];
-  protected items: PndObjectiveModel[] = [];
+  protected selectedItem!: PndPoliceModel;
+  protected selectedItems: PndPoliceModel[] = [];
+  protected items: PndPoliceModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -50,9 +51,9 @@ export class PndObjectiveListComponent {
     protected readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly pndObjectivesHttpService: PndObjectivesHttpService,
+    private readonly pndPolicesHttpService: PndPolicesHttpService,
   ) {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.PND_OBJECTIVES}]);
+    this.breadcrumbService.setItems([{label: BreadcrumbEnum.PND_POLICES}]);
   }
 
   ngOnInit() {
@@ -69,7 +70,7 @@ export class PndObjectiveListComponent {
   }
 
   findAll() {
-    this.pndObjectivesHttpService.findAll()
+    this.pndPolicesHttpService.findAll()
       .subscribe((response) => {
         this.items = response;
         this.coreService.higherSort = getHigherSort(this.items);
@@ -78,10 +79,11 @@ export class PndObjectiveListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'code', header: PndObjectivesFormEnum.code},
-      {field: 'name', header: PndObjectivesFormEnum.name},
-      {field: 'sort', header: PndObjectivesFormEnum.sort},
-      {field: 'enabled', header: PndObjectivesFormEnum.enabled}
+      {field: 'pndObjective', header: PndPolicesFormEnum.pndObjective},
+      {field: 'code', header: PndPolicesFormEnum.code},
+      {field: 'name', header: PndPolicesFormEnum.name},
+      {field: 'sort', header: PndPolicesFormEnum.sort},
+      {field: 'enabled', header: PndPolicesFormEnum.enabled}
     ];
   }
 
@@ -122,7 +124,7 @@ export class PndObjectiveListComponent {
     ];
   }
 
-  validateButtonActions(item: PndObjectiveModel): void {
+  validateButtonActions(item: PndPoliceModel): void {
     this.buttonActions = this.buildButtonActions;
 
     if (item.enabled) {
@@ -135,24 +137,24 @@ export class PndObjectiveListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.pndObjectivesForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.pndPolicesForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.pndObjectivesForm(id)]);
+    this.router.navigate([this.routesService.pndPolicesForm(id)]);
   }
 
   disable(id: string) {
-    this.pndObjectivesHttpService.disable(id).subscribe(pndObjective => {
-      const index = this.items.findIndex(pndObjective => pndObjective.id === id);
-      this.items[index] = pndObjective;
+    this.pndPolicesHttpService.disable(id).subscribe(pndPolice => {
+      const index = this.items.findIndex(pndPolice => pndPolice.id === id);
+      this.items[index] = pndPolice;
     });
   }
 
   enable(id: string) {
-    this.pndObjectivesHttpService.enable(id).subscribe(pndObjective => {
-      const index = this.items.findIndex(pndObjective => pndObjective.id === id);
-      this.items[index] = pndObjective;
+    this.pndPolicesHttpService.enable(id).subscribe(pndPolice => {
+      const index = this.items.findIndex(pndPolice => pndPolice.id === id);
+      this.items[index] = pndPolice;
     });
   }
 
@@ -160,14 +162,14 @@ export class PndObjectiveListComponent {
     this.messageService.questionDelete()
       .then((result) => {
         if (result.isConfirmed) {
-          this.pndObjectivesHttpService.remove(id).subscribe((pndObjective) => {
-            this.items = this.items.filter(item => item.id !== pndObjective.id);
+          this.pndPolicesHttpService.remove(id).subscribe((pndPolice) => {
+            this.items = this.items.filter(item => item.id !== pndPolice.id);
           });
         }
       });
   }
 
-  selectItem(item:  PndObjectiveModel) {
+  selectItem(item: PndPoliceModel) {
     this.isButtonActions = true;
     this.selectedItem = item;
     this.validateButtonActions(item);

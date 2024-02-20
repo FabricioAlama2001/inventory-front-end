@@ -3,9 +3,9 @@ import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validat
 import {ActivatedRoute, Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import {CreateProjectDto, UpdateProjectDto} from '@models/core';
+import {CreateProjectDto, ExpenseTypeModel, PndObjectiveModel, PndPoliceModel, UpdateProjectDto} from '@models/core';
 import {CatalogueModel} from "@models/core";
-import {PndObjectivesHttpService} from '@services/core/pnd-objectives-http.services';
+import {PndObjectivesHttpService} from '@services/core/pnd-objectives-http.service';
 import {PndPolicesHttpService} from '@services/core/pnd-polices-http.service';
 import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
 import {
@@ -48,9 +48,9 @@ export class ProjectFormComponent {
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
-  protected pndObjectives: CatalogueModel[] = [];
-  protected pndPolices: CatalogueModel[] = [];
-  protected expenseTypes: CatalogueModel[] = [];
+  protected pndObjectives: PndObjectiveModel[] = [];
+  protected pndPolices: PndPoliceModel[] = [];
+  protected expenseTypes: ExpenseTypeModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -153,16 +153,20 @@ export class ProjectFormComponent {
   }
 
   loadExpenseTypes(): void {
-    this.expenseTypes = this.expenseTypesHttpService.findCatalogue(CatalogueEnum.EXPENSE_TYPE);
-  }
+    this.expenseTypesHttpService.findCatalogue().subscribe((expenseTypes) => {
+      this.expenseTypes = expenseTypes;
+    });  }
 
   loadPndObjectives(): void {
-    this.pndObjectives = this.pndObjectivesHttpService.findCatalogue(CatalogueEnum.PND_OBJECTIVE);
+    this.pndObjectivesHttpService.findCatalogue().subscribe((pndObjectives) => {
+      this.pndObjectives = pndObjectives;
+    });
   }
 
   loadPndPolices(): void {
-    this.pndPolices = this.pndPolicesHttpService.findCatalogue(CatalogueEnum.PND_POLICE);
-  }
+    this.pndPolicesHttpService.findCatalogue().subscribe((pndPolices) => {
+      this.pndPolices = pndPolices;
+    });  }
 
   get nameField(): AbstractControl {
     return this.form.controls['name'];

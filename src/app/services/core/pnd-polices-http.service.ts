@@ -3,16 +3,17 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {CreatePndPoliceDto, UpdatePndPoliceDto, PndPoliceModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueModel, CreatePndPoliceDto, PndPoliceModel, UpdatePndPoliceDto } from '@models/core';
 import { CatalogueEnum } from '@shared/enums';
+import { CatalogueModel } from '@models/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PndPolicesHttpService {
-  API_URL = `${environment.API_URL}/pnd-polices`;
+  API_URL = `${environment.API_URL}/core/pnd-polices`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
@@ -28,7 +29,17 @@ export class PndPolicesHttpService {
     );
   }
 
-  findAll(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findAll(): Observable<PndPoliceModel[]> {
+    const url = this.API_URL;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
+  findPndPolices(page: number = 0, search: string = ''): Observable<PndPoliceModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -38,7 +49,7 @@ export class PndPolicesHttpService {
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response;
+        return response.data;
       })
     );
   }
@@ -64,8 +75,8 @@ export class PndPolicesHttpService {
     );
   }
 
-  reactivate(id: string): Observable<PndPoliceModel> {
-    const url = `${this.API_URL}/${id}/reactivate`;
+  enable(id: string): Observable<PndPoliceModel> {
+    const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -86,10 +97,10 @@ export class PndPolicesHttpService {
     );
   }
 
-  removeAll(projects: PndPoliceModel[]): Observable<PndPoliceModel[]> {
+  removeAll(pndPolices: PndPoliceModel[]): Observable<PndPoliceModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, projects).pipe(
+    return this.httpClient.patch<ServerResponse>(url, pndPolices).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -97,8 +108,8 @@ export class PndPolicesHttpService {
     );
   }
 
-  suspend(id: string): Observable<PndPoliceModel> {
-    const url = `${this.API_URL}/${id}/suspend`;
+  disable(id: string): Observable<PndPoliceModel> {
+    const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -108,9 +119,13 @@ export class PndPolicesHttpService {
     );
   }
 
-  findCatalogue(type: CatalogueEnum): CatalogueModel[] {
-    const catalogues: CatalogueModel[] = JSON.parse(String(sessionStorage.getItem('catalogues')));
+  findCatalogue(): Observable<PndPoliceModel[]> {
+    const url = `${this.API_URL}/catalogues`;
 
-    return catalogues.filter(catalogue => catalogue.type === type);
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map(response => {
+        return response.data;
+      })
+    );
   }
 }

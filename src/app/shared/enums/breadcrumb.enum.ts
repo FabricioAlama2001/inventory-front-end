@@ -25,5 +25,7 @@ export enum BreadcrumbEnum {
   SUBACTIVITIES = 'Sub-actividades',
   BUDGET_ITEMS = 'Items Presupuestarios',
   EXPENSE_GROUPS = 'Grupo de gasto',
-  EXPENSE_TYPES = 'Tipo de gastos'
+  EXPENSE_TYPES = 'Tipo de gastos',
+  PND_OBJECTIVES = 'Objetivos',
+  PND_POLICES = 'Políticas'
 }

@@ -15,11 +15,11 @@
 </p-toolbar>
 
 <p-table #dt1 dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns"
-  [globalFilterFields]="['code', 'name']" [loading]="coreService.isLoading"
+  [globalFilterFields]="['code', 'name', 'pndObjective.name']" [loading]="coreService.isLoading"
   [(selection)]="selectedItems">
   <ng-template pTemplate="caption">
     <div class="flex">
-      <h1>{{ BreadcrumbEnum.PND_OBJECTIVES }}</h1>
+      <h1>{{ BreadcrumbEnum.PND_POLICES }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
         <input #search pInputText type="text" placeholder="Buscar..."
@@ -44,6 +44,15 @@
     <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
       @for (col of columns; track col) {
       <!--Objects-->
+      @if (rowData[col.field]?.id) {
+      <td>
+        @switch (col.field) {
+        @case ('pndObjective') {
+        {{ rowData.pndObjective.name }}
+        }
+        }
+      </td>
+      }
 
       <!--Fields-->
       @if (!rowData[col.field]?.id) {
