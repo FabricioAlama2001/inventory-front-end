@@ -1,13 +1,15 @@
 <div id="sidebar" class="sidebar" [ngClass]="{'close':closed}" (mouseleave)="closeMenu()">
   <div class="logo-details">
     <a href="javascript:void(0);"><i class="pi pi-bars" (click)="showCloseMenu()"></i></a>
-    <span class="logo_name">{{authService.systemShortName}}</span>
-    <a *ngIf="!closed" href="javascript:void(0);">
-      <i class='pi'
-         [ngClass]="{'pi-lock-open':!closedLock && !closed,'pi-lock':closedLock && !closed}"
-         (click)="closedLock=!closedLock">
-      </i>
-    </a>
+    <span class="logo_name">{{ authService.systemShortName }}</span>
+    @if (!closed) {
+      <a href="javascript:void(0);">
+        <i class='pi'
+           [ngClass]="{'pi-lock-open':!closedLock && !closed,'pi-lock':closedLock && !closed}"
+           (click)="closedLock=!closedLock">
+        </i>
+      </a>
+    }
   </div>
   <ul class="nav-links">
     <!--Dashboard-->
@@ -21,26 +23,32 @@
     </li>
 
     <!--Menus-->
-    <li [id]="index" *ngFor="let item of menus,let index = index" [ngClass]="{'showMenu':showedMenu}">
-      <div class="icon-link">
-        <a href="javascript:void(0);" [routerLink]="item.routerLink" (click)="showSubMenu(index)">
-          <i [class]="item.icon"></i>
-          <span class="link_name">{{item.label}}</span>
-        </a>
-        <i *ngIf="item.children.length>0" class="pi pi-chevron-down arrow" (click)="showSubMenu(index)"></i>
-      </div>
-      <ul class="sub-menu">
-        <li>
-          <a class="link_name" [routerLink]="item.routerLink">{{item.label}}</a>
-          <div *ngFor="let subItem of item.children">
-            <a *ngIf="subItem.enabled" [routerLink]="subItem.routerLink">
-              {{subItem.label}}
-            </a>
-          </div>
-        </li>
-      </ul>
-    </li>
-
+    @for (item of menus;track item.id;let index = $index) {
+      <li [id]="index" [ngClass]="{'showMenu':showedMenu}">
+        <div class="icon-link">
+          <a href="javascript:void(0);" [routerLink]="item.routerLink" (click)="showSubMenu(index)">
+            <i [class]="item.icon"></i>
+            <span class="link_name">{{ item.label }}</span>
+          </a>
+          @if (item.children.length > 0) {
+            <i class="pi pi-chevron-down arrow" (click)="showSubMenu(index)"></i>
+          }
+        </div>
+        <ul class="sub-menu">
+          <li>
+            <a class="link_name" [routerLink]="item.routerLink">{{ item.label }}</a>
+            {{item.children}}
+            @for (subItem of item.children;track subItem.id) {
+              @if (subItem.enabled) {
+                <a [routerLink]="subItem.routerLink">
+                  {{ subItem.label }}
+                </a>
+              }
+            }
+          </li>
+        </ul>
+      </li>
+    }
     <!--Sign Out-->
     <li id="100" [ngClass]="{'showMenu':showedMenu}">
       <div class="icon-link">
@@ -59,12 +67,12 @@
       <div class="icon-link">
         <a href="javascript:void(0);" (click)="about()">
           <i [class]="PrimeIcons.ANDROID"></i>
-          <small class="link_name">V {{coreService.version}}</small>
+          <small class="link_name">V {{ coreService.version }}</small>
         </a>
       </div>
       <ul class="sub-menu">
         <li>
-          <a class="link_name" href="javascript:void(0);" (click)="about()">V {{coreService.version}}</a>
+          <a class="link_name" href="javascript:void(0);" (click)="about()">V {{ coreService.version }}</a>
         </li>
       </ul>
     </li>
