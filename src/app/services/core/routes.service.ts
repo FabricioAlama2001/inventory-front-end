@@ -75,6 +75,18 @@ export class RoutesService {
     this.router.navigateByUrl(`/login`);
   }
 
+  forbidden() {
+    this.router.navigateByUrl(`/common/403`);
+  }
+
+  unauthenticated() {
+    this.router.navigateByUrl(`/common/401`);
+  }
+
+  notFound() {
+    this.router.navigateByUrl(`/common/404`);
+  }
+
   roleSelect() {
     this.router.navigateByUrl(`/auth/authentication/role-select`);
   }
