@@ -6,8 +6,10 @@ export interface InstitutionalStrategicPlanModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
+  sort: number;
 }
 
 export interface CreateInstitutionalStrategicPlanDto extends Omit<InstitutionalStrategicPlanModel, 'id'> {}

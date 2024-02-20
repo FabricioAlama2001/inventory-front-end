@@ -29,5 +29,6 @@ export enum BreadcrumbEnum {
   PND_OBJECTIVES = 'Objetivos',
   PND_POLICES = 'Políticas',
   INDICATOR_COMPONENTS = 'Indicador de componente',
-  FUNDING_SOURCES = 'Fuentes de financiamiento'
+  FUNDING_SOURCES = 'Fuentes de financiamiento',
+  INSTITUTIONAL_STRATEGIC_PLANS = 'Planes estrategicos institucionales'
 }

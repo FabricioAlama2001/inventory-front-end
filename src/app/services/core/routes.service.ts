@@ -98,6 +98,14 @@ export class RoutesService {
     return this.core + `catalogue/funding-sources/${id}`;
   }
 
+  get institutionalStrategicPlansList(): string {
+    return this.core + '/catalogue/institutional-strategic-plans';
+  }
+
+  institutionalStrategicPlansForm(id: string): string {
+    return this.core + `catalogue/institutional-strategic-plans/${id}`;
+  }
+
   get common(): string {
     return '/common';
   }

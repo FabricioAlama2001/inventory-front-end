@@ -88,3 +88,9 @@ export enum FundingSourcesFormEnum {
   sort = 'Orden'
 }
 
+export enum InstitutionalStrategicPlansFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}

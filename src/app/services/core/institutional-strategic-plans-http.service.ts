@@ -3,16 +3,15 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {CreateInstitutionalStrategicPlanDto, UpdateInstitutionalStrategicPlanDto, InstitutionalStrategicPlanModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueModel, CreateInstitutionalStrategicPlanDto, CreateSubactivityDto, InstitutionalStrategicPlanModel, SubactivityModel, UpdateInstitutionalStrategicPlanDto, UpdateSubactivityDto } from '@models/core';
-import { CatalogueEnum } from '@shared/enums';
 
 @Injectable({
   providedIn: 'root'
 })
-export class InsitutionalStrategicPlansHttpService {
-  API_URL = `${environment.API_URL}/institutional-strategic-plan`;
+export class InstitutionalStrategicPlansHttpService {
+  API_URL = `${environment.API_URL}/core/institutional-strategic-plans`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
@@ -28,7 +27,17 @@ export class InsitutionalStrategicPlansHttpService {
     );
   }
 
-  findAll(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findAll(): Observable<InstitutionalStrategicPlanModel[]> {
+    const url = this.API_URL;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
+  findInstitutionalStrategicPlans(page: number = 0, search: string = ''): Observable<InstitutionalStrategicPlanModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -38,7 +47,7 @@ export class InsitutionalStrategicPlansHttpService {
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response;
+        return response.data;
       })
     );
   }
@@ -64,8 +73,8 @@ export class InsitutionalStrategicPlansHttpService {
     );
   }
 
-  reactivate(id: string): Observable<InstitutionalStrategicPlanModel> {
-    const url = `${this.API_URL}/${id}/reactivate`;
+  enable(id: string): Observable<InstitutionalStrategicPlanModel> {
+    const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -86,10 +95,10 @@ export class InsitutionalStrategicPlansHttpService {
     );
   }
 
-  removeAll(projects: InstitutionalStrategicPlanModel[]): Observable<InstitutionalStrategicPlanModel[]> {
+  removeAll(institutionalStrategicPlans: InstitutionalStrategicPlanModel[]): Observable<InstitutionalStrategicPlanModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, projects).pipe(
+    return this.httpClient.patch<ServerResponse>(url, institutionalStrategicPlans).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -97,8 +106,8 @@ export class InsitutionalStrategicPlansHttpService {
     );
   }
 
-  suspend(id: string): Observable<InstitutionalStrategicPlanModel> {
-    const url = `${this.API_URL}/${id}/suspend`;
+  disable(id: string): Observable<InstitutionalStrategicPlanModel> {
+    const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -108,9 +117,13 @@ export class InsitutionalStrategicPlansHttpService {
     );
   }
 
-  findCatalogue(type: CatalogueEnum): CatalogueModel[] {
-    const catalogues: CatalogueModel[] = JSON.parse(String(sessionStorage.getItem('catalogues')));
+  findCatalogue(): Observable<InstitutionalStrategicPlanModel[]> {
+    const url = `${this.API_URL}/catalogues`;
 
-    return catalogues.filter(catalogue => catalogue.type === type);
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map(response => {
+        return response.data;
+      })
+    );
   }
 }

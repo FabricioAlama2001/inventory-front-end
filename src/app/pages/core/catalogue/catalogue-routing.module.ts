@@ -46,6 +46,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.CATALOGUE]}
   },
+  {
+    path: 'institutional-strategic-plans',
+    loadChildren: () => import('./institutional-strategic-plan/institutional-strategic-plan.module').then(m => m.InstitutionalStrategicPlanModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
 ];
 
 @NgModule({
