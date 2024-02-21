@@ -72,7 +72,7 @@ export class PndPoliceFormComponent implements OnInit, OnExitInterface{
   }
 
   ngOnInit(): void {
-    this.loadExpenseGroups();
+    this.loadPndObjectives();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -83,9 +83,9 @@ export class PndPoliceFormComponent implements OnInit, OnExitInterface{
     return this.formBuilder.group({
       code: [null, []],
       name: [null, []],
-      enabled: [null, []],
+      enabled: [true, []],
       sort: [this.coreService.higherSort, []],
-      expenseGroup: [null, []],
+      pndObjective: [null, []],
     });
   }
 
@@ -154,7 +154,7 @@ export class PndPoliceFormComponent implements OnInit, OnExitInterface{
     });
   }
 
-  loadExpenseGroups(): void {
+  loadPndObjectives(): void {
     this.pndObjectivesHttpService.findCatalogue().subscribe((pndObjectives) => {
       this.pndObjectives = pndObjectives;
     });

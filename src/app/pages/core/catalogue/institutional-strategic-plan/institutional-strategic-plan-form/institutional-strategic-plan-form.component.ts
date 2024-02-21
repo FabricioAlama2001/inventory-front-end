@@ -77,7 +77,7 @@ export class InstitutionalStrategicPlanFormComponent implements OnInit, OnExitIn
     return this.formBuilder.group({
       code: [null, []],
       name: [null, []],
-      enabled: [null, []],
+      enabled: [true, []],
       sort: [this.coreService.higherSort, []],
     });
   }
