@@ -78,7 +78,7 @@ export class ContinentFormComponent {
     return this.formBuilder.group({
       code: [null, []],
       name: [null, []],
-      enabled: [null, []],
+      enabled: [true, []],
       sort: [this.coreService.higherSort, []],
     });
   }
@@ -128,7 +128,7 @@ export class ContinentFormComponent {
   }
 
   back(): void {
-    this.router.navigate([this.routesService.strategicAxesList]);
+    this.router.navigate([this.routesService.continentsList]);
   }
 
   create(continent: CreateContinentDto): void {

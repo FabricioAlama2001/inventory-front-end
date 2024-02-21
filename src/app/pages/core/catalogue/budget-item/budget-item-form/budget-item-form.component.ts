@@ -83,7 +83,7 @@ export class BudgetItemFormComponent implements OnInit, OnExitInterface{
     return this.formBuilder.group({
       code: [null, []],
       name: [null, []],
-      enabled: [null, []],
+      enabled: [true, []],
       sort: [this.coreService.higherSort, []],
       expenseGroup: [null, []],
     });

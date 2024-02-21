@@ -93,7 +93,7 @@ export class ProjectFormComponent {
     return this.formBuilder.group({
       name: [null, []],
       fiscalYear: [null, []],
-      enabled: [null, []],
+      enabled: [true, []],
       pndObjective: [null, []],
       pndPolice: [null, []],
       expenseType: [null, []],

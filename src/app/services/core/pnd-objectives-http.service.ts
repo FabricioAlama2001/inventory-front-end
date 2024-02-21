@@ -3,11 +3,9 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {CreatePndObjectiveDto, UpdatePndObjectiveDto, PndObjectiveModel, PndPoliceModel} from '@models/core';
+import {CreatePndObjectiveDto, UpdatePndObjectiveDto, PndObjectiveModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueEnum } from '@shared/enums';
-import { CatalogueModel } from '@models/core';
 
 @Injectable({
   providedIn: 'root'
@@ -78,7 +76,7 @@ export class PndObjectivesHttpService {
   enable(id: string): Observable<PndObjectiveModel> {
     const url = `${this.API_URL}/${id}/enable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -111,7 +109,7 @@ export class PndObjectivesHttpService {
   disable(id: string): Observable<PndObjectiveModel> {
     const url = `${this.API_URL}/${id}/disable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -119,7 +117,7 @@ export class PndObjectivesHttpService {
     );
   }
 
-  findCatalogue(): Observable<PndPoliceModel[]> {
+  findCatalogue(): Observable<PndObjectiveModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
