@@ -79,7 +79,6 @@ export class InstitutionalStrategicPlanFormComponent implements OnInit, OnExitIn
       name: [null, []],
       enabled: [null, []],
       sort: [this.coreService.higherSort, []],
-      expenseGroup: [null, []],
     });
   }
 
