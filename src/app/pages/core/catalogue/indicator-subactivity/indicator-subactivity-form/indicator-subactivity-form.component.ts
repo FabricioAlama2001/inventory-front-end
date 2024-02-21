@@ -3,13 +3,13 @@ import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import { CreateStrategicAxisDto, UpdateStrategicAxisDto, } from '@models/core';
+import { CreateIndicatorSubactivityDto, UpdateIndicatorSubactivityDto, } from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
+  IndicatorSubactivitiesHttpService,
   MessageService,
-  RoutesService,
-  StrategicAxesHttpService
+  RoutesService
 } from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
@@ -19,20 +19,21 @@ import {
   LabelButtonActionEnum,
   SkeletonEnum,
    RoutesEnum,
-   StrategicAxesFormEnum
+   IndicatorSubactivitiesFormEnum
 } from "@shared/enums";
 
+
 @Component({
-  selector: 'app-strategic-axis-form',
-  templateUrl: './strategic-axis-form.component.html',
-  styleUrl: './strategic-axis-form.component.scss'
+  selector: 'app-indicator-subactivity-form',
+  templateUrl: './indicator-subactivity-form.component.html',
+  styleUrl: './indicator-subactivity-form.component.scss'
 })
-export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
+export class IndicatorSubactivityFormComponent {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
-  protected readonly StrategicAxesFormEnum = StrategicAxesFormEnum;
+  protected readonly IndicatorSubactivitiesFormEnum = IndicatorSubactivitiesFormEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
   private saving: boolean = true;
@@ -48,10 +49,10 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly strategicAxesHttpService: StrategicAxesHttpService
+    private readonly indicatorSubactivitiesHttpService: IndicatorSubactivitiesHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.STRATEGIC_AXES, routerLink: [this.routesService.strategicAxesList]},
+      {label: BreadcrumbEnum.INDICATOR_SUBACTIVITIES, routerLink: [this.routesService.indicatorSubactivitiesList]},
       {label: BreadcrumbEnum.FORM},
     ]);
 
@@ -98,10 +99,10 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
   get validateFormErrors() {
     this.formErrors = [];
 
-    if (this.codeField.errors) this.formErrors.push(StrategicAxesFormEnum.code);
-    if (this.nameField.errors) this.formErrors.push(StrategicAxesFormEnum.name);
-    if (this.enabledField.errors) this.formErrors.push(StrategicAxesFormEnum.enabled);
-    if (this.sortField.errors) this.formErrors.push(StrategicAxesFormEnum.sort);
+    if (this.codeField.errors) this.formErrors.push(IndicatorSubactivitiesFormEnum.code);
+    if (this.nameField.errors) this.formErrors.push(IndicatorSubactivitiesFormEnum.name);
+    if (this.enabledField.errors) this.formErrors.push(IndicatorSubactivitiesFormEnum.enabled);
+    if (this.sortField.errors) this.formErrors.push(IndicatorSubactivitiesFormEnum.sort);
 
     this.formErrors.sort();
 
@@ -109,8 +110,8 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
   }
 
   get(): void {
-    this.strategicAxesHttpService.findOne(this.id!).subscribe((strategicAxis) => {
-      this.form.patchValue(strategicAxis);
+    this.indicatorSubactivitiesHttpService.findOne(this.id!).subscribe((indicator) => {
+      this.form.patchValue(indicator);
     });
   }
 
@@ -128,20 +129,20 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
   }
 
   back(): void {
-    this.router.navigate([this.routesService.strategicAxesList]);
+    this.router.navigate([this.routesService.indicatorSubactivitiesList]);
   }
 
-  create(strategicAxis: CreateStrategicAxisDto): void {
-    this.strategicAxesHttpService.create(strategicAxis).subscribe(strategicAxis => {
-      //this.form.reset(strategicAxis);
+  create(indicator: CreateIndicatorSubactivityDto): void {
+    this.indicatorSubactivitiesHttpService.create(indicator).subscribe(indicator => {
+      //this.form.reset(indicator);
       this.saving = false;
       this.back();
     });
   }
 
-  update(strategicAxis: UpdateStrategicAxisDto): void {
-    this.strategicAxesHttpService.update(this.id!, strategicAxis).subscribe((strategicAxis) => {
-      //this.form.reset(strategicAxis);
+  update(indicator: UpdateIndicatorSubactivityDto): void {
+    this.indicatorSubactivitiesHttpService.update(this.id!, indicator).subscribe((indicator) => {
+      //this.form.reset(indicator);
       this.saving = false;
       this.back()
     });

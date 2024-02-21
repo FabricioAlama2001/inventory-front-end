@@ -6,8 +6,10 @@ export interface ContinentModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   name: string;
   enabled: boolean;
+  sort: number;
 }
 
 export interface CreateContinentDto extends Omit<ContinentModel, 'id'> {}

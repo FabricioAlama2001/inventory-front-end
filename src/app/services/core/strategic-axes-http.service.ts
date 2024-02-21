@@ -3,16 +3,15 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {CreateStrategicAxisDto, UpdateStrategicAxisDto, StrategicAxisModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueModel, CreateStrategicAxisDto, CreateSubactivityDto, StrategicAxisModel, SubactivityModel, UpdateStrategicAxisDto, UpdateSubactivityDto } from '@models/core';
-import { CatalogueEnum } from '@shared/enums';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StrategicAxisHttpService {
-  API_URL = `${environment.API_URL}/strategic-axis`;
+export class StrategicAxesHttpService {
+  API_URL = `${environment.API_URL}/core/strategic-axes`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
@@ -28,7 +27,17 @@ export class StrategicAxisHttpService {
     );
   }
 
-  findAll(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findAll(): Observable<StrategicAxisModel[]> {
+    const url = this.API_URL;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
+  findStrategicAxiss(page: number = 0, search: string = ''): Observable<StrategicAxisModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -38,7 +47,7 @@ export class StrategicAxisHttpService {
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response;
+        return response.data;
       })
     );
   }
@@ -64,8 +73,8 @@ export class StrategicAxisHttpService {
     );
   }
 
-  reactivate(id: string): Observable<StrategicAxisModel> {
-    const url = `${this.API_URL}/${id}/reactivate`;
+  enable(id: string): Observable<StrategicAxisModel> {
+    const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -86,10 +95,10 @@ export class StrategicAxisHttpService {
     );
   }
 
-  removeAll(projects: StrategicAxisModel[]): Observable<StrategicAxisModel[]> {
+  removeAll(strategicAxiss: StrategicAxisModel[]): Observable<StrategicAxisModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, projects).pipe(
+    return this.httpClient.patch<ServerResponse>(url, strategicAxiss).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -97,8 +106,8 @@ export class StrategicAxisHttpService {
     );
   }
 
-  suspend(id: string): Observable<StrategicAxisModel> {
-    const url = `${this.API_URL}/${id}/suspend`;
+  disable(id: string): Observable<StrategicAxisModel> {
+    const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -108,9 +117,13 @@ export class StrategicAxisHttpService {
     );
   }
 
-  findCatalogue(type: CatalogueEnum): CatalogueModel[] {
-    const catalogues: CatalogueModel[] = JSON.parse(String(sessionStorage.getItem('catalogues')));
+  findCatalogue(): Observable<StrategicAxisModel[]> {
+    const url = `${this.API_URL}/catalogues`;
 
-    return catalogues.filter(catalogue => catalogue.type === type);
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map(response => {
+        return response.data;
+      })
+    );
   }
 }

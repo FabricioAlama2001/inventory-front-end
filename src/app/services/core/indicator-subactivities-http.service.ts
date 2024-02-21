@@ -3,16 +3,15 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {CreateIndicatorSubactivityDto, UpdateIndicatorSubactivityDto, IndicatorSubactivityModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueModel, CreateIndicatorSubactivityDto, CreateSubactivityDto, IndicatorSubactivityModel, SubactivityModel, UpdateIndicatorSubactivityDto, UpdateSubactivityDto } from '@models/core';
-import { CatalogueEnum } from '@shared/enums';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IndicatorSubactivitiesHttpService {
-  API_URL = `${environment.API_URL}/indicator-subactivities`;
+  API_URL = `${environment.API_URL}/core/indicator-subactivities`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
@@ -28,7 +27,17 @@ export class IndicatorSubactivitiesHttpService {
     );
   }
 
-  findAll(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findAll(): Observable<IndicatorSubactivityModel[]> {
+    const url = this.API_URL;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
+  findIndicatorSubactivitys(page: number = 0, search: string = ''): Observable<IndicatorSubactivityModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -38,7 +47,7 @@ export class IndicatorSubactivitiesHttpService {
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response;
+        return response.data;
       })
     );
   }
@@ -64,8 +73,8 @@ export class IndicatorSubactivitiesHttpService {
     );
   }
 
-  reactivate(id: string): Observable<IndicatorSubactivityModel> {
-    const url = `${this.API_URL}/${id}/reactivate`;
+  enable(id: string): Observable<IndicatorSubactivityModel> {
+    const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -86,10 +95,10 @@ export class IndicatorSubactivitiesHttpService {
     );
   }
 
-  removeAll(projects: IndicatorSubactivityModel[]): Observable<IndicatorSubactivityModel[]> {
+  removeAll(indicatorSubactivity: IndicatorSubactivityModel[]): Observable<IndicatorSubactivityModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, projects).pipe(
+    return this.httpClient.patch<ServerResponse>(url, indicatorSubactivity).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -97,8 +106,8 @@ export class IndicatorSubactivitiesHttpService {
     );
   }
 
-  suspend(id: string): Observable<IndicatorSubactivityModel> {
-    const url = `${this.API_URL}/${id}/suspend`;
+  disable(id: string): Observable<IndicatorSubactivityModel> {
+    const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.put<ServerResponse>(url, null).pipe(
       map((response) => {
@@ -108,9 +117,13 @@ export class IndicatorSubactivitiesHttpService {
     );
   }
 
-  findCatalogue(type: CatalogueEnum): CatalogueModel[] {
-    const catalogues: CatalogueModel[] = JSON.parse(String(sessionStorage.getItem('catalogues')));
+  findCatalogue(): Observable<IndicatorSubactivityModel[]> {
+    const url = `${this.API_URL}/catalogues`;
 
-    return catalogues.filter(catalogue => catalogue.type === type);
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map(response => {
+        return response.data;
+      })
+    );
   }
 }

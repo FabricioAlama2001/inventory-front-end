@@ -13,7 +13,7 @@ export * from './model.model';
 export * from './subactivity.model';
 export * from './indicator-subactivity.model';
 export * from './institutional-strategic-plan.model';
-export * from './strategic-axes.model';
+export * from './strategic-axis.model';
 export * from './strategy.model';
 export * from './continent.model';
 export * from './country.model';

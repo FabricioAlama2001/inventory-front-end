@@ -30,5 +30,9 @@ export enum BreadcrumbEnum {
   PND_POLICES = 'Políticas',
   INDICATOR_COMPONENTS = 'Indicador de componente',
   FUNDING_SOURCES = 'Fuentes de financiamiento',
-  INSTITUTIONAL_STRATEGIC_PLANS = 'Planes estrategicos institucionales'
+  INSTITUTIONAL_STRATEGIC_PLANS = 'Planes estrategicos institucionales',
+  STRATEGIC_AXES = 'Ejes estratégicos',
+  STRATEGIES = 'Estrategias',
+  INDICATOR_SUBACTIVITIES = 'Indicador de subactividades',
+  CONTINENTS = 'Continentes'
 }

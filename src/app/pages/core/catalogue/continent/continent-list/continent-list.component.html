@@ -19,7 +19,7 @@
   [(selection)]="selectedItems">
   <ng-template pTemplate="caption">
     <div class="flex">
-      <h1>{{ BreadcrumbEnum.STRATEGIC_AXES }}</h1>
+      <h1>{{ BreadcrumbEnum.CONTINENTS }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
         <input #search pInputText type="text" placeholder="Buscar..."
@@ -78,3 +78,4 @@
 
 <app-button-action [buttonActions]="buttonActions" [enabled]="isButtonActions" (isHide)="isButtonActions=!$event">
 </app-button-action>
+

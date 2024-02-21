@@ -3,13 +3,13 @@ import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import { CreateStrategicAxisDto, UpdateStrategicAxisDto, } from '@models/core';
+import { CreateStrategyDto, UpdateStrategyDto, } from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
   MessageService,
   RoutesService,
-  StrategicAxesHttpService
+  StrategiesHttpService,
 } from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
@@ -19,20 +19,21 @@ import {
   LabelButtonActionEnum,
   SkeletonEnum,
    RoutesEnum,
-   StrategicAxesFormEnum
+   StrategiesFormEnum
 } from "@shared/enums";
 
+
 @Component({
-  selector: 'app-strategic-axis-form',
-  templateUrl: './strategic-axis-form.component.html',
-  styleUrl: './strategic-axis-form.component.scss'
+  selector: 'app-strategy-form',
+  templateUrl: './strategy-form.component.html',
+  styleUrl: './strategy-form.component.scss'
 })
-export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
+export class StrategyFormComponent implements OnInit, OnExitInterface{
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
-  protected readonly StrategicAxesFormEnum = StrategicAxesFormEnum;
+  protected readonly StrategiesFormEnum = StrategiesFormEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
   private saving: boolean = true;
@@ -48,10 +49,10 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly strategicAxesHttpService: StrategicAxesHttpService
+    private readonly strategiesHttpService: StrategiesHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.STRATEGIC_AXES, routerLink: [this.routesService.strategicAxesList]},
+      {label: BreadcrumbEnum.STRATEGIES, routerLink: [this.routesService.strategiesList]},
       {label: BreadcrumbEnum.FORM},
     ]);
 
@@ -98,10 +99,10 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
   get validateFormErrors() {
     this.formErrors = [];
 
-    if (this.codeField.errors) this.formErrors.push(StrategicAxesFormEnum.code);
-    if (this.nameField.errors) this.formErrors.push(StrategicAxesFormEnum.name);
-    if (this.enabledField.errors) this.formErrors.push(StrategicAxesFormEnum.enabled);
-    if (this.sortField.errors) this.formErrors.push(StrategicAxesFormEnum.sort);
+    if (this.codeField.errors) this.formErrors.push(StrategiesFormEnum.code);
+    if (this.nameField.errors) this.formErrors.push(StrategiesFormEnum.name);
+    if (this.enabledField.errors) this.formErrors.push(StrategiesFormEnum.enabled);
+    if (this.sortField.errors) this.formErrors.push(StrategiesFormEnum.sort);
 
     this.formErrors.sort();
 
@@ -109,8 +110,8 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
   }
 
   get(): void {
-    this.strategicAxesHttpService.findOne(this.id!).subscribe((strategicAxis) => {
-      this.form.patchValue(strategicAxis);
+    this.strategiesHttpService.findOne(this.id!).subscribe((strategy) => {
+      this.form.patchValue(strategy);
     });
   }
 
@@ -131,17 +132,17 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
     this.router.navigate([this.routesService.strategicAxesList]);
   }
 
-  create(strategicAxis: CreateStrategicAxisDto): void {
-    this.strategicAxesHttpService.create(strategicAxis).subscribe(strategicAxis => {
-      //this.form.reset(strategicAxis);
+  create(strategy: CreateStrategyDto): void {
+    this.strategiesHttpService.create(strategy).subscribe(strategy => {
+      //this.form.reset(strategy);
       this.saving = false;
       this.back();
     });
   }
 
-  update(strategicAxis: UpdateStrategicAxisDto): void {
-    this.strategicAxesHttpService.update(this.id!, strategicAxis).subscribe((strategicAxis) => {
-      //this.form.reset(strategicAxis);
+  update(strategy: UpdateStrategyDto): void {
+    this.strategiesHttpService.update(this.id!, strategy).subscribe((strategy) => {
+      //this.form.reset(strategy);
       this.saving = false;
       this.back()
     });

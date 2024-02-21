@@ -6,11 +6,11 @@ import {debounceTime} from "rxjs";
 
 import {MenuItem, PrimeIcons} from "primeng/api";
 
-import {StrategicAxisModel, ColumnModel} from '@models/core';
-import {BreadcrumbService, CoreService, MessageService, RoutesService, StrategicAxesHttpService} from '@services/core';
+import {StrategyModel, ColumnModel} from '@models/core';
+import {BreadcrumbService, CoreService, MessageService, RoutesService, StrategiesHttpService} from '@services/core';
 import {
   BreadcrumbEnum,
-  StrategicAxesFormEnum,
+  StrategiesFormEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
@@ -18,19 +18,18 @@ import {
 } from "@shared/enums";
 import {getHigherSort} from "@shared/helpers";
 
-
 @Component({
-  selector: 'app-strategic-axis-list',
-  templateUrl: './strategic-axis-list.component.html',
-  styleUrl: './strategic-axis-list.component.scss'
+  selector: 'app-strategy-list',
+  templateUrl: './strategy-list.component.html',
+  styleUrl: './strategy-list.component.scss'
 })
-export class StrategicAxisListComponent {
+export class StrategyListComponent {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
-  protected readonly StrategicAxesFormEnum = StrategicAxesFormEnum;
+  protected readonly StrategiesFormEnum = StrategiesFormEnum;
   protected readonly TableEnum = TableEnum;
 
   protected buttonActions: MenuItem[] = this.buildButtonActions;
@@ -40,9 +39,9 @@ export class StrategicAxisListComponent {
 
   protected search: FormControl = new FormControl('');
 
-  protected selectedItem!: StrategicAxisModel;
-  protected selectedItems: StrategicAxisModel[] = [];
-  protected items: StrategicAxisModel[] = [];
+  protected selectedItem!: StrategyModel;
+  protected selectedItems: StrategyModel[] = [];
+  protected items: StrategyModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -50,9 +49,9 @@ export class StrategicAxisListComponent {
     protected readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly strategicAxesHttpService: StrategicAxesHttpService,
+    private readonly strategiesHttpService: StrategiesHttpService,
   ) {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.STRATEGIC_AXES}]);
+    this.breadcrumbService.setItems([{label: BreadcrumbEnum.STRATEGIES}]);
   }
 
   ngOnInit() {
@@ -69,7 +68,7 @@ export class StrategicAxisListComponent {
   }
 
   findAll() {
-    this.strategicAxesHttpService.findAll()
+    this.strategiesHttpService.findAll()
       .subscribe((response) => {
         this.items = response;
         this.coreService.higherSort = getHigherSort(this.items);
@@ -78,10 +77,10 @@ export class StrategicAxisListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'code', header: StrategicAxesFormEnum.code},
-      {field: 'name', header: StrategicAxesFormEnum.name},
-      {field: 'enabled', header: StrategicAxesFormEnum.enabled},
-      {field: 'sort', header: StrategicAxesFormEnum.sort}
+      {field: 'code', header: StrategiesFormEnum.code},
+      {field: 'name', header: StrategiesFormEnum.name},
+      {field: 'enabled', header: StrategiesFormEnum.enabled},
+      {field: 'sort', header: StrategiesFormEnum.sort}
     ];
   }
 
@@ -122,7 +121,7 @@ export class StrategicAxisListComponent {
     ];
   }
 
-  validateButtonActions(item: StrategicAxisModel): void {
+  validateButtonActions(item: StrategyModel): void {
     this.buttonActions = this.buildButtonActions;
 
     if (item.enabled) {
@@ -135,24 +134,24 @@ export class StrategicAxisListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.strategicAxesForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.strategiesForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.strategicAxesForm(id)]);
+    this.router.navigate([this.routesService.strategiesForm(id)]);
   }
 
   disable(id: string) {
-    this.strategicAxesHttpService.disable(id).subscribe(strategicAxis => {
-      const index = this.items.findIndex(strategicAxis => strategicAxis.id === id);
-      this.items[index] = strategicAxis;
+    this.strategiesHttpService.disable(id).subscribe(strategy => {
+      const index = this.items.findIndex(strategy => strategy.id === id);
+      this.items[index] = strategy;
     });
   }
 
   enable(id: string) {
-    this.strategicAxesHttpService.enable(id).subscribe(strategicAxis => {
-      const index = this.items.findIndex(strategicAxis => strategicAxis.id === id);
-      this.items[index] = strategicAxis;
+    this.strategiesHttpService.enable(id).subscribe(strategy => {
+      const index = this.items.findIndex(strategy => strategy.id === id);
+      this.items[index] = strategy;
     });
   }
 
@@ -160,14 +159,14 @@ export class StrategicAxisListComponent {
     this.messageService.questionDelete()
       .then((result) => {
         if (result.isConfirmed) {
-          this.strategicAxesHttpService.remove(id).subscribe((strategicAxis) => {
-            this.items = this.items.filter(item => item.id !== strategicAxis.id);
+          this.strategiesHttpService.remove(id).subscribe((strategy) => {
+            this.items = this.items.filter(item => item.id !== strategy.id);
           });
         }
       });
   }
 
-  selectItem(item: StrategicAxisModel) {
+  selectItem(item: StrategyModel) {
     this.isButtonActions = true;
     this.selectedItem = item;
     this.validateButtonActions(item);

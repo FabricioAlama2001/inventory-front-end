@@ -106,6 +106,38 @@ export class RoutesService {
     return this.core + `catalogue/institutional-strategic-plans/${id}`;
   }
 
+  get strategicAxesList(): string {
+    return this.core + '/catalogue/strategic-axes';
+  }
+
+  strategicAxesForm(id: string): string {
+    return this.core + `catalogue/strategic-axes/${id}`;
+  }
+
+  get strategiesList(): string {
+    return this.core + '/catalogue/strategies';
+  }
+
+  strategiesForm(id: string): string {
+    return this.core + `catalogue/strategies/${id}`;
+  }
+
+  get indicatorSubactivitiesList(): string {
+    return this.core + '/catalogue/indicator-subactivities';
+  }
+
+  indicatorSubactivitiesForm(id: string): string {
+    return this.core + `catalogue/indicator-subactivities/${id}`;
+  }
+
+  get continentsList(): string {
+    return this.core + '/catalogue/continents';
+  }
+
+  continentsForm(id: string): string {
+    return this.core + `catalogue/continents/${id}`;
+  }
+
   get common(): string {
     return '/common';
   }

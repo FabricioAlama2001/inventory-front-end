@@ -13,7 +13,7 @@ export * from './projects-http.service';
 export * from './subactivities-http.service';
 export * from './indicator-subactivities-http.service';
 export * from './institutional-strategic-plans-http.service';
-export * from './strategic-axis-http.service';
+export * from './strategic-axes-http.service';
 export * from './strategies-http.service';
 export * from './continents-http.service';
 export * from './countries-http.service';

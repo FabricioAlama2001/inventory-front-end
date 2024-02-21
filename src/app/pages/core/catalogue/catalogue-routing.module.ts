@@ -52,6 +52,30 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RolesEnum.CATALOGUE]}
   },
+  {
+    path: 'strategic-axes',
+    loadChildren: () => import('./strategic-axis/strategic-axis.module').then(m => m.StrategicAxisModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
+  {
+    path: 'strategies',
+    loadChildren: () => import('./strategy/strategy.module').then(m => m.StrategyModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
+  {
+    path: 'indicator-subactivities',
+    loadChildren: () => import('./indicator-subactivity/indicator-subactivity.module').then(m => m.IndicatorSubactivityModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
+  {
+    path: 'continents',
+    loadChildren: () => import('./continent/continent.module').then(m => m.ContinentModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RolesEnum.CATALOGUE]}
+  },
 ];
 
 @NgModule({

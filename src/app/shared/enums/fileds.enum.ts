@@ -94,3 +94,31 @@ export enum InstitutionalStrategicPlansFormEnum {
   enabled = 'Estado',
   sort = 'Orden'
 }
+
+export enum StrategicAxesFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}
+
+export enum StrategiesFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}
+
+export enum IndicatorSubactivitiesFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}
+
+export enum ContinentsFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
+}

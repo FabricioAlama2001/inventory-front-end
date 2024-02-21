@@ -1,8 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule as NgCommonModule} from '@angular/common';
-import { StrategicAxisRoutingModule } from './strategic-axis-routing.module';
+import { IndicatorSubactivityRoutingModule } from './indicator-subactivity-routing.module';
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "@shared/shared.module";
+
 
 // PrimeNg Modules
 import {ButtonModule} from "primeng/button";
@@ -26,17 +27,17 @@ import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
 
 // Components
-import { StrategicAxisFormComponent } from './strategic-axis-form/strategic-axis-form.component';
-import { StrategicAxisListComponent } from './strategic-axis-list/strategic-axis-list.component';
+import { IndicatorSubactivityFormComponent } from './indicator-subactivity-form/indicator-subactivity-form.component';
+import { IndicatorSubactivityListComponent } from './indicator-subactivity-list/indicator-subactivity-list.component';
 
 @NgModule({
   declarations: [
-    StrategicAxisFormComponent,
-    StrategicAxisListComponent,
+    IndicatorSubactivityFormComponent,
+    IndicatorSubactivityListComponent,
   ],
   imports: [
     NgCommonModule,
-    StrategicAxisRoutingModule,
+    IndicatorSubactivityRoutingModule,
     ReactiveFormsModule,
     SharedModule,
     ButtonModule,
@@ -60,5 +61,5 @@ import { StrategicAxisListComponent } from './strategic-axis-list/strategic-axis
     ToolbarModule,
   ]
 })
-export class StrategicAxisModule {
+export class IndicatorSubactivityModule {
 }

@@ -3,7 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import { CreateExpenseTypeDto, ExpenseTypeModel, UpdateExpenseTypeDto, } from '@models/core';
+import { CreateExpenseTypeDto, UpdateExpenseTypeDto, } from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
@@ -40,8 +40,6 @@ export class ExpenseTypeFormComponent implements OnInit, OnExitInterface{
   @Input() id: string = '';
   protected form: FormGroup;
   protected formErrors: string[] = [];
-
-  protected expenseTypes: ExpenseTypeModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,

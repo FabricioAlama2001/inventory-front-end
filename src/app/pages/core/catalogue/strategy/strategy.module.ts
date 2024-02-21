@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule as NgCommonModule} from '@angular/common';
-import { StrategicAxisRoutingModule } from './strategic-axis-routing.module';
+import { StrategyRoutingModule } from './strategy-routing.module';
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "@shared/shared.module";
 
@@ -26,17 +26,17 @@ import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
 
 // Components
-import { StrategicAxisFormComponent } from './strategic-axis-form/strategic-axis-form.component';
-import { StrategicAxisListComponent } from './strategic-axis-list/strategic-axis-list.component';
+import { StrategyFormComponent } from './strategy-form/strategy-form.component';
+import { StrategyListComponent } from './strategy-list/strategy-list.component';
 
 @NgModule({
   declarations: [
-    StrategicAxisFormComponent,
-    StrategicAxisListComponent,
+    StrategyFormComponent,
+    StrategyListComponent,
   ],
   imports: [
     NgCommonModule,
-    StrategicAxisRoutingModule,
+    StrategyRoutingModule,
     ReactiveFormsModule,
     SharedModule,
     ButtonModule,
@@ -60,5 +60,5 @@ import { StrategicAxisListComponent } from './strategic-axis-list/strategic-axis
     ToolbarModule,
   ]
 })
-export class StrategicAxisModule {
+export class StrategyModule {
 }

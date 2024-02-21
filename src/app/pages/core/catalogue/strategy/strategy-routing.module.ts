@@ -1,17 +1,17 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ExitGuard} from "@shared/guards";
-import { StrategicAxisFormComponent } from './strategic-axis-form/strategic-axis-form.component';
-import { StrategicAxisListComponent } from './strategic-axis-list/strategic-axis-list.component';
+import { StrategyFormComponent } from './strategy-form/strategy-form.component';
+import { StrategyListComponent } from './strategy-list/strategy-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: StrategicAxisListComponent
+    component: StrategyListComponent
   },
   {
     path: ':id',
-    component: StrategicAxisFormComponent,
+    component: StrategyFormComponent,
     canDeactivate: [ExitGuard]
   },
 ];
@@ -20,5 +20,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class StrategicAxisRoutingModule {
+export class StrategyRoutingModule {
 }

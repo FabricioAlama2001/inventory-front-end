@@ -5,7 +5,7 @@ import {PrimeIcons} from "primeng/api";
 
 import {CreateSubactivityDto, UpdateSubactivityDto} from '@models/core';
 import {CatalogueModel} from "@models/core";
-import {IndicatorSubactivitiesHttpService, SubactivitiesHttpService, InsitutionalStrategicPlansHttpService, StrategicAxisHttpService, StrategiesHttpService, ContinentsHttpService, CountriesHttpService, ProvincesHttpService, CantonsHttpService, ParishesHttpService, PoasHttpService, UnitsHttpService} from '@services/core';
+import {IndicatorSubactivitiesHttpService, SubactivitiesHttpService, InstitutionalStrategicPlansHttpService, StrategicAxesHttpService, StrategiesHttpService, ContinentsHttpService, CountriesHttpService, ProvincesHttpService, CantonsHttpService, ParishesHttpService, PoasHttpService, UnitsHttpService} from '@services/core';
 import {BreadcrumbService, CataloguesHttpService, CoreService, MessageService, RoutesService} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
@@ -61,10 +61,10 @@ export class SubactivityFormComponent {
     private readonly routesService: RoutesService,
 
     private readonly subactivitiesHttpService: SubactivitiesHttpService,
-    
+
     private readonly indicatorSubactivitiesHttpService: IndicatorSubactivitiesHttpService,
-    private readonly institutionalStrategicPlansHttpService: InsitutionalStrategicPlansHttpService,
-    private readonly strategicAxisHttpService: StrategicAxisHttpService,
+    private readonly institutionalStrategicPlansHttpService: InstitutionalStrategicPlansHttpService,
+    private readonly strategicAxesHttpService: StrategicAxesHttpService,
     private readonly strategiesHttpService: StrategiesHttpService,
     private readonly continentsHttpService: ContinentsHttpService,
     private readonly countriesHttpService: CountriesHttpService,
@@ -177,7 +177,7 @@ export class SubactivityFormComponent {
     });
   }
 
-  loadIndicatorSubactivities(): void {
+  /*loadIndicatorSubactivities(): void {
     this.indicatorSubactivities = this.indicatorSubactivitiesHttpService.findCatalogue(CatalogueEnum.INDICATOR_SUBACTIVITY);
   }
 
@@ -195,7 +195,7 @@ export class SubactivityFormComponent {
 
   loadContinents(): void {
     this.continents = this.continentsHttpService.findCatalogue(CatalogueEnum.CONTINENT);
-  }
+  }*/
 
   loadCountries(): void {
     this.countries = this.countriesHttpService.findCatalogue(CatalogueEnum.COUNTRY);

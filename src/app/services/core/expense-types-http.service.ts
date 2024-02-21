@@ -6,8 +6,6 @@ import {map} from 'rxjs/operators';
 import {CreateExpenseTypeDto, UpdateExpenseTypeDto, ExpenseTypeModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueEnum } from '@shared/enums';
-import { CatalogueModel } from '@models/core';
 
 @Injectable({
   providedIn: 'root'

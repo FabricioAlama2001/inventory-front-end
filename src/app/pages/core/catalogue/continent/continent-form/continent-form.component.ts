@@ -3,13 +3,13 @@ import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import { CreateStrategicAxisDto, UpdateStrategicAxisDto, } from '@models/core';
+import { CreateContinentDto, UpdateContinentDto, } from '@models/core';
 import {
   BreadcrumbService,
+  ContinentsHttpService,
   CoreService,
   MessageService,
   RoutesService,
-  StrategicAxesHttpService
 } from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
@@ -19,20 +19,20 @@ import {
   LabelButtonActionEnum,
   SkeletonEnum,
    RoutesEnum,
-   StrategicAxesFormEnum
+   ContinentsFormEnum
 } from "@shared/enums";
 
 @Component({
-  selector: 'app-strategic-axis-form',
-  templateUrl: './strategic-axis-form.component.html',
-  styleUrl: './strategic-axis-form.component.scss'
+  selector: 'app-continent-form',
+  templateUrl: './continent-form.component.html',
+  styleUrl: './continent-form.component.scss'
 })
-export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
+export class ContinentFormComponent {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
-  protected readonly StrategicAxesFormEnum = StrategicAxesFormEnum;
+  protected readonly ContinentsFormEnum = ContinentsFormEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
   private saving: boolean = true;
@@ -48,10 +48,10 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly strategicAxesHttpService: StrategicAxesHttpService
+    private readonly continentsHttpService: ContinentsHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.STRATEGIC_AXES, routerLink: [this.routesService.strategicAxesList]},
+      {label: BreadcrumbEnum.CONTINENTS, routerLink: [this.routesService.continentsList]},
       {label: BreadcrumbEnum.FORM},
     ]);
 
@@ -98,10 +98,10 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
   get validateFormErrors() {
     this.formErrors = [];
 
-    if (this.codeField.errors) this.formErrors.push(StrategicAxesFormEnum.code);
-    if (this.nameField.errors) this.formErrors.push(StrategicAxesFormEnum.name);
-    if (this.enabledField.errors) this.formErrors.push(StrategicAxesFormEnum.enabled);
-    if (this.sortField.errors) this.formErrors.push(StrategicAxesFormEnum.sort);
+    if (this.codeField.errors) this.formErrors.push(ContinentsFormEnum.code);
+    if (this.nameField.errors) this.formErrors.push(ContinentsFormEnum.name);
+    if (this.enabledField.errors) this.formErrors.push(ContinentsFormEnum.enabled);
+    if (this.sortField.errors) this.formErrors.push(ContinentsFormEnum.sort);
 
     this.formErrors.sort();
 
@@ -109,8 +109,8 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
   }
 
   get(): void {
-    this.strategicAxesHttpService.findOne(this.id!).subscribe((strategicAxis) => {
-      this.form.patchValue(strategicAxis);
+    this.continentsHttpService.findOne(this.id!).subscribe((continent) => {
+      this.form.patchValue(continent);
     });
   }
 
@@ -131,17 +131,17 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
     this.router.navigate([this.routesService.strategicAxesList]);
   }
 
-  create(strategicAxis: CreateStrategicAxisDto): void {
-    this.strategicAxesHttpService.create(strategicAxis).subscribe(strategicAxis => {
-      //this.form.reset(strategicAxis);
+  create(continent: CreateContinentDto): void {
+    this.continentsHttpService.create(continent).subscribe(continent => {
+      //this.form.reset(continent);
       this.saving = false;
       this.back();
     });
   }
 
-  update(strategicAxis: UpdateStrategicAxisDto): void {
-    this.strategicAxesHttpService.update(this.id!, strategicAxis).subscribe((strategicAxis) => {
-      //this.form.reset(strategicAxis);
+  update(continent: UpdateContinentDto): void {
+    this.continentsHttpService.update(this.id!, continent).subscribe((continent) => {
+      //this.form.reset(continent);
       this.saving = false;
       this.back()
     });
