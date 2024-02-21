@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {RoleModel} from "@models/auth";
 import {AuthService} from "@services/auth";
-import {RolesEnum} from "@shared/enums";
+import {RoleEnum} from "@shared/enums";
 import {Router} from "@angular/router";
 import {RoutesService} from "@services/core";
 
@@ -24,7 +24,7 @@ export class DashboardComponent {
 
   redirectDashboard() {
     switch (this.role.code) {
-      case RolesEnum.ADMIN:
+      case RoleEnum.ADMIN:
         this.routesService.dashboardAdmin();
     }
   }

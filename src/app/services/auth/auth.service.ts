@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {PermissionModel, RoleModel, UserModel} from '@models/auth';
 import {environment} from "@env/environment";
-import {RolesEnum} from "@shared/enums";
+import {RoleEnum} from "@shared/enums";
 import {MessageService, RoutesService} from "@services/core";
 
 @Injectable({
@@ -100,40 +100,32 @@ export class AuthService {
     this.messageService.successCustom('Bienvenido', 'Ingreso Correcto');
 
     switch (this.role.code) {
-      case RolesEnum.ADMIN: {
+      case RoleEnum.ADMIN: {
         this.routesService.dashboardAdmin();
         break;
       }
-      case RolesEnum.PLANNER: {
+      case RoleEnum.PLANNER: {
         this.routesService.dashboardPlanner();
         break;
       }
-      case RolesEnum.CATALOGUE: {
+      case RoleEnum.CATALOGUE: {
         this.routesService.dashboardPlanner();
         break;
       }
-      case RolesEnum.STUDENT: {
-        this.routesService.dashboardStudent();
+      case RoleEnum.FOLLOWER: {
+        this.routesService.dashboardFollower();
         break;
       }
-      case RolesEnum.COORDINATOR_ADMINISTRATIVE: {
-        this.routesService.dashboardCoordinatorAdministrative();
+      case RoleEnum.APPLICANT: {
+        this.routesService.dashboardApplicant();
         break;
       }
-      case RolesEnum.COORDINATOR_CAREER: {
-        this.routesService.dashboardCoordinatorCareer();
+      case RoleEnum.APPROVER: {
+        this.routesService.dashboardApprover();
         break;
       }
-      case RolesEnum.REVIEWER: {
-        this.routesService.dashboardReviewer();
-        break;
-      }
-      case RolesEnum.SECRETARY: {
-        this.routesService.dashboardSecretary();
-        break;
-      }
-      case RolesEnum.WELFARE: {
-        this.routesService.dashboardWelfare();
+      case RoleEnum.PLANNER_APPROVER: {
+        this.routesService.dashboardPlannerApprover();
         break;
       }
     }

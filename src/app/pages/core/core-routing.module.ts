@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {RoleGuard, TokenGuard} from "@shared/guards";
-import {RolesEnum} from "@shared/enums";
+import {RoleEnum} from "@shared/enums";
 
 const routes: Routes = [
   {
@@ -18,13 +18,13 @@ const routes: Routes = [
     path: 'planner',
     loadChildren: () => import('./planner/planner.module').then(m => m.PlannerModule),
     canActivate: [RoleGuard],
-    data: {roles: [RolesEnum.PLANNER]}
+    data: {roles: [RoleEnum.PLANNER]}
   },
   {
     path: 'catalogue',
     loadChildren: () => import('./catalogue/catalogue.module').then(m => m.CatalogueModule),
     canActivate: [RoleGuard],
-    data: {roles: [RolesEnum.CATALOGUE]}
+    data: {roles: [RoleEnum.CATALOGUE]}
   },
 ];
 

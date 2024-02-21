@@ -176,32 +176,20 @@ export class RoutesService {
     this.router.navigateByUrl(`/core/dashboards/planner`);
   }
 
-  dashboardTeacher() {
-    this.router.navigateByUrl(`/core/dashboards/teacher`);
+  dashboardFollower() {
+    this.router.navigateByUrl(`/core/dashboards/follower`);
   }
 
-  dashboardStudent() {
-    this.router.navigateByUrl(`/core/student/enrollment-application`);
+  dashboardApplicant() {
+    this.router.navigateByUrl(`/core/dashboards/applicant`);
   }
 
-  dashboardCoordinatorAdministrative() {
-    this.router.navigateByUrl(`/core/dashboards/coordinator-administrative`);
+  dashboardApprover() {
+    this.router.navigateByUrl(`/core/dashboards/approver`);
   }
 
-  dashboardCoordinatorCareer() {
-    this.router.navigateByUrl(`/core/dashboards/coordinator-career`);
-  }
-
-  dashboardReviewer() {
-    this.router.navigateByUrl(`/core/reviewer/inscriptions`);
-  }
-
-  dashboardSecretary() {
-    this.router.navigateByUrl(`/core/secretary/enrollments`);
-  }
-
-  dashboardWelfare() {
-    this.router.navigateByUrl(`/core/welfare/enrollments`);
+  dashboardPlannerApprover() {
+    this.router.navigateByUrl(`/core/dashboards/planner-approver`);
   }
 
   passwordReset() {

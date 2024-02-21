@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from "primeng/api";
-import {RolesEnum} from "@shared/enums";
+import {RoleEnum} from "@shared/enums";
 import {AuthHttpService, AuthService} from '@services/auth';
 import {CoreService, MessageService, RoutesService} from '@services/core';
 
