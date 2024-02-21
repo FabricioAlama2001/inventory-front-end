@@ -37,7 +37,6 @@
         <ul class="sub-menu">
           <li>
             <a class="link_name" [routerLink]="item.routerLink">{{ item.label }}</a>
-            {{item.children}}
             @for (subItem of item.children;track subItem.id) {
               @if (subItem.enabled) {
                 <a [routerLink]="subItem.routerLink">
