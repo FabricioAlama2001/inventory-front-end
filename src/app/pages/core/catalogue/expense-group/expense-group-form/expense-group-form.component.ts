@@ -78,10 +78,10 @@ export class ExpenseGroupFormComponent implements OnInit, OnExitInterface{
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      code: [null, []],
-      name: [null, []],
-      enabled: [true, []],
-      sort: [this.coreService.higherSort, []],
+      code: [null, [Validators.required]],
+      name: [null, [Validators.required]],
+      enabled: [true, [Validators.required]],
+      sort: [this.coreService.higherSort, [Validators.required]],
     });
   }
 

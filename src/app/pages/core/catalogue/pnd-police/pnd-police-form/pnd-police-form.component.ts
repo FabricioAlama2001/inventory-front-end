@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
@@ -81,11 +81,11 @@ export class PndPoliceFormComponent implements OnInit, OnExitInterface{
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      code: [null, []],
-      name: [null, []],
-      enabled: [true, []],
-      sort: [this.coreService.higherSort, []],
-      pndObjective: [null, []],
+      code: [null, [Validators.required]],
+      name: [null, [Validators.required]],
+      enabled: [true, [Validators.required]],
+      sort: [this.coreService.higherSort, [Validators.required]],
+      pndObjective: [null, [Validators.required]],
     });
   }
 
