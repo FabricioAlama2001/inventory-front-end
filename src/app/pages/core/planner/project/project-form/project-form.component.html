@@ -1,124 +1,149 @@
-<app-skeleton *ngIf="coreService.isLoading" [type]="SkeletonEnum.CARD"></app-skeleton>
+@if (coreService.isLoading) {
+  <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
+}
 
-<p-toolbar *ngIf="!coreService.isLoading">
+@if (!coreService.isLoading) {
+  <p-toolbar>
     <div class="p-toolbar-group-left">
-        <app-header-form [id]="id"></app-header-form>
+      <app-header-form [id]="id"></app-header-form>
     </div>
     <div class="p-toolbar-group-right">
-        <button pButton pRipple type="button" (click)="back()" [icon]="IconButtonActionEnum.CANCEL"
-            [label]="LabelButtonActionEnum.CANCEL" [loading]="coreService.isLoading"
-            [ngClass]="[ClassButtonActionEnum.CANCEL]"></button>
-        <p-divider layout="vertical"></p-divider>
-        <button pButton pRipple type="button" (click)="onSubmit()" [icon]="IconButtonActionEnum.SAVE"
-            [label]="LabelButtonActionEnum.SAVE" [loading]="coreService.isLoading"
-            [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
+      <button pButton pRipple type="button"
+              (click)="back()"
+              [icon]="IconButtonActionEnum.CANCEL"
+              [label]="LabelButtonActionEnum.CANCEL"
+              [loading]="coreService.isLoading"
+              [ngClass]="[ClassButtonActionEnum.CANCEL]"></button>
+      <p-divider layout="vertical"></p-divider>
+      <button pButton pRipple type="button"
+              (click)="onSubmit()"
+              [icon]="IconButtonActionEnum.SAVE"
+              [label]="LabelButtonActionEnum.SAVE"
+              [loading]="coreService.isLoading"
+              [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
     </div>
-</p-toolbar>
+  </p-toolbar>
 
-<p-panel *ngIf="!coreService.isLoading" class="p-fluid">
+  <p-panel class="p-fluid">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="formgrid grid">
-            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="name" [label]="ProjectsFormEnum.name"
-                    [required]="nameField"></label>
-                    <app-help-field (mouseenter)="opName.toggle($event)"
-                        (mouseleave)="opName.hide()"></app-help-field>
-                <input pInputText type="text" id="name" formControlName="name" />
-                <small appErrorMessage [errors]="nameField.errors" [touched]="nameField.touched"
-                    [dirty]="nameField.dirty">
-                </small>
-            </div>
-            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="fiscalYear" [label]="ProjectsFormEnum.fiscalYear"
-                    [required]="fiscalYearField"></label>
-                    <app-help-field (mouseenter)="opFiscalYear.toggle($event)"
-                        (mouseleave)="opFiscalYear.hide()"></app-help-field>
-                <input pInputText fiscalYear="text" id="fiscalYear" formControlName="fiscalYear" />
-                <small appErrorMessage [errors]="fiscalYearField.errors" [touched]="fiscalYearField.touched"
-                    [dirty]="fiscalYearField.dirty">
-                </small>
-            </div>
-            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="enabled" [label]="ProjectsFormEnum.enabled"
-                    [required]="enabledField"></label>
-                <input pInputText enabled="text" id="enabled" formControlName="enabled" />
-                <small appErrorMessage [errors]="enabledField.errors" [touched]="enabledField.touched"
-                    [dirty]="enabledField.dirty">
-                </small>
-            </div>
+      <div class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="pndObjective" [label]="ProjectsFormEnum.pndObjective"
+                 [required]="pndObjectiveField"></label>
+          <p-dropdown id="pndObjective"
+                      dataKey="id"
+                      formControlName="pndObjective"
+                      [options]="pndObjectives"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (pndObjectiveField.value) {
+                <div>{{ pndObjectiveField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="pndObjectiveField.errors"
+                 [touched]="pndObjectiveField.touched"
+                 [dirty]="pndObjectiveField.dirty">
+          </small>
         </div>
-        <div class="formgrid grid">
-            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="pndObjective" [label]="ProjectsFormEnum.pndObjective"
-                    [required]="pndObjectiveField"></label>
-                <p-dropdown id="pndObjective" dataKey="id" formControlName="pndObjective"
-                    [options]="pndObjectives" optionLabel="name" [filter]="true" filterBy="name"
-                    placeholder="Seleccione...">
-                    <ng-template pTemplate="selectedItem">
-                        <div *ngIf="pndObjectiveField.value">
-                            <div>{{ pndObjectiveField.value.name }}</div>
-                        </div>
-                    </ng-template>
-                    <ng-template let-item pTemplate="item">
-                        <div>{{ item.name }}</div>
-                    </ng-template>
-                </p-dropdown>
-                <small appErrorMessage [errors]="pndObjectiveField.errors"
-                    [touched]="pndObjectiveField.touched" [dirty]="pndObjectiveField.dirty">
-                </small>
-            </div>
-            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="pndPolice" [label]="ProjectsFormEnum.pndPolice"
-                    [required]="pndPoliceField"></label>
-                <p-dropdown id="pndPolice" dataKey="id" formControlName="pndPolice"
-                    [options]="pndPolices" optionLabel="name" [filter]="true" filterBy="name"
-                    placeholder="Seleccione...">
-                    <ng-template pTemplate="selectedItem">
-                        <div *ngIf="pndPoliceField.value">
-                            <div>{{ pndPoliceField.value.name }}</div>
-                        </div>
-                    </ng-template>
-                    <ng-template let-item pTemplate="item">
-                        <div>{{ item.name }}</div>
-                    </ng-template>
-                </p-dropdown>
-                <small appErrorMessage [errors]="pndPoliceField.errors"
-                    [touched]="pndPoliceField.touched" [dirty]="pndPoliceField.dirty">
-                </small>
-            </div>
-            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-                <label appLabel for="expenseType" [label]="ProjectsFormEnum.expenseType"
-                    [required]="expenseTypeField"></label>
-                <p-dropdown id="expenseType" dataKey="id" formControlName="expenseType"
-                    [options]="expenseTypes" optionLabel="name" [filter]="true" filterBy="name"
-                    placeholder="Seleccione...">
-                    <ng-template pTemplate="selectedItem">
-                        <div *ngIf="expenseTypeField.value">
-                            <div>{{ expenseTypeField.value.name }}</div>
-                        </div>
-                    </ng-template>
-                    <ng-template let-item pTemplate="item">
-                        <div>{{ item.name }}</div>
-                    </ng-template>
-                </p-dropdown>
-                <small appErrorMessage [errors]="expenseTypeField.errors"
-                    [touched]="expenseTypeField.touched" [dirty]="expenseTypeField.dirty">
-                </small>
-            </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="pndPolice" [label]="ProjectsFormEnum.pndPolice"
+                 [required]="pndPoliceField"></label>
+          <p-dropdown id="pndPolice"
+                      dataKey="id"
+                      formControlName="pndPolice"
+                      [options]="pndPolices"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (pndPoliceField.value) {
+                <div>{{ pndPoliceField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="pndPoliceField.errors"
+                 [touched]="pndPoliceField.touched"
+                 [dirty]="pndPoliceField.dirty">
+          </small>
         </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="expenseType" [label]="ProjectsFormEnum.expenseType"
+                 [required]="expenseTypeField"></label>
+          <p-dropdown id="expenseType"
+                      dataKey="id"
+                      formControlName="expenseType"
+                      [options]="expenseTypes"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (expenseTypeField.value) {
+                <div>{{ expenseTypeField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="expenseTypeField.errors"
+                 [touched]="expenseTypeField.touched"
+                 [dirty]="expenseTypeField.dirty">
+          </small>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+          <label appLabel for="name" [label]="ProjectsFormEnum.name" [required]="nameField"></label>
+          <input pInputText type="text" id="name" formControlName="name"/>
+          <small appErrorMessage
+                 [errors]="nameField.errors"
+                 [touched]="nameField.touched"
+                 [dirty]="nameField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+          <label appLabel for="fiscalYear" [label]="ProjectsFormEnum.fiscalYear" [required]="fiscalYearField"></label>
+          <p-inputNumber id="fiscalYear" formControlName="fiscalYear" [min]="1"></p-inputNumber>
+          <small appErrorMessage [errors]="fiscalYearField.errors" [touched]="fiscalYearField.touched" [dirty]="fiscalYearField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+          <label appLabel for="enabled" [label]="ProjectsFormEnum.enabled" [required]="enabledField"></label>
+          <p>
+            <p-inputSwitch id="enabled" formControlName="enabled"></p-inputSwitch>
+          </p>
+          <small appErrorMessage [errors]="enabledField.errors" [touched]="enabledField.touched"
+            [dirty]="enabledField.dirty">
+          </small>
+        </div>
+      </div>
     </form>
-</p-panel>
+  </p-panel>
+}
 
-<p-overlayPanel #opName>
-    <ng-template pTemplate="content">
-        Ingrese el nombre del proyecto
-    </ng-template>
+<p-overlayPanel #opIdentification>
+  <ng-template pTemplate="content">
+    Ingrese su numero cedula
+  </ng-template>
 </p-overlayPanel>
 
-<p-overlayPanel #opFiscalYear>
-    <ng-template pTemplate="content">
-        Ingrese el año fiscal del proyecto
-    </ng-template>
+<p-overlayPanel #opEmail>
+  <ng-template pTemplate="content">
+    Ingrese su correo
+  </ng-template>
 </p-overlayPanel>
-
-

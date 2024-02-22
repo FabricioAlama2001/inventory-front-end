@@ -13,7 +13,7 @@ import {
   ClassButtonActionEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
-  LabelButtonActionEnum, RoutesEnum
+  LabelButtonActionEnum, ProjectsFormEnum, RoutesEnum, TableEnum
 } from "@shared/enums";
 
 @Component({
@@ -27,6 +27,7 @@ export class ProjectListComponent {
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
+  protected readonly TableEnum = TableEnum;
 
   protected paginator: PaginatorModel;
 
@@ -77,9 +78,12 @@ export class ProjectListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'name', header: 'Nombre'},
-      {field: 'fiscalYear', header: 'Año fiscal'},
-      {field: 'enabled', header: 'Disponible'},
+      {field: 'pndObjective', header: ProjectsFormEnum.pndObjective},
+      {field: 'pndPolice', header: ProjectsFormEnum.pndPolice},
+      {field: 'expenseType', header: ProjectsFormEnum.expenseType},
+      {field: 'name', header: ProjectsFormEnum.name},
+      {field: 'fiscalYear', header: ProjectsFormEnum.fiscalYear},
+      {field: 'enabled', header: ProjectsFormEnum.enabled},
     ];
   }
 

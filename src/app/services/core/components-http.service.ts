@@ -3,22 +3,20 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {CreateProjectDto, UpdateProjectDto, ProjectModel} from '@models/core';
+import {CreateComponentDto, UpdateComponentDto, ComponentModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueEnum } from '@shared/enums';
-import { CatalogueModel } from '@models/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectsHttpService {
-  API_URL = `${environment.API_URL}/core/projects`;
+export class ComponentsHttpService {
+  API_URL = `${environment.API_URL}/core/components`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
 
-  create(payload: CreateProjectDto): Observable<ProjectModel> {
+  create(payload: CreateComponentDto): Observable<ComponentModel> {
     const url = `${this.API_URL}`;
 
     return this.httpClient.post<ServerResponse>(url, payload).pipe(
@@ -29,7 +27,17 @@ export class ProjectsHttpService {
     );
   }
 
-  findProjects(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findAll(): Observable<ComponentModel[]> {
+    const url = this.API_URL;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
+  findComponents(page: number = 0, search: string = ''): Observable<ServerResponse> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -44,7 +52,7 @@ export class ProjectsHttpService {
     );
   }
 
-  findOne(id: string): Observable<ProjectModel> {
+  findOne(id: string): Observable<ComponentModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -54,7 +62,7 @@ export class ProjectsHttpService {
     );
   }
 
-  update(id: string, payload: UpdateProjectDto): Observable<ProjectModel> {
+  update(id: string, payload: UpdateComponentDto): Observable<ComponentModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.put<ServerResponse>(url, payload).pipe(
@@ -65,10 +73,10 @@ export class ProjectsHttpService {
     );
   }
 
-  enable(id: string): Observable<ProjectModel> {
+  enable(id: string): Observable<ComponentModel> {
     const url = `${this.API_URL}/${id}/enable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -76,7 +84,7 @@ export class ProjectsHttpService {
     );
   }
 
-  remove(id: string): Observable<ProjectModel> {
+  remove(id: string): Observable<ComponentModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.delete<ServerResponse>(url).pipe(
@@ -87,10 +95,10 @@ export class ProjectsHttpService {
     );
   }
 
-  removeAll(projects: ProjectModel[]): Observable<ProjectModel[]> {
+  removeAll(component: ComponentModel[]): Observable<ComponentModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, projects).pipe(
+    return this.httpClient.patch<ServerResponse>(url, component).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -98,10 +106,10 @@ export class ProjectsHttpService {
     );
   }
 
-  disable(id: string): Observable<ProjectModel> {
+  disable(id: string): Observable<ComponentModel> {
     const url = `${this.API_URL}/${id}/disable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -109,7 +117,7 @@ export class ProjectsHttpService {
     );
   }
 
-  findCatalogue(): Observable<ProjectModel[]> {
+  findCatalogue(): Observable<ComponentModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

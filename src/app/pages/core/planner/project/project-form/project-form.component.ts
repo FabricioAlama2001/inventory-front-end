@@ -1,16 +1,14 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, Input, OnInit } from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
 import {CreateProjectDto, ExpenseTypeModel, PndObjectiveModel, PndPoliceModel, UpdateProjectDto} from '@models/core';
-import {CatalogueModel} from "@models/core";
 import {PndObjectivesHttpService} from '@services/core/pnd-objectives-http.service';
 import {PndPolicesHttpService} from '@services/core/pnd-polices-http.service';
 import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
 import {
   BreadcrumbService,
-  CataloguesHttpService,
   CoreService,
   MessageService,
   ProjectsHttpService,
@@ -35,7 +33,7 @@ import {
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss'
 })
-export class ProjectFormComponent {
+export class ProjectFormComponent implements OnInit, OnExitInterface{
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -91,12 +89,12 @@ export class ProjectFormComponent {
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      name: [null, []],
-      fiscalYear: [null, []],
-      enabled: [true, []],
-      pndObjective: [null, []],
-      pndPolice: [null, []],
-      expenseType: [null, []],
+      name: [null, [Validators.required]],
+      fiscalYear: [null, [Validators.required]],
+      enabled: [true, [Validators.required]],
+      pndObjective: [null, [Validators.required]],
+      pndPolice: [null, [Validators.required]],
+      expenseType: [null, [Validators.required]],
     });
   }
 

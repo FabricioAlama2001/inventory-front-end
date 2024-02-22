@@ -122,3 +122,12 @@ export enum ContinentsFormEnum {
   enabled = 'Estado',
   sort = 'Orden'
 }
+
+export enum ComponentsFormEnum {
+  indicatorComponent = 'Indicador',
+  project = 'Proyecto',
+  code = 'Código',
+  name = 'Nombre',
+  fiscalYear = 'Año fiscal',
+  enabled = 'Estado',
+}

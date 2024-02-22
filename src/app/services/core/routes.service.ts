@@ -41,6 +41,10 @@ export class RoutesService {
     return this.core + `projects/${projectId}/components`;
   }
 
+  componentsForm(id: string): string {
+    return this.core + `components/${id}`;
+  }
+
   get subactivities(): string {
     return this.core + '/planner/subactivities';
   }
