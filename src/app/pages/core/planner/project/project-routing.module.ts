@@ -16,7 +16,7 @@ const routes: Routes = [
     canDeactivate: [ExitGuard]
   },
   {
-    path: ':projectId/components',
+    path: ':id/components',
     component: ComponentListComponent
   },
 ];

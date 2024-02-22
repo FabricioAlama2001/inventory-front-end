@@ -6,5 +6,5 @@ import {Component, Input, input} from '@angular/core';
   styleUrl: './component-list.component.scss'
 })
 export class ComponentListComponent {
-  @Input() projectId: string='';
+  @Input({alias: 'id'}) projectId: string = '';
 }

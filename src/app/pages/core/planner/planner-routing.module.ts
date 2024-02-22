@@ -11,19 +11,19 @@ const routes: Routes = [
     data: {roles: [RoleEnum.PLANNER]}
   },
   {
-    path: 'project',
+    path: 'projects',
     loadChildren: () => import('./project/project.module').then(m => m.ProjectModule),
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.PLANNER]}
   },
   {
-    path: 'component',
+    path: 'components',
     loadChildren: () => import('./component/component.module').then(m => m.ComponentModule),
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.PLANNER]}
   },
   {
-    path: 'activity',
+    path: 'activities',
     loadChildren: () => import('./activity/activity.module').then(m => m.ActivityModule),
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.PLANNER]}
