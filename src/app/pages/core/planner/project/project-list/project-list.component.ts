@@ -117,6 +117,14 @@ export class ProjectListComponent {
           if (this.selectedItem?.id) this.enable(this.selectedItem.id);
         },
       },
+      {
+        id: IdButtonActionEnum.ENABLE,
+        label: LabelButtonActionEnum.COMPONENTS,
+        icon: IconButtonActionEnum.ENABLE,
+        command: () => {
+          if (this.selectedItem?.id) this.redirectComponentsList(this.selectedItem.id);
+        },
+      },
     ];
   }
 
@@ -134,6 +142,10 @@ export class ProjectListComponent {
 
   redirectCreateForm() {
     this.router.navigate([this.routesService.projectsForm(RoutesEnum.NEW)]);
+  }
+
+  redirectComponentsList(id:string) {
+    this.router.navigate([this.routesService.components(id)]);
   }
 
   redirectEditForm(id: string) {

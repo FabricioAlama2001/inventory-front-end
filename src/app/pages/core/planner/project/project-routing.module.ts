@@ -1,8 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ExitGuard} from "@shared/guards";
-import { ProjectFormComponent } from './project-form/project-form.component';
-import { ProjectListComponent } from './project-list/project-list.component';
+import {ProjectFormComponent} from './project-form/project-form.component';
+import {ProjectListComponent} from './project-list/project-list.component';
+import {ComponentListComponent} from "../component/component-list/component-list.component";
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
     path: ':id',
     component: ProjectFormComponent,
     canDeactivate: [ExitGuard]
+  },
+  {
+    path: ':projectId/components',
+    component: ComponentListComponent
   },
 ];
 

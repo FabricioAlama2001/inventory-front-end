@@ -47,7 +47,8 @@ export enum LabelButtonActionEnum {
   CURRICULUMS = 'Mallas Curriculares',
   SUBJECTS = 'Asignaturas',
   PARALLEL_CAPACITY = 'Capacidad Paralelos',
-  REACTIVATE = 'Reactivar'
+  REACTIVATE = 'Reactivar',
+  COMPONENTS = 'Componentes'
 }
 
 export enum IconButtonActionEnum {

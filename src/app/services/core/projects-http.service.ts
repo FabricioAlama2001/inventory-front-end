@@ -35,7 +35,7 @@ export class ProjectsHttpService {
     const headers = new HttpHeaders().append('pagination', 'true');
     const params = new HttpParams()
       .append('page', page)
-      .append('search', search)
+      .append('search', search);
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
