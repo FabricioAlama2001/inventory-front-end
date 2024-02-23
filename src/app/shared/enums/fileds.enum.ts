@@ -131,3 +131,11 @@ export enum ComponentsFormEnum {
   fiscalYear = 'Año fiscal',
   enabled = 'Estado',
 }
+
+export enum ActivitiesFormEnum {
+  component = 'Componente',
+  code = 'Código',
+  name = 'Nombre',
+  fiscalYear = 'Año fiscal',
+  enabled = 'Estado',
+}

@@ -49,6 +49,14 @@ export class RoutesService {
     return this.core + '/planner/subactivities';
   }
 
+  activitiesForm(componentId:string,id: string): string {
+    return this.core + `planner/components/${componentId}/activities/${id}`;
+  }
+
+  activitiesList(componentId: string): string {
+    return this.core + `planner/components/${componentId}/activities`;
+  }
+
   /** Catalogue Role **/
   get budgetItemsList(): string {
     return this.core + 'catalogue/budget-items';

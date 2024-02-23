@@ -5,16 +5,10 @@ import {PrimeIcons} from "primeng/api";
 
 import {
   CreateComponentDto,
-  ExpenseTypeModel,
   IndicatorComponentModel,
-  PndObjectiveModel,
-  PndPoliceModel,
   ProjectModel,
   UpdateComponentDto
 } from '@models/core';
-import {PndObjectivesHttpService} from '@services/core/pnd-objectives-http.service';
-import {PndPolicesHttpService} from '@services/core/pnd-polices-http.service';
-import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
 import {
   BreadcrumbService,
   ComponentsHttpService,
@@ -27,7 +21,6 @@ import {
 import {OnExitInterface} from '@shared/interfaces';
 import {
   BreadcrumbEnum,
-  CatalogueTypeEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   LabelButtonActionEnum,

@@ -35,5 +35,6 @@ export enum BreadcrumbEnum {
   STRATEGIES = 'Estrategias',
   INDICATOR_SUBACTIVITIES = 'Indicador de subactividades',
   CONTINENTS = 'Continentes',
-  COMPONENTS = 'Componentes'
+  COMPONENTS = 'Componentes',
+  ACTIVITIES = 'Actividades'
 }

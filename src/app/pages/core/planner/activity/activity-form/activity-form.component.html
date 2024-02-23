@@ -1,1 +1,94 @@
-<p>activity-form works!</p>
+@if (coreService.isLoading) {
+  <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
+}
+
+@if (!coreService.isLoading) {
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <app-header-form [id]="id"></app-header-form>
+    </div>
+    <div class="p-toolbar-group-right">
+      <button pButton pRipple type="button"
+              (click)="back()"
+              [icon]="IconButtonActionEnum.CANCEL"
+              [label]="LabelButtonActionEnum.CANCEL"
+              [loading]="coreService.isLoading"
+              [ngClass]="[ClassButtonActionEnum.CANCEL]"></button>
+      <p-divider layout="vertical"></p-divider>
+      <button pButton pRipple type="button"
+              (click)="onSubmit()"
+              [icon]="IconButtonActionEnum.SAVE"
+              [label]="LabelButtonActionEnum.SAVE"
+              [loading]="coreService.isLoading"
+              [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
+    </div>
+  </p-toolbar>
+
+  <p-panel class="p-fluid">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="formgrid grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="component" [label]="ActivitiesFormEnum.component"
+                 [required]="componentField"></label>
+          <p-dropdown id="component"
+                      dataKey="id"
+                      formControlName="component"
+                      [options]="components"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (componentField.value) {
+                <div>{{ componentField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="componentField.errors"
+                 [touched]="componentField.touched"
+                 [dirty]="componentField.dirty">
+          </small>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="code" [label]="ActivitiesFormEnum.code" [required]="codeField"></label>
+          <input pInputText type="text" id="code" formControlName="code"/>
+          <small appErrorMessage
+                 [errors]="codeField.errors"
+                 [touched]="codeField.touched"
+                 [dirty]="codeField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="name" [label]="ActivitiesFormEnum.name" [required]="nameField"></label>
+          <input pInputText type="text" id="name" formControlName="name"/>
+          <small appErrorMessage
+                 [errors]="nameField.errors"
+                 [touched]="nameField.touched"
+                 [dirty]="nameField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+          <label appLabel for="fiscalYear" [label]="ActivitiesFormEnum.fiscalYear" [required]="fiscalYearField"></label>
+          <p-inputNumber id="fiscalYear" formControlName="fiscalYear" [min]="1"></p-inputNumber>
+          <small appErrorMessage [errors]="fiscalYearField.errors" [touched]="fiscalYearField.touched" [dirty]="fiscalYearField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+          <label appLabel for="enabled" [label]="ActivitiesFormEnum.enabled" [required]="enabledField"></label>
+          <p>
+            <p-inputSwitch id="enabled" formControlName="enabled"></p-inputSwitch>
+          </p>
+          <small appErrorMessage [errors]="enabledField.errors" [touched]="enabledField.touched"
+            [dirty]="enabledField.dirty">
+          </small>
+        </div>
+      </div>
+    </form>
+  </p-panel>
+}

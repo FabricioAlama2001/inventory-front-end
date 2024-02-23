@@ -149,6 +149,14 @@ export class ComponentListComponent implements OnInit {
           if (this.selectedItem?.id) this.enable(this.selectedItem.id);
         },
       },
+      {
+        id: IdButtonActionEnum.ENABLE,
+        label: LabelButtonActionEnum.COMPONENTS,
+        icon: IconButtonActionEnum.ENABLE,
+        command: () => {
+          if (this.selectedItem?.id) this.redirectActivitiesList(this.selectedItem.id);
+        },
+      },
     ];
   }
 
@@ -175,21 +183,25 @@ export class ComponentListComponent implements OnInit {
     this.router.navigate([this.routesService.componentsForm(this.projectId, RoutesEnum.NEW)]);
   }
 
+  redirectActivitiesList(id:string) {
+    this.router.navigate([this.routesService.activitiesList(id)]);
+  }
+
   redirectEditForm(id: string) {
     this.router.navigate([this.routesService.componentsForm(this.projectId, id)]);
   }
 
   disable(id: string) {
-    this.componentsHttpService.disable(id).subscribe(project => {
-      const index = this.items.findIndex(project => project.id === id);
-      this.items[index] = project;
+    this.componentsHttpService.disable(id).subscribe(component => {
+      const index = this.items.findIndex(component => component.id === id);
+      this.items[index] = component;
     });
   }
 
   enable(id: string) {
-    this.componentsHttpService.enable(id).subscribe(project => {
-      const index = this.items.findIndex(project => project.id === id);
-      this.items[index] = project;
+    this.componentsHttpService.enable(id).subscribe(component => {
+      const index = this.items.findIndex(component => component.id === id);
+      this.items[index] = component;
     });
   }
 
@@ -197,8 +209,8 @@ export class ComponentListComponent implements OnInit {
     this.messageService.questionDelete()
       .then((result) => {
         if (result.isConfirmed) {
-          this.componentsHttpService.remove(id).subscribe((project) => {
-            this.items = this.items.filter(item => item.id !== project.id);
+          this.componentsHttpService.remove(id).subscribe((component) => {
+            this.items = this.items.filter(item => item.id !== component.id);
             this.paginator.totalItems--;
           });
         }
@@ -214,4 +226,5 @@ export class ComponentListComponent implements OnInit {
     this.selectedItem = item;
     this.validateButtonActions(item);
   }
+
 }

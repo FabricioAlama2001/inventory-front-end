@@ -30,6 +30,8 @@ export * from './pnd-polices-http.service';
 export * from './indicator-components-http.service';
 export * from './funding-sources-http.service';
 export * from './components-http.service';
+export * from './activities-http.service';
+
 
 
 

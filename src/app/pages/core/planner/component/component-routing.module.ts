@@ -9,6 +9,11 @@ const routes: Routes = [
     path: '',
     component: ComponentListComponent
   },
+  {
+    path: ':id',
+    component: ComponentFormComponent,
+    canDeactivate: [ExitGuard]
+  },
 ];
 
 @NgModule({

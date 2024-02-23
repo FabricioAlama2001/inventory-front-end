@@ -48,7 +48,8 @@ export enum LabelButtonActionEnum {
   SUBJECTS = 'Asignaturas',
   PARALLEL_CAPACITY = 'Capacidad Paralelos',
   REACTIVATE = 'Reactivar',
-  COMPONENTS = 'Componentes'
+  COMPONENTS = 'Componentes',
+  ACTIVITIES = 'Actividades'
 }
 
 export enum IconButtonActionEnum {
