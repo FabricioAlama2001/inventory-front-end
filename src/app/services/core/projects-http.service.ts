@@ -6,8 +6,8 @@ import {map} from 'rxjs/operators';
 import {CreateProjectDto, UpdateProjectDto, ProjectModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueEnum } from '@shared/enums';
-import { CatalogueModel } from '@models/core';
+import {CatalogueEnum} from '@shared/enums';
+import {CatalogueModel} from '@models/core';
 
 @Injectable({
   providedIn: 'root'
@@ -115,6 +115,21 @@ export class ProjectsHttpService {
     return this.httpClient.get<ServerResponse>(url).pipe(
       map(response => {
         return response.data;
+      })
+    );
+  }
+
+  findComponentsByProject(id: string, page: number = 0, search: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/${id}/components`;
+
+    const headers = new HttpHeaders().append('pagination', 'true');
+    const params = new HttpParams()
+      .append('page', page)
+      .append('search', search);
+
+    return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
+      map((response) => {
+        return response;
       })
     );
   }

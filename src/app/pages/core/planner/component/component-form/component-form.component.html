@@ -28,32 +28,6 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="formgrid grid">
         <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-          <label appLabel for="indicatorComponent" [label]="ComponentsFormEnum.indicatorComponent"
-                 [required]="indicatorComponentField"></label>
-          <p-dropdown id="indicatorComponent"
-                      dataKey="id"
-                      formControlName="indicatorComponent"
-                      [options]="indicators"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (indicatorComponentField.value) {
-                <div>{{ indicatorComponentField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="indicatorComponentField.errors"
-                 [touched]="indicatorComponentField.touched"
-                 [dirty]="indicatorComponentField.dirty">
-          </small>
-        </div>
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
           <label appLabel for="project" [label]="ComponentsFormEnum.project"
                  [required]="projectField"></label>
           <p-dropdown id="project"
@@ -79,11 +53,37 @@
                  [dirty]="projectField.dirty">
           </small>
         </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="indicatorComponent" [label]="ComponentsFormEnum.indicatorComponent"
+                 [required]="indicatorComponentField"></label>
+          <p-dropdown id="indicatorComponent"
+                      dataKey="id"
+                      formControlName="indicatorComponent"
+                      [options]="indicators"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (indicatorComponentField.value) {
+                <div>{{ indicatorComponentField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="indicatorComponentField.errors"
+                 [touched]="indicatorComponentField.touched"
+                 [dirty]="indicatorComponentField.dirty">
+          </small>
+        </div>
       </div>
       <div class="formgrid grid">
         <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
           <label appLabel for="code" [label]="ComponentsFormEnum.code" [required]="codeField"></label>
-          <input pInputText type="text" id="code" formControlcode="code"/>
+          <input pInputText type="text" id="code" formControlName="code"/>
           <small appErrorMessage
                  [errors]="codeField.errors"
                  [touched]="codeField.touched"

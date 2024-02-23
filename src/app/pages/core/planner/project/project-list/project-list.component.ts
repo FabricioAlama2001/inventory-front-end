@@ -78,10 +78,10 @@ export class ProjectListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
+      {field: 'name', header: ProjectsFormEnum.name},
       {field: 'pndObjective', header: ProjectsFormEnum.pndObjective},
       {field: 'pndPolice', header: ProjectsFormEnum.pndPolice},
       {field: 'expenseType', header: ProjectsFormEnum.expenseType},
-      {field: 'name', header: ProjectsFormEnum.name},
       {field: 'fiscalYear', header: ProjectsFormEnum.fiscalYear},
       {field: 'enabled', header: ProjectsFormEnum.enabled},
     ];
@@ -149,7 +149,7 @@ export class ProjectListComponent {
   }
 
   redirectComponentsList(id:string) {
-    this.router.navigate([this.routesService.components(id)]);
+    this.router.navigate([this.routesService.componentsList(id)]);
   }
 
   redirectEditForm(id: string) {

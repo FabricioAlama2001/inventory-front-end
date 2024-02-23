@@ -24,7 +24,7 @@ const routes: Routes = [
     path: 'catalogue',
     loadChildren: () => import('./catalogue/catalogue.module').then(m => m.CatalogueModule),
     canActivate: [RoleGuard],
-    data: {roles: [RoleEnum.CATALOGUE]}
+    data: {roles: [RoleEnum.PLANNER]}
   },
 ];
 

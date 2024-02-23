@@ -1,6 +1,6 @@
-import {Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
 import {CreateProjectDto, ExpenseTypeModel, PndObjectiveModel, PndPoliceModel, UpdateProjectDto} from '@models/core';
@@ -27,13 +27,14 @@ import {
   CatalogueEnum,
   ProjectsFormEnum, RoutesEnum
 } from "@shared/enums";
+import {debounceTime} from "rxjs";
 
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss'
 })
-export class ProjectFormComponent implements OnInit, OnExitInterface{
+export class ProjectFormComponent implements OnInit, OnExitInterface {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -49,6 +50,7 @@ export class ProjectFormComponent implements OnInit, OnExitInterface{
   protected pndObjectives: PndObjectiveModel[] = [];
   protected pndPolices: PndPoliceModel[] = [];
   protected expenseTypes: ExpenseTypeModel[] = [];
+  private saving: boolean = true;
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -68,10 +70,12 @@ export class ProjectFormComponent implements OnInit, OnExitInterface{
     ]);
 
     this.form = this.newForm;
+
+    this.checkValueChanges();
   }
 
   async onExit(): Promise<boolean> {
-    if (this.form.touched || this.form.dirty) {
+    if ((this.form.touched || this.form.dirty) && this.saving) {
       return await this.messageService.questionOnExit().then(result => result.isConfirmed);
     }
     return true;
@@ -80,7 +84,6 @@ export class ProjectFormComponent implements OnInit, OnExitInterface{
   ngOnInit(): void {
     this.loadExpenseTypes();
     this.loadPndObjectives();
-    this.loadPndPolices();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -95,6 +98,12 @@ export class ProjectFormComponent implements OnInit, OnExitInterface{
       pndObjective: [null, [Validators.required]],
       pndPolice: [null, [Validators.required]],
       expenseType: [null, [Validators.required]],
+    });
+  }
+
+  checkValueChanges() {
+    this.pndObjectiveField.valueChanges.subscribe(value => {
+      this.loadPndPolices();
     });
   }
 
@@ -121,6 +130,8 @@ export class ProjectFormComponent implements OnInit, OnExitInterface{
 
   onSubmit(): void {
     if (this.validateFormErrors) {
+      this.saving = false;
+
       if (this.id === RoutesEnum.NEW) {
         this.create(this.form.value);
       } else {
@@ -153,7 +164,8 @@ export class ProjectFormComponent implements OnInit, OnExitInterface{
   loadExpenseTypes(): void {
     this.expenseTypesHttpService.findCatalogue().subscribe((expenseTypes) => {
       this.expenseTypes = expenseTypes;
-    });  }
+    });
+  }
 
   loadPndObjectives(): void {
     this.pndObjectivesHttpService.findCatalogue().subscribe((pndObjectives) => {
@@ -163,8 +175,9 @@ export class ProjectFormComponent implements OnInit, OnExitInterface{
 
   loadPndPolices(): void {
     this.pndPolicesHttpService.findCatalogue().subscribe((pndPolices) => {
-      this.pndPolices = pndPolices;
-    });  }
+      this.pndPolices = pndPolices.filter(item => item.pndObjectiveId === this.pndObjectiveField.value.id);
+    });
+  }
 
   get nameField(): AbstractControl {
     return this.form.controls['name'];

@@ -30,19 +30,19 @@ export class RoutesService {
 
   /** Planner Role **/
   get projectsList(): string {
-    return this.core + 'projects';
+    return this.core + 'planner/projects';
   }
 
   projectsForm(id: string): string {
-    return this.core + `projects/${id}`;
+    return this.core + `planner/projects/${id}`;
   }
 
-  components(projectId: string): string {
-    return this.core + `projects/${projectId}/components`;
+  componentsList(projectId: string): string {
+    return this.core + `planner/projects/${projectId}/components`;
   }
 
-  componentsForm(id: string): string {
-    return this.core + `components/${id}`;
+  componentsForm(projectId:string,id: string): string {
+    return this.core + `planner/projects/${projectId}/components/${id}`;
   }
 
   get subactivities(): string {

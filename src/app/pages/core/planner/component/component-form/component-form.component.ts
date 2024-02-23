@@ -1,9 +1,17 @@
-import {Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import {CreateComponentDto, ExpenseTypeModel, IndicatorComponentModel, PndObjectiveModel, PndPoliceModel, ProjectModel, UpdateComponentDto} from '@models/core';
+import {
+  CreateComponentDto,
+  ExpenseTypeModel,
+  IndicatorComponentModel,
+  PndObjectiveModel,
+  PndPoliceModel,
+  ProjectModel,
+  UpdateComponentDto
+} from '@models/core';
 import {PndObjectivesHttpService} from '@services/core/pnd-objectives-http.service';
 import {PndPolicesHttpService} from '@services/core/pnd-polices-http.service';
 import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
@@ -27,13 +35,15 @@ import {
   ComponentsFormEnum, RoutesEnum
 } from "@shared/enums";
 
-
 @Component({
   selector: 'app-component-form',
   templateUrl: './component-form.component.html',
   styleUrl: './component-form.component.scss'
 })
-export class ComponentFormComponent {
+export class ComponentFormComponent implements OnInit, OnExitInterface {
+  @Input({alias: 'projectId'}) projectId: string = '';
+  @Input({alias: 'componentId'}) id: string = '';
+
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -42,7 +52,6 @@ export class ComponentFormComponent {
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
 
-  @Input() id: string = '';
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
@@ -60,11 +69,6 @@ export class ComponentFormComponent {
     private readonly indicatorComponentsHttpService: IndicatorComponentsHttpService,
     private readonly componentsHttpService: ComponentsHttpService,
   ) {
-    this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.PROJECTS, routerLink: [this.routesService.projectsList]},
-      {label: BreadcrumbEnum.FORM},
-    ]);
-
     this.form = this.newForm;
   }
 
@@ -76,6 +80,12 @@ export class ComponentFormComponent {
   }
 
   ngOnInit(): void {
+    this.breadcrumbService.setItems([
+      {label: BreadcrumbEnum.PROJECTS, routerLink: [this.routesService.projectsList]},
+      {label: BreadcrumbEnum.COMPONENTS, routerLink: [this.routesService.componentsList(this.projectId)]},
+      {label: BreadcrumbEnum.FORM},
+    ]);
+
     this.loadIndicatorComponents();
     this.loadProjects();
 
@@ -86,12 +96,12 @@ export class ComponentFormComponent {
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
+      code: [null, [Validators.required]],
       name: [null, [Validators.required]],
       fiscalYear: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
-      pndObjective: [null, [Validators.required]],
-      pndPolice: [null, [Validators.required]],
-      expenseType: [null, [Validators.required]],
+      indicatorComponent: [null, [Validators.required]],
+      project: [null, [Validators.required]],
     });
   }
 
@@ -130,7 +140,7 @@ export class ComponentFormComponent {
   }
 
   back(): void {
-    this.router.navigate([this.routesService.projectsList]);
+    this.router.navigate([this.routesService.componentsList(this.projectId)]);
   }
 
   create(project: CreateComponentDto): void {
@@ -156,6 +166,7 @@ export class ComponentFormComponent {
   loadProjects(): void {
     this.projectsHttpService.findCatalogue().subscribe((projects) => {
       this.projects = projects;
+      this.projectField.patchValue(this.projects.find(item => item.id === this.projectId));
     });
   }
 

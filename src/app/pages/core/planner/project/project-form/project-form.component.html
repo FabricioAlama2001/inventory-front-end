@@ -28,6 +28,32 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="formgrid grid">
         <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="expenseType" [label]="ProjectsFormEnum.expenseType"
+                 [required]="expenseTypeField"></label>
+          <p-dropdown id="expenseType"
+                      dataKey="id"
+                      formControlName="expenseType"
+                      [options]="expenseTypes"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (expenseTypeField.value) {
+                <div>{{ expenseTypeField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="expenseTypeField.errors"
+                 [touched]="expenseTypeField.touched"
+                 [dirty]="expenseTypeField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
           <label appLabel for="pndObjective" [label]="ProjectsFormEnum.pndObjective"
                  [required]="pndObjectiveField"></label>
           <p-dropdown id="pndObjective"
@@ -77,32 +103,6 @@
                  [errors]="pndPoliceField.errors"
                  [touched]="pndPoliceField.touched"
                  [dirty]="pndPoliceField.dirty">
-          </small>
-        </div>
-        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-          <label appLabel for="expenseType" [label]="ProjectsFormEnum.expenseType"
-                 [required]="expenseTypeField"></label>
-          <p-dropdown id="expenseType"
-                      dataKey="id"
-                      formControlName="expenseType"
-                      [options]="expenseTypes"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (expenseTypeField.value) {
-                <div>{{ expenseTypeField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="expenseTypeField.errors"
-                 [touched]="expenseTypeField.touched"
-                 [dirty]="expenseTypeField.dirty">
           </small>
         </div>
       </div>

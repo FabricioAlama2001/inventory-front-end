@@ -10,8 +10,9 @@ export interface PndPoliceModel {
   name: string;
   enabled: boolean;
   sort: number;
-  
+
   pndObjective: PndObjectiveModel;
+  pndObjectiveId: string;
 }
 
 export interface CreatePndPoliceDto extends Omit<PndPoliceModel, 'id'> {}

@@ -30,7 +30,7 @@ export class LabelDirective implements OnInit {
   }
 
   setFieldRequired() {
-    this.nativeElement.innerText = this.label;
+    this.nativeElement.innerText = this.label+ ':';
     const i = this.renderer.createElement('i');
     i.innerText = '*';
     this.renderer.addClass(i, 'p-error');
@@ -40,6 +40,6 @@ export class LabelDirective implements OnInit {
   }
 
   setFieldNoRequired() {
-    this.nativeElement.innerText = this.label;
+    this.nativeElement.innerText = this.label + ':';
   }
 }

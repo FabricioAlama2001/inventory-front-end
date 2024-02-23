@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {Router} from '@angular/router';
 
@@ -6,8 +6,15 @@ import {debounceTime} from "rxjs";
 
 import {MenuItem, PrimeIcons} from "primeng/api";
 
-import {ColumnModel, PaginatorModel, ComponentModel} from '@models/core';
-import {BreadcrumbService, CoreService, MessageService, ComponentsHttpService, RoutesService} from '@services/core';
+import {ColumnModel, PaginatorModel, ComponentModel, ProjectModel} from '@models/core';
+import {
+  BreadcrumbService,
+  CoreService,
+  MessageService,
+  ComponentsHttpService,
+  RoutesService,
+  ProjectsHttpService
+} from '@services/core';
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
@@ -21,8 +28,9 @@ import {
   templateUrl: './component-list.component.html',
   styleUrl: './component-list.component.scss'
 })
-export class ComponentListComponent {
+export class ComponentListComponent implements OnInit {
   @Input({alias: 'id'}) projectId: string = '';
+
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
@@ -43,6 +51,9 @@ export class ComponentListComponent {
   protected selectedItems: ComponentModel[] = [];
   protected items: ComponentModel[] = [];
 
+  protected projects: ProjectModel[] = [];
+  protected project: FormControl = new FormControl(null);
+
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
     protected readonly coreService: CoreService,
@@ -50,27 +61,43 @@ export class ComponentListComponent {
     private readonly router: Router,
     private readonly routesService: RoutesService,
     private readonly componentsHttpService: ComponentsHttpService,
+    private readonly projectsHttpService: ProjectsHttpService,
   ) {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.COMPONENTS}]);
+    this.breadcrumbService.setItems([
+      {label: BreadcrumbEnum.PROJECTS, routerLink: [this.routesService.projectsList]},
+      {label: BreadcrumbEnum.COMPONENTS}
+    ]);
 
+    console.log('asd');
     this.paginator = this.coreService.paginator;
   }
 
   ngOnInit() {
+    this.loadProjects();
+
     this.checkValueChanges();
-    this.findComponents();
+    if (this.projectId) {
+      this.findComponentsByProject();
+    }
   }
 
   checkValueChanges() {
     this.search.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(value => {
-      this.findComponents();
+      this.findComponentsByProject();
+    });
+
+    this.project.valueChanges.subscribe(value => {
+      if (value) {
+        this.projectId = value.id;
+        this.findComponentsByProject();
+      }
     });
   }
 
-  findComponents(page: number = 0) {
-    this.componentsHttpService.findComponents(page, this.search.value)
+  findComponentsByProject(page: number = 0) {
+    this.projectsHttpService.findComponentsByProject(this.projectId, page, this.search.value)
       .subscribe((response) => {
         this.paginator = response.pagination!;
         this.items = response.data;
@@ -79,10 +106,10 @@ export class ComponentListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'indicatorComponent', header: ComponentsFormEnum.indicatorComponent},
-      {field: 'project', header: ComponentsFormEnum.project},
       {field: 'code', header: ComponentsFormEnum.code},
       {field: 'name', header: ComponentsFormEnum.name},
+      {field: 'project', header: ComponentsFormEnum.project},
+      {field: 'indicatorComponent', header: ComponentsFormEnum.indicatorComponent},
       {field: 'fiscalYear', header: ComponentsFormEnum.fiscalYear},
       {field: 'enabled', header: ComponentsFormEnum.enabled},
     ];
@@ -137,16 +164,19 @@ export class ComponentListComponent {
     }
   }
 
-  redirectCreateForm() {
-    this.router.navigate([this.routesService.componentsForm(RoutesEnum.NEW)]);
+  loadProjects(): void {
+    this.projectsHttpService.findCatalogue().subscribe((projects) => {
+      this.projects = projects;
+      this.project.patchValue(this.projects.find(item => item.id === this.projectId));
+    });
   }
 
-  redirectComponentsList(id:string) {
-    this.router.navigate([this.routesService.components(id)]);
+  redirectCreateForm() {
+    this.router.navigate([this.routesService.componentsForm(this.projectId, RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.componentsForm(id)]);
+    this.router.navigate([this.routesService.componentsForm(this.projectId, id)]);
   }
 
   disable(id: string) {
@@ -176,7 +206,7 @@ export class ComponentListComponent {
   }
 
   paginate(event: any) {
-    this.findComponents(event.page);
+    this.findComponentsByProject(event.page);
   }
 
   selectItem(item: ComponentModel) {

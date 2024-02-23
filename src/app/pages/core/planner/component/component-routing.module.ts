@@ -4,18 +4,10 @@ import {ExitGuard} from "@shared/guards";
 import { ComponentFormComponent } from './component-form/component-form.component';
 import { ComponentListComponent } from './component-list/component-list.component';
 
-
-
-
 const routes: Routes = [
   {
     path: '',
     component: ComponentListComponent
-  },
-  {
-    path: ':id',
-    component: ComponentFormComponent,
-    canDeactivate: [ExitGuard]
   },
 ];
 
