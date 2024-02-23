@@ -151,7 +151,7 @@ export class ComponentListComponent implements OnInit {
       },
       {
         id: IdButtonActionEnum.ENABLE,
-        label: LabelButtonActionEnum.COMPONENTS,
+        label: LabelButtonActionEnum.ACTIVITIES,
         icon: IconButtonActionEnum.ENABLE,
         command: () => {
           if (this.selectedItem?.id) this.redirectActivitiesList(this.selectedItem.id);
