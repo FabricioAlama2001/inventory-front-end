@@ -3,13 +3,14 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import {CreateProjectDto, ExpenseTypeModel, PndObjectiveModel, PndPoliceModel, UpdateProjectDto} from '@models/core';
+import {CreateProjectDto, ExpenseTypeModel, FiscalYearModel, PndObjectiveModel, PndPoliceModel, UpdateProjectDto} from '@models/core';
 import {PndObjectivesHttpService} from '@services/core/pnd-objectives-http.service';
 import {PndPolicesHttpService} from '@services/core/pnd-polices-http.service';
 import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
 import {
   BreadcrumbService,
   CoreService,
+  FiscalYearsHttpService,
   MessageService,
   ProjectsHttpService,
   RoutesService
@@ -50,6 +51,8 @@ export class ProjectFormComponent implements OnInit, OnExitInterface {
   protected pndObjectives: PndObjectiveModel[] = [];
   protected pndPolices: PndPoliceModel[] = [];
   protected expenseTypes: ExpenseTypeModel[] = [];
+  protected fiscalYears: FiscalYearModel[] = [];
+
   private saving: boolean = true;
 
   constructor(
@@ -62,7 +65,8 @@ export class ProjectFormComponent implements OnInit, OnExitInterface {
     private readonly projectsHttpService: ProjectsHttpService,
     private readonly pndObjectivesHttpService: PndObjectivesHttpService,
     private readonly pndPolicesHttpService: PndPolicesHttpService,
-    private readonly expenseTypesHttpService: ExpenseTypesHttpService
+    private readonly expenseTypesHttpService: ExpenseTypesHttpService,
+    private readonly fiscalYearsHttpService: FiscalYearsHttpService,
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.PROJECTS, routerLink: [this.routesService.projectsList]},
@@ -84,6 +88,7 @@ export class ProjectFormComponent implements OnInit, OnExitInterface {
   ngOnInit(): void {
     this.loadExpenseTypes();
     this.loadPndObjectives();
+    this.loadExpenseTypes();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -176,6 +181,12 @@ export class ProjectFormComponent implements OnInit, OnExitInterface {
   loadPndPolices(): void {
     this.pndPolicesHttpService.findCatalogue().subscribe((pndPolices) => {
       this.pndPolices = pndPolices.filter(item => item.pndObjectiveId === this.pndObjectiveField.value.id);
+    });
+  }
+
+  loadFiscalYears(): void {
+    this.fiscalYearsHttpService.findCatalogue().subscribe((fiscalYears) => {
+      this.fiscalYears = fiscalYears;
     });
   }
 

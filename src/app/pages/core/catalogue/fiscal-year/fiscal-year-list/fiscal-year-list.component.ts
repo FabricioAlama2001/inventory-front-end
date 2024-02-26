@@ -6,30 +6,31 @@ import {debounceTime} from "rxjs";
 
 import {MenuItem, PrimeIcons} from "primeng/api";
 
-import {ColumnModel, PaginatorModel, SubactivityModel} from '@models/core';
-import {BreadcrumbService, CoreService, MessageService, SubactivitiesHttpService, RoutesService} from '@services/core';
+import {FiscalYearModel, ColumnModel} from '@models/core';
+import {BreadcrumbService, CoreService, MessageService, FiscalYearsHttpService, RoutesService} from '@services/core';
 import {
   BreadcrumbEnum,
+  FiscalYearsFormEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
-  LabelButtonActionEnum, SubactivitiesFormEnum, RoutesEnum, TableEnum
+  LabelButtonActionEnum, RoutesEnum, TableEnum
 } from "@shared/enums";
+import {getHigherSort} from "@shared/helpers";
 
 @Component({
-  selector: 'app-subactivity-list',
-  templateUrl: './subactivity-list.component.html',
-  styleUrl: './subactivity-list.component.scss'
+  selector: 'app-fiscal-year-list',
+  templateUrl: './fiscal-year-list.component.html',
+  styleUrl: './fiscal-year-list.component.scss'
 })
-export class SubactivityListComponent {
+export class FiscalYearListComponent {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
+  protected readonly FiscalYearsFormEnum = FiscalYearsFormEnum;
   protected readonly TableEnum = TableEnum;
-
-  protected paginator: PaginatorModel;
 
   protected buttonActions: MenuItem[] = this.buildButtonActions;
   protected isButtonActions: boolean = false;
@@ -38,9 +39,9 @@ export class SubactivityListComponent {
 
   protected search: FormControl = new FormControl('');
 
-  protected selectedItem!: SubactivityModel;
-  protected selectedItems: SubactivityModel[] = [];
-  protected items: SubactivityModel[] = [];
+  protected selectedItem!: FiscalYearModel;
+  protected selectedItems: FiscalYearModel[] = [];
+  protected items: FiscalYearModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -48,51 +49,38 @@ export class SubactivityListComponent {
     protected readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly subactivitiesHttpService: SubactivitiesHttpService,
+    private readonly fiscalYearsHttpService: FiscalYearsHttpService,
   ) {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.SUBACTIVITIES}]);
-
-    this.paginator = this.coreService.paginator;
+    this.breadcrumbService.setItems([{label: BreadcrumbEnum.EXPENSE_TYPES}]);
   }
 
   ngOnInit() {
     this.checkValueChanges();
-    this.findSubactivities();
+    this.findAll();
   }
 
   checkValueChanges() {
     this.search.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(value => {
-      this.findSubactivities();
+      this.findAll();
     });
   }
 
-  findSubactivities(page: number = 0) {
-    this.subactivitiesHttpService.findSubactivities(page, this.search.value)
+  findAll() {
+    this.fiscalYearsHttpService.findAll()
       .subscribe((response) => {
-        this.paginator = response.pagination!;
-        this.items = response.data;
+        this.items = response;
+        this.coreService.higherSort = getHigherSort(this.items);
       });
   }
 
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'fiscalYear', header: SubactivitiesFormEnum.fiscalYear},
-      {field: 'indicatorSubactivity', header: SubactivitiesFormEnum.indicatorSubactivity},
-      {field: 'institutionalStrategicPlan', header: SubactivitiesFormEnum.institutionalStrategicPlan},
-      {field: 'strategicAxis', header: SubactivitiesFormEnum.strategicAxis},
-      {field: 'strategy', header: SubactivitiesFormEnum.strategy},
-      //{field: 'continent', header: SubactivitiesFormEnum.continent},
-      //{field: 'country', header: SubactivitiesFormEnum.country},
-      //{field: 'province', header: SubactivitiesFormEnum.province},
-      //{field: 'canton', header: SubactivitiesFormEnum.canton},
-      //{field: 'parish', header: SubactivitiesFormEnum.parish},
-      {field: 'poa', header: SubactivitiesFormEnum.poa},
-      {field: 'unit', header: SubactivitiesFormEnum.unit},
-      {field: 'name', header: SubactivitiesFormEnum.name},
-      {field: 'type', header: SubactivitiesFormEnum.type},
-      {field: 'enabled', header: SubactivitiesFormEnum.enabled},
+      {field: 'code', header: FiscalYearsFormEnum.code},
+      {field: 'name', header: FiscalYearsFormEnum.name},
+      {field: 'enabled', header: FiscalYearsFormEnum.enabled},
+      {field: 'sort', header: FiscalYearsFormEnum.sort}
     ];
   }
 
@@ -133,7 +121,7 @@ export class SubactivityListComponent {
     ];
   }
 
-  validateButtonActions(item: SubactivityModel): void {
+  validateButtonActions(item: FiscalYearModel): void {
     this.buttonActions = this.buildButtonActions;
 
     if (item.enabled) {
@@ -146,24 +134,24 @@ export class SubactivityListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.subactivitiesForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.fiscalYearsForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.subactivitiesForm(id)]);
+    this.router.navigate([this.routesService.fiscalYearsForm(id)]);
   }
 
   disable(id: string) {
-    this.subactivitiesHttpService.disable(id).subscribe(subactivity => {
-      const index = this.items.findIndex(subactivity => subactivity.id === id);
-      this.items[index] = subactivity;
+    this.fiscalYearsHttpService.disable(id).subscribe(fiscalYear => {
+      const index = this.items.findIndex(fiscalYear => fiscalYear.id === id);
+      this.items[index] = fiscalYear;
     });
   }
 
   enable(id: string) {
-    this.subactivitiesHttpService.enable(id).subscribe(subactivity => {
-      const index = this.items.findIndex(subactivity => subactivity.id === id);
-      this.items[index] = subactivity;
+    this.fiscalYearsHttpService.enable(id).subscribe(fiscalYear => {
+      const index = this.items.findIndex(fiscalYear => fiscalYear.id === id);
+      this.items[index] = fiscalYear;
     });
   }
 
@@ -171,19 +159,14 @@ export class SubactivityListComponent {
     this.messageService.questionDelete()
       .then((result) => {
         if (result.isConfirmed) {
-          this.subactivitiesHttpService.remove(id).subscribe((subactivity) => {
-            this.items = this.items.filter(item => item.id !== subactivity.id);
-            this.paginator.totalItems--;
+          this.fiscalYearsHttpService.remove(id).subscribe((fiscalYear) => {
+            this.items = this.items.filter(item => item.id !== fiscalYear.id);
           });
         }
       });
   }
 
-  paginate(event: any) {
-    this.findSubactivities(event.page);
-  }
-
-  selectItem(item: SubactivityModel) {
+  selectItem(item: FiscalYearModel) {
     this.isButtonActions = true;
     this.selectedItem = item;
     this.validateButtonActions(item);

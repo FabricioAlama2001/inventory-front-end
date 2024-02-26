@@ -14,6 +14,7 @@ export enum UsersFormEnum {
 export enum SubactivitiesFormEnum {
   name = 'Nombre',
   type = 'Tipo',
+  enabled = 'Disponible',
   fiscalYear = 'Año fiscal',
   indicatorSubactivity = 'Indicador de la sub-actividad',
   institutionalStrategicPlan = 'Plan estrategico institucional',
@@ -138,4 +139,11 @@ export enum ActivitiesFormEnum {
   name = 'Nombre',
   fiscalYear = 'Año fiscal',
   enabled = 'Estado',
+}
+
+export enum FiscalYearsFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+  sort = 'Orden'
 }

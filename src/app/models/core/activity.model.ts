@@ -1,4 +1,4 @@
-import {ComponentModel} from '@models/core';
+import {ComponentModel, FiscalYearModel} from '@models/core';
 
 export interface ActivityModel {
   id: string;
@@ -8,9 +8,9 @@ export interface ActivityModel {
 
   code: string;
   name: string;
-  fiscalYear: number;
   enabled: boolean;
 
+  fiscalYear: FiscalYearModel;
   component: ComponentModel;
 }
 

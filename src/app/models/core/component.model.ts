@@ -1,4 +1,4 @@
-import { ExpenseGroupModel, IndicatorComponentModel, ProjectModel} from '@models/core';
+import { ExpenseGroupModel, FiscalYearModel, IndicatorComponentModel, ProjectModel} from '@models/core';
 
 export interface ComponentModel {
   id: string;
@@ -8,9 +8,9 @@ export interface ComponentModel {
 
   code: string;
   name: string;
-  fiscalYear: number;
   enabled: boolean;
 
+  fiscalYear: FiscalYearModel;
   indicatorComponent: IndicatorComponentModel;
   project: ProjectModel;
 }

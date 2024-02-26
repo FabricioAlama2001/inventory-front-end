@@ -3,20 +3,20 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {CreateSubactivityDto, UpdateSubactivityDto, SubactivityModel} from '@models/core';
+import {CreateFiscalYearDto, UpdateFiscalYearDto, FiscalYearModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
 
 @Injectable({
   providedIn: 'root'
 })
-export class SubactivitiesHttpService {
-  API_URL = `${environment.API_URL}/core/subactivities`;
+export class FiscalYearsHttpService {
+  API_URL = `${environment.API_URL}/core/fiscal-years`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
 
-  create(payload: CreateSubactivityDto): Observable<SubactivityModel> {
+  create(payload: CreateFiscalYearDto): Observable<FiscalYearModel> {
     const url = `${this.API_URL}`;
 
     return this.httpClient.post<ServerResponse>(url, payload).pipe(
@@ -27,7 +27,7 @@ export class SubactivitiesHttpService {
     );
   }
 
-  findAll(): Observable<SubactivityModel[]> {
+  findAll(): Observable<FiscalYearModel[]> {
     const url = this.API_URL;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -37,22 +37,22 @@ export class SubactivitiesHttpService {
     );
   }
 
-  findSubactivities(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findFiscalYears(page: number = 0, search: string = ''): Observable<FiscalYearModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
     const params = new HttpParams()
       .append('page', page)
-      .append('search', search);
+      .append('search', search)
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response;
+        return response.data;
       })
     );
   }
 
-  findOne(id: string): Observable<SubactivityModel> {
+  findOne(id: string): Observable<FiscalYearModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -62,7 +62,7 @@ export class SubactivitiesHttpService {
     );
   }
 
-  update(id: string, payload: UpdateSubactivityDto): Observable<SubactivityModel> {
+  update(id: string, payload: UpdateFiscalYearDto): Observable<FiscalYearModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.put<ServerResponse>(url, payload).pipe(
@@ -73,7 +73,7 @@ export class SubactivitiesHttpService {
     );
   }
 
-  enable(id: string): Observable<SubactivityModel> {
+  enable(id: string): Observable<FiscalYearModel> {
     const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.patch<ServerResponse>(url, null).pipe(
@@ -84,7 +84,7 @@ export class SubactivitiesHttpService {
     );
   }
 
-  remove(id: string): Observable<SubactivityModel> {
+  remove(id: string): Observable<FiscalYearModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.delete<ServerResponse>(url).pipe(
@@ -95,10 +95,10 @@ export class SubactivitiesHttpService {
     );
   }
 
-  removeAll(subactivities: SubactivityModel[]): Observable<SubactivityModel[]> {
+  removeAll(fiscalYears: FiscalYearModel[]): Observable<FiscalYearModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, subactivities).pipe(
+    return this.httpClient.patch<ServerResponse>(url, fiscalYears).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -106,7 +106,7 @@ export class SubactivitiesHttpService {
     );
   }
 
-  disable(id: string): Observable<SubactivityModel> {
+  disable(id: string): Observable<FiscalYearModel> {
     const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.patch<ServerResponse>(url, null).pipe(
@@ -117,18 +117,8 @@ export class SubactivitiesHttpService {
     );
   }
 
-  findCatalogue(): Observable<SubactivityModel[]> {
+  findCatalogue(): Observable<FiscalYearModel[]> {
     const url = `${this.API_URL}/catalogues`;
-
-    return this.httpClient.get<ServerResponse>(url).pipe(
-      map(response => {
-        return response.data;
-      })
-    );
-  }
-
-  findLocations(): Observable<SubactivityModel[]> {
-    const url = `${this.API_URL}/locations`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
       map(response => {

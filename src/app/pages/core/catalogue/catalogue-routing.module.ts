@@ -76,6 +76,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.PLANNER]}
   },
+  {
+    path: 'fiscal-years',
+    loadChildren: () => import('./fiscal-year/fiscal-year.module').then(m => m.FiscalYearModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RoleEnum.PLANNER]}
+  },
 ];
 
 @NgModule({

@@ -116,10 +116,30 @@
                  [dirty]="nameField.dirty">
           </small>
         </div>
-        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
-          <label appLabel for="fiscalYear" [label]="ProjectsFormEnum.fiscalYear" [required]="fiscalYearField"></label>
-          <p-inputNumber id="fiscalYear" formControlName="fiscalYear" [min]="1"></p-inputNumber>
-          <small appErrorMessage [errors]="fiscalYearField.errors" [touched]="fiscalYearField.touched" [dirty]="fiscalYearField.dirty">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="fiscalYear" [label]="ProjectsFormEnum.fiscalYear"
+                 [required]="fiscalYearField"></label>
+          <p-dropdown id="fiscalYear"
+                      dataKey="id"
+                      formControlName="fiscalYear"
+                      [options]="fiscalYears"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (fiscalYearField.value) {
+                <div>{{ fiscalYearField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="fiscalYearField.errors"
+                 [touched]="fiscalYearField.touched"
+                 [dirty]="fiscalYearField.dirty">
           </small>
         </div>
         <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">

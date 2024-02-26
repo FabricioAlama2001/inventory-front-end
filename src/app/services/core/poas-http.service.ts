@@ -3,16 +3,15 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {CreatePoaDto, UpdatePoaDto, PoaModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
-import { CatalogueModel, CreatePoaDto, PoaModel, UpdatePoaDto } from '@models/core';
-import { CatalogueEnum } from '@shared/enums';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PoasHttpService {
-  API_URL = `${environment.API_URL}/poas`;
+  API_URL = `${environment.API_URL}/core/poas`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
@@ -28,7 +27,17 @@ export class PoasHttpService {
     );
   }
 
-  findAll(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findAll(): Observable<PoaModel[]> {
+    const url = this.API_URL;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
+  findPoas(page: number = 0, search: string = ''): Observable<PoaModel[]> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
@@ -38,7 +47,7 @@ export class PoasHttpService {
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response;
+        return response.data;
       })
     );
   }
@@ -64,10 +73,10 @@ export class PoasHttpService {
     );
   }
 
-  reactivate(id: string): Observable<PoaModel> {
-    const url = `${this.API_URL}/${id}/reactivate`;
+  enable(id: string): Observable<PoaModel> {
+    const url = `${this.API_URL}/${id}/enable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -86,10 +95,10 @@ export class PoasHttpService {
     );
   }
 
-  removeAll(projects: PoaModel[]): Observable<PoaModel[]> {
+  removeAll(poas: PoaModel[]): Observable<PoaModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, projects).pipe(
+    return this.httpClient.patch<ServerResponse>(url, poas).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -97,10 +106,10 @@ export class PoasHttpService {
     );
   }
 
-  suspend(id: string): Observable<PoaModel> {
-    const url = `${this.API_URL}/${id}/suspend`;
+  disable(id: string): Observable<PoaModel> {
+    const url = `${this.API_URL}/${id}/disable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -108,9 +117,13 @@ export class PoasHttpService {
     );
   }
 
-  findCatalogue(type: CatalogueEnum): CatalogueModel[] {
-    const catalogues: CatalogueModel[] = JSON.parse(String(sessionStorage.getItem('catalogues')));
+  findCatalogue(): Observable<PoaModel[]> {
+    const url = `${this.API_URL}/catalogues`;
 
-    return catalogues.filter(catalogue => catalogue.type === type);
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map(response => {
+        return response.data;
+      })
+    );
   }
 }

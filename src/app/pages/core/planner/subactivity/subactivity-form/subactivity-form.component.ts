@@ -1,23 +1,34 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import {CreateSubactivityDto, UpdateSubactivityDto} from '@models/core';
-import {CatalogueModel} from "@models/core";
-import {IndicatorSubactivitiesHttpService, SubactivitiesHttpService, InstitutionalStrategicPlansHttpService, StrategicAxesHttpService, StrategiesHttpService, ContinentsHttpService, CountriesHttpService, ProvincesHttpService, CantonsHttpService, ParishesHttpService, PoasHttpService, UnitsHttpService} from '@services/core';
-import {BreadcrumbService, CataloguesHttpService, CoreService, MessageService, RoutesService} from '@services/core';
+import {ContinentModel, CreateSubactivityDto, ExpenseTypeModel, FiscalYearModel, IndicatorSubactivityModel, InstitutionalStrategicPlanModel, LocationModel, PndObjectiveModel, PndPoliceModel, PoaModel, StrategicAxisModel, StrategyModel, UnitModel, UpdateSubactivityDto} from '@models/core';
+import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
+import {
+  BreadcrumbService,
+  ContinentsHttpService,
+  CoreService,
+  FiscalYearsHttpService,
+  IndicatorSubactivitiesHttpService,
+  InstitutionalStrategicPlansHttpService,
+  LocationsHttpService,
+  MessageService,
+  PoasHttpService,
+  RoutesService,
+  StrategicAxesHttpService,
+  StrategiesHttpService,
+  SubactivitiesHttpService,
+  UnitsHttpService
+} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
   BreadcrumbEnum,
-  CatalogueTypeEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   LabelButtonActionEnum,
-  SubactivitiesFormEnum,
-  SkeletonEnum, UsersFormEnum,
-  UsersIdentificationTypeStateEnum,
-  CatalogueEnum
+  SkeletonEnum,
+  SubactivitiesFormEnum, RoutesEnum
 } from "@shared/enums";
 
 @Component({
@@ -25,7 +36,7 @@ import {
   templateUrl: './subactivity-form.component.html',
   styleUrl: './subactivity-form.component.scss'
 })
-export class SubactivityFormComponent {
+export class SubactivityFormComponent implements OnInit, OnExitInterface{
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -38,19 +49,20 @@ export class SubactivityFormComponent {
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
-  protected indicatorSubactivities: CatalogueModel[] = [];
-  protected institutionalStrategicPlans: CatalogueModel[] = [];
-  protected strategicAxes: CatalogueModel[] = [];
-  protected strategies: CatalogueModel[] = [];
-  protected continents: CatalogueModel[] = [];
-  protected countries: CatalogueModel[] = [];
-  protected provinces: CatalogueModel[] = [];
-  protected cantons: CatalogueModel[] = [];
-  protected parishes: CatalogueModel[] = [];
-  protected poas: CatalogueModel[] = [];
-  protected units: CatalogueModel[] = [];
+  protected fiscalYears: FiscalYearModel[] = [];
+  protected indicatorSubactivities: IndicatorSubactivityModel[] = [];
+  protected institutionalStrategicPlans: InstitutionalStrategicPlanModel[] = [];
+  protected strategicAxes: StrategicAxisModel[] = [];
+  protected strategies: StrategyModel[] = [];
+  protected continents: ContinentModel[] = [];
+  protected poas: PoaModel[] = [];
+  protected units: UnitModel[] = [];
 
-
+  protected countries: LocationModel[] = [];
+  protected provinces: LocationModel[] = [];
+  protected cantons: LocationModel[] = [];
+  protected parishes: LocationModel[] = [];
+  private saving: boolean = true;
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -59,68 +71,75 @@ export class SubactivityFormComponent {
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-
     private readonly subactivitiesHttpService: SubactivitiesHttpService,
 
+    private readonly expenseTypesHttpService: ExpenseTypesHttpService,
+    private readonly locationsHttpService: LocationsHttpService,
+    private readonly fiscalYearsHttpService: FiscalYearsHttpService,
     private readonly indicatorSubactivitiesHttpService: IndicatorSubactivitiesHttpService,
     private readonly institutionalStrategicPlansHttpService: InstitutionalStrategicPlansHttpService,
     private readonly strategicAxesHttpService: StrategicAxesHttpService,
     private readonly strategiesHttpService: StrategiesHttpService,
     private readonly continentsHttpService: ContinentsHttpService,
-    private readonly countriesHttpService: CountriesHttpService,
-    private readonly provincesHttpService: ProvincesHttpService,
-    private readonly cantonsHttpService: CantonsHttpService,
-    private readonly parishesHttpService: ParishesHttpService,
     private readonly poasHttpService: PoasHttpService,
     private readonly unitsHttpService: UnitsHttpService,
 
-
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.SUBACTIVITIES, routerLink: [this.routesService.subactivities]},
+      {label: BreadcrumbEnum.SUBACTIVITIES, routerLink: [this.routesService.subactivitiesList]},
       {label: BreadcrumbEnum.FORM},
     ]);
 
     this.form = this.newForm;
+
   }
 
   async onExit(): Promise<boolean> {
-    if (this.form.touched || this.form.dirty) {
+    if ((this.form.touched || this.form.dirty) && this.saving) {
       return await this.messageService.questionOnExit().then(result => result.isConfirmed);
     }
     return true;
   }
 
   ngOnInit(): void {
-    if (this.id != 'new') {
+    this.loadFiscalYears();
+    this.loadCountries();
+    this.loadFiscalYears();
+    this.loadIndicatorSubactivities();
+    this.loadInstitutionalStrategicPlans();
+    this.loadStrategicAxis();
+    this.loadStrategies();
+    this.loadContinents();
+    this.loadPoas();
+    this.loadUnits();
+
+    if (this.id != RoutesEnum.NEW) {
       this.get();
     }
   }
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      name: [null, []],
-      type: [null, []],
-      fiscalYear: [null, []],
-      indicatorSubactivity: [null, []],
-      institutionalStrategicPlan: [null, []],
-      strategicAxis: [null, []],
-      strategy: [null, []],
-      continent: [null, []],
-      country: [null, []],
-      province: [null, []],
-      canton: [null, []],
-      parrish: [null, []],
-      poa: [null, []],
-      unit: [null, []],
+      fiscalYear: [null, [Validators.required]],
+      indicatorSubactivity: [null, [Validators.required]],
+      institutionalStrategicPlan: [null, [Validators.required]],
+      strategicAxis: [null, [Validators.required]],
+      strategy: [null, [Validators.required]],
+      continent: [null, [Validators.required]],
+      country: [null, [Validators.required]],
+      province: [null, [Validators.required]],
+      canton: [null, [Validators.required]],
+      parish: [null, [Validators.required]],
+      poa: [null, [Validators.required]],
+      unit: [null, [Validators.required]],
+      name: [null, [Validators.required]],
+      type: [null, [Validators.required]],
+      enabled: [true, [Validators.required]],
     });
   }
 
   get validateFormErrors() {
     this.formErrors = [];
-
-    if (this.nameField.errors) this.formErrors.push(SubactivitiesFormEnum.name);
-    if (this.typeField.errors) this.formErrors.push(SubactivitiesFormEnum.type);
     if (this.fiscalYearField.errors) this.formErrors.push(SubactivitiesFormEnum.fiscalYear);
     if (this.indicatorSubactivityField.errors) this.formErrors.push(SubactivitiesFormEnum.indicatorSubactivity);
     if (this.institutionalStrategicPlanField.errors) this.formErrors.push(SubactivitiesFormEnum.institutionalStrategicPlan);
@@ -134,6 +153,9 @@ export class SubactivityFormComponent {
     if (this.poaField.errors) this.formErrors.push(SubactivitiesFormEnum.poa);
     if (this.unitField.errors) this.formErrors.push(SubactivitiesFormEnum.unit);
 
+    if (this.nameField.errors) this.formErrors.push(SubactivitiesFormEnum.name);
+    if (this.typeField.errors) this.formErrors.push(SubactivitiesFormEnum.type);
+    if (this.enabledField.errors) this.formErrors.push(SubactivitiesFormEnum.enabled);
 
     this.formErrors.sort();
 
@@ -148,10 +170,12 @@ export class SubactivityFormComponent {
 
   onSubmit(): void {
     if (this.validateFormErrors) {
-      if (this.id) {
-        this.update(this.form.value);
-      } else {
+      this.saving = false;
+
+      if (this.id === RoutesEnum.NEW) {
         this.create(this.form.value);
+      } else {
+        this.update(this.form.value);
       }
     } else {
       this.form.markAllAsTouched();
@@ -160,7 +184,7 @@ export class SubactivityFormComponent {
   }
 
   back(): void {
-    this.router.navigate([this.routesService.subactivities]);
+    this.router.navigate([this.routesService.subactivitiesList]);
   }
 
   create(subactivity: CreateSubactivityDto): void {
@@ -177,49 +201,105 @@ export class SubactivityFormComponent {
     });
   }
 
-  /*loadIndicatorSubactivities(): void {
-    this.indicatorSubactivities = this.indicatorSubactivitiesHttpService.findCatalogue(CatalogueEnum.INDICATOR_SUBACTIVITY);
+  applyValidations() {
+    this.countryField.valueChanges.subscribe(value => {
+      if (value.alpha3Code === 'ECU') {
+        this.loadProvinces(value?.id);
+        this.provinceField.addValidators(Validators.required);
+        this.cantonField.addValidators(Validators.required);
+        this.parishField.addValidators(Validators.required);
+      } else {
+        this.provinceField.setValue(null);
+
+        this.provinceField.clearValidators();
+        this.cantonField.clearValidators();
+        this.parishField.clearValidators();
+
+        this.provinces = [];
+        this.cantons = [];
+        this.parishes = [];
+      }
+
+      this.provinceField.updateValueAndValidity();
+      this.cantonField.updateValueAndValidity();
+      this.parishField.updateValueAndValidity();
+    });
+
+    this.provinceField.valueChanges.subscribe(value => {
+      this.loadCantons(value?.id);
+    });
+
+    this.cantonField.valueChanges.subscribe(value => {
+      this.loadParishes(value?.id);
+    });
+  }
+
+  //FK
+
+  loadFiscalYears(): void {
+    this.fiscalYearsHttpService.findCatalogue().subscribe((fiscalYears) => {
+      this.fiscalYears = fiscalYears;
+    });
+  }
+
+  loadIndicatorSubactivities(): void {
+    this.indicatorSubactivitiesHttpService.findCatalogue().subscribe((indicatorSubactivities) => {
+      this.indicatorSubactivities = indicatorSubactivities;
+    });
   }
 
   loadInstitutionalStrategicPlans(): void {
-    this.institutionalStrategicPlans = this.institutionalStrategicPlansHttpService.findCatalogue(CatalogueEnum.INSTITUTIONAL_STRATEGIC_PLAN);
+    this.institutionalStrategicPlansHttpService.findCatalogue().subscribe((institutionalStrategicPlans) => {
+      this.institutionalStrategicPlans = institutionalStrategicPlans;
+    });
   }
 
   loadStrategicAxis(): void {
-    this.strategicAxes = this.strategicAxisHttpService.findCatalogue(CatalogueEnum.STRATEGIC_AXIS);
+    this.strategicAxesHttpService.findCatalogue().subscribe((strategicAxes) => {
+      this.strategicAxes = strategicAxes;
+    });
   }
 
   loadStrategies(): void {
-    this.strategies = this.strategiesHttpService.findCatalogue(CatalogueEnum.STRATEGY);
+    this.strategiesHttpService.findCatalogue().subscribe((strategies) => {
+      this.strategies = strategies;
+    });
   }
 
   loadContinents(): void {
-    this.continents = this.continentsHttpService.findCatalogue(CatalogueEnum.CONTINENT);
-  }*/
-
-  loadCountries(): void {
-    this.countries = this.countriesHttpService.findCatalogue(CatalogueEnum.COUNTRY);
-  }
-
-  loadProvinces(): void {
-    this.provinces = this.provincesHttpService.findCatalogue(CatalogueEnum.PROVINCE);
-  }
-
-  loadCantons(): void {
-    this.cantons = this.cantonsHttpService.findCatalogue(CatalogueEnum.CANTON);
-  }
-
-  loadParishes(): void {
-    this.parishes = this.parishesHttpService.findCatalogue(CatalogueEnum.PARISH);
+    this.continentsHttpService.findCatalogue().subscribe((continents) => {
+      this.continents = continents;
+    });
   }
 
   loadPoas(): void {
-    this.poas = this.poasHttpService.findCatalogue(CatalogueEnum.POA);
+    this.poasHttpService.findCatalogue().subscribe((poas) => {
+      this.poas = poas;
+    });
   }
 
   loadUnits(): void {
-    this.units = this.unitsHttpService.findCatalogue(CatalogueEnum.UNIT);
+    this.unitsHttpService.findCatalogue().subscribe((units) => {
+      this.units = units;
+    });
   }
+
+  loadCountries(): void {
+    this.countries = this.locationsHttpService.findCountries();
+  }
+
+  loadProvinces(countryId: string): void {
+    this.provinces = this.locationsHttpService.findProvincesByCountry(countryId);
+  }
+
+  loadCantons(provinceId: string): void {
+    this.cantons = this.locationsHttpService.findCantonsByProvince(provinceId);
+  }
+
+  loadParishes(cantonId: string): void {
+    this.parishes = this.locationsHttpService.findParishesByCanton(cantonId);
+  }
+
 
   get nameField(): AbstractControl {
     return this.form.controls['name'];
@@ -227,6 +307,10 @@ export class SubactivityFormComponent {
 
   get typeField(): AbstractControl {
     return this.form.controls['type'];
+  }
+
+  get enabledField(): AbstractControl {
+    return this.form.controls['enabled'];
   }
 
   get fiscalYearField(): AbstractControl {

@@ -4,7 +4,7 @@
       [label]="LabelButtonActionEnum.CREATE" [loading]="coreService.isLoading"
       [ngClass]="[ClassButtonActionEnum.CREATE]">
     </button>
-    <button pButton type="button" (click)="findProjects()" [icon]="IconButtonActionEnum.SYNC"
+    <button pButton type="button" (click)="findAll()" [icon]="IconButtonActionEnum.SYNC"
       [label]="LabelButtonActionEnum.SYNC" [loading]="coreService.isLoading"
       [ngClass]="[ClassButtonActionEnum.SYNC,'ml-2']">
     </button>
@@ -15,10 +15,11 @@
 </p-toolbar>
 
 <p-table #dt1 dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns"
-  [globalFilterFields]="['fiscalYear', 'name']" [loading]="coreService.isLoading" [(selection)]="selectedItems">
+  [globalFilterFields]="['code', 'name']" [loading]="coreService.isLoading"
+  [(selection)]="selectedItems">
   <ng-template pTemplate="caption">
     <div class="flex">
-      <h1>{{ BreadcrumbEnum.PROJECTS }}</h1>
+      <h1>{{ BreadcrumbEnum.FISCAL_YEARS }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
         <input #search pInputText type="text" placeholder="Buscar..."
@@ -43,25 +44,7 @@
     <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
       @for (col of columns; track col) {
       <!--Objects-->
-      @if (rowData[col.field]?.id) {
-      <td>
-        @switch (col.field) {
-        @case ('fiscalYear') {
-        {{ rowData.fiscalYear.name }}
-        }
-        @case ('pndObjective') {
-        {{ rowData.pndObjective.name }}
-        }
-        @case ('pndPolice') {
-        {{ rowData.pndPolice.name }}
-        }
-        @case ('expenseType') {
-        {{ rowData.expenseType.name }}
-        }
-        }
 
-      </td>
-      }
       <!--Fields-->
       @if (!rowData[col.field]?.id) {
       <td>

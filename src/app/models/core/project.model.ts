@@ -1,4 +1,4 @@
-import {ExpenseTypeModel, PndObjectiveModel, PndPoliceModel} from '@models/core';
+import {ExpenseTypeModel, FiscalYearModel, PndObjectiveModel, PndPoliceModel} from '@models/core';
 
 export interface ProjectModel {
   id: string;
@@ -7,9 +7,9 @@ export interface ProjectModel {
   deleteAt: Date;
 
   name: string;
-  fiscalYear: number;
   enabled: boolean;
 
+  fiscalYear: FiscalYearModel;
   pndObjective: PndObjectiveModel;
   pndPolice: PndPoliceModel;
   expenseType: ExpenseTypeModel,

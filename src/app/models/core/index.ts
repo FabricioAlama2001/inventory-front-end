@@ -32,6 +32,8 @@ export * from './indicator-component.model';
 export * from './project.model';
 export * from './pnd-objective.model';
 export * from './pnd-police.model';
+export * from './fiscal-year.model';
+
 
 
 

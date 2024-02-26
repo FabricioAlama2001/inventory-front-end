@@ -45,8 +45,12 @@ export class RoutesService {
     return this.core + `planner/projects/${projectId}/components/${id}`;
   }
 
-  get subactivities(): string {
+  get subactivitiesList(): string {
     return this.core + '/planner/subactivities';
+  }
+
+  subactivitiesForm(id: string): string {
+    return this.core + `planner/subactivities/${id}`;
   }
 
   activitiesForm(componentId:string,id: string): string {
@@ -152,6 +156,14 @@ export class RoutesService {
 
   continentsForm(id: string): string {
     return this.core + `catalogue/continents/${id}`;
+  }
+
+  get fiscalYearsList(): string {
+    return this.core + '/catalogue/fiscal-years';
+  }
+
+  fiscalYearsForm(id: string): string {
+    return this.core + `catalogue/fiscal-years/${id}`;
   }
 
   get common(): string {

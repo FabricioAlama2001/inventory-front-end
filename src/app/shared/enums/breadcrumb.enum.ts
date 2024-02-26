@@ -36,5 +36,6 @@ export enum BreadcrumbEnum {
   INDICATOR_SUBACTIVITIES = 'Indicador de subactividades',
   CONTINENTS = 'Continentes',
   COMPONENTS = 'Componentes',
-  ACTIVITIES = 'Actividades'
+  ACTIVITIES = 'Actividades',
+  FISCAL_YEARS = 'Años fiscales',
 }
