@@ -14,15 +14,30 @@
   </div>
 </p-toolbar>
 
-<p-table #dt1 dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns"
+<p-paginator
+  [rows]="paginator.limit"
+  [totalRecords]="paginator.totalItems"
+  (onPageChange)="paginate($event)"></p-paginator>
+
+<p-table dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns"
   [globalFilterFields]="['fiscalYear', 'name']" [loading]="coreService.isLoading" [(selection)]="selectedItems">
   <ng-template pTemplate="caption">
     <div class="flex">
       <h1>{{ BreadcrumbEnum.PROJECTS }}</h1>
-      <div class="p-input-icon-right ml-auto">
-        <i [class]="PrimeIcons.SEARCH"></i>
-        <input #search pInputText type="text" placeholder="Buscar..."
-          (input)="dt1.filterGlobal(search.value, 'contains')" />
+      <div class="p-input-icon-left ml-auto">
+        <div class="p-inputgroup">
+          <input type="text"
+                 pInputText
+                 [formControl]="search"
+                 placeholder="Buscar...">
+          <button pButton
+                  pRipple
+                  type="button"
+                  [icon]="PrimeIcons.SEARCH"
+                  [loading]="coreService.isLoading"
+                  (click)="findProjects()">
+          </button>
+        </div>
       </div>
     </div>
   </ng-template>
