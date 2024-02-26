@@ -155,7 +155,7 @@ export class BudgetItemFormComponent implements OnInit, OnExitInterface{
   }
 
   loadExpenseGroups(): void {
-    this.expenseGroupsHttpService.findCatalogue().subscribe((expenseGroups) => {
+    this.expenseGroupsHttpService.findCatalogues().subscribe((expenseGroups) => {
       this.expenseGroups = expenseGroups;
     });
   }

@@ -117,7 +117,7 @@ export class IndicatorSubactivitiesHttpService {
     );
   }
 
-  findCatalogue(): Observable<IndicatorSubactivityModel[]> {
+  findCatalogues(): Observable<IndicatorSubactivityModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

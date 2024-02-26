@@ -117,7 +117,7 @@ export class ExpenseTypesHttpService {
     );
   }
 
-  findCatalogue(): Observable<ExpenseTypeModel[]> {
+  findCatalogues(): Observable<ExpenseTypeModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

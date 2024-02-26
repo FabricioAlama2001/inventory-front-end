@@ -151,13 +151,13 @@ export class ComponentFormComponent implements OnInit, OnExitInterface {
   }
 
   loadIndicatorComponents(): void {
-    this.indicatorComponentsHttpService.findCatalogue().subscribe((indicators) => {
+    this.indicatorComponentsHttpService.findCatalogues().subscribe((indicators) => {
       this.indicators = indicators;
     });
   }
 
   loadProjects(): void {
-    this.projectsHttpService.findCatalogue().subscribe((projects) => {
+    this.projectsHttpService.findCatalogues().subscribe((projects) => {
       this.projects = projects;
       this.projectField.patchValue(this.projects.find(item => item.id === this.projectId));
     });

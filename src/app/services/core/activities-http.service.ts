@@ -117,7 +117,7 @@ export class ActivitiesHttpService {
     );
   }
 
-  findCatalogue(): Observable<ActivityModel[]> {
+  findCatalogues(): Observable<ActivityModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

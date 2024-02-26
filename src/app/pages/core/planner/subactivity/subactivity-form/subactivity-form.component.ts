@@ -237,49 +237,49 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
   //FK
 
   loadFiscalYears(): void {
-    this.fiscalYearsHttpService.findCatalogue().subscribe((fiscalYears) => {
+    this.fiscalYearsHttpService.findCatalogues().subscribe((fiscalYears) => {
       this.fiscalYears = fiscalYears;
     });
   }
 
   loadIndicatorSubactivities(): void {
-    this.indicatorSubactivitiesHttpService.findCatalogue().subscribe((indicatorSubactivities) => {
+    this.indicatorSubactivitiesHttpService.findCatalogues().subscribe((indicatorSubactivities) => {
       this.indicatorSubactivities = indicatorSubactivities;
     });
   }
 
   loadInstitutionalStrategicPlans(): void {
-    this.institutionalStrategicPlansHttpService.findCatalogue().subscribe((institutionalStrategicPlans) => {
+    this.institutionalStrategicPlansHttpService.findCatalogues().subscribe((institutionalStrategicPlans) => {
       this.institutionalStrategicPlans = institutionalStrategicPlans;
     });
   }
 
   loadStrategicAxis(): void {
-    this.strategicAxesHttpService.findCatalogue().subscribe((strategicAxes) => {
+    this.strategicAxesHttpService.findCatalogues().subscribe((strategicAxes) => {
       this.strategicAxes = strategicAxes;
     });
   }
 
   loadStrategies(): void {
-    this.strategiesHttpService.findCatalogue().subscribe((strategies) => {
+    this.strategiesHttpService.findCatalogues().subscribe((strategies) => {
       this.strategies = strategies;
     });
   }
 
   loadContinents(): void {
-    this.continentsHttpService.findCatalogue().subscribe((continents) => {
+    this.continentsHttpService.findCatalogues().subscribe((continents) => {
       this.continents = continents;
     });
   }
 
   loadPoas(): void {
-    this.poasHttpService.findCatalogue().subscribe((poas) => {
+    this.poasHttpService.findCatalogues().subscribe((poas) => {
       this.poas = poas;
     });
   }
 
   loadUnits(): void {
-    this.unitsHttpService.findCatalogue().subscribe((units) => {
+    this.unitsHttpService.findCatalogues().subscribe((units) => {
       this.units = units;
     });
   }

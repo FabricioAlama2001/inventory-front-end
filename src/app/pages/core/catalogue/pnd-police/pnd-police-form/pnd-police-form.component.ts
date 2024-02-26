@@ -155,7 +155,7 @@ export class PndPoliceFormComponent implements OnInit, OnExitInterface{
   }
 
   loadPndObjectives(): void {
-    this.pndObjectivesHttpService.findCatalogue().subscribe((pndObjectives) => {
+    this.pndObjectivesHttpService.findCatalogues().subscribe((pndObjectives) => {
       this.pndObjectives = pndObjectives;
     });
   }

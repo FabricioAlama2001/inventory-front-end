@@ -117,7 +117,7 @@ export class ExpenseGroupsHttpService {
     );
   }
 
-  findCatalogue(): Observable<ExpenseGroupModel[]> {
+  findCatalogues(): Observable<ExpenseGroupModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

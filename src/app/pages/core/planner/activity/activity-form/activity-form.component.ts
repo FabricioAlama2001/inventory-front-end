@@ -146,7 +146,7 @@ export class ActivityFormComponent implements OnInit, OnExitInterface{
   }
 
   loadComponents(): void {
-    this.componentsHttpService.findCatalogue().subscribe((components) => {
+    this.componentsHttpService.findCatalogues().subscribe((components) => {
       this.components = components;
       this.componentField.patchValue(this.components.find(item => item.id === this.componentId));
     });

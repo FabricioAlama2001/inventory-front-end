@@ -117,7 +117,7 @@ export class FiscalYearsHttpService {
     );
   }
 
-  findCatalogue(): Observable<FiscalYearModel[]> {
+  findCatalogues(): Observable<FiscalYearModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

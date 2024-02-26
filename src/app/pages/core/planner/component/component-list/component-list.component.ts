@@ -173,7 +173,7 @@ export class ComponentListComponent implements OnInit {
   }
 
   loadProjects(): void {
-    this.projectsHttpService.findCatalogue().subscribe((projects) => {
+    this.projectsHttpService.findCatalogues().subscribe((projects) => {
       this.projects = projects;
       this.project.patchValue(this.projects.find(item => item.id === this.projectId));
     });

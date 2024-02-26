@@ -117,7 +117,7 @@ export class UnitsHttpService {
     );
   }
 
-  findCatalogue(): Observable<UnitModel[]> {
+  findCatalogues(): Observable<UnitModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

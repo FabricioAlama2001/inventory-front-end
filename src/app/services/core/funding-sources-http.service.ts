@@ -118,7 +118,7 @@ export class FundingSourcesHttpService {
     );
   }
 
-  findCatalogue(): Observable<FundingSourceModel[]> {
+  findCatalogues(): Observable<FundingSourceModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

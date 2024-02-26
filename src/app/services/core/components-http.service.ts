@@ -117,7 +117,7 @@ export class ComponentsHttpService {
     );
   }
 
-  findCatalogue(): Observable<ComponentModel[]> {
+  findCatalogues(): Observable<ComponentModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

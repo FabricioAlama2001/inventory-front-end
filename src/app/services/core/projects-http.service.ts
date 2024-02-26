@@ -109,7 +109,7 @@ export class ProjectsHttpService {
     );
   }
 
-  findCatalogue(): Observable<ProjectModel[]> {
+  findCatalogues(): Observable<ProjectModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

@@ -117,7 +117,7 @@ export class BudgetItemsHttpService {
     );
   }
 
-  findCatalogue(): Observable<BudgetItemModel[]> {
+  findCatalogues(): Observable<BudgetItemModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

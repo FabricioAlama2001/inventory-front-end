@@ -6,7 +6,7 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-fluid">
     <!--username-->
     <div class="field">
-      <label appLabel for="username" label="Usuario:" [required]="usernameField"></label>
+      <label appLabel for="username" label="Usuario" [required]="usernameField"></label>
       <input pInputText type="text" id="username" formControlName="username" pKeyFilter="alphanum"/>
       <small appErrorMessage
              [errors]="usernameField.errors"
@@ -18,7 +18,7 @@
     <!--email && phone-->
     <div class="formgrid grid">
       <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="email" label="Correo Electrónico:" [required]="emailField"></label>
+        <label appLabel for="email" label="Correo Electrónico" [required]="emailField"></label>
         <input pInputText type="email" id="email" formControlName="email" class="mb-1"/>
         <small appErrorMessage
                [errors]="emailField.errors"
@@ -36,7 +36,7 @@
         }
       </div>
       <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="phone" label="Teléfono:" [required]="phoneField"></label>
+        <label appLabel for="phone" label="Teléfono" [required]="phoneField"></label>
         <input pInputText type="text" id="phone" formControlName="phone"/>
         <small appErrorMessage
                [errors]="phoneField.errors"

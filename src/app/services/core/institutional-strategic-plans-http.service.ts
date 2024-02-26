@@ -117,7 +117,7 @@ export class InstitutionalStrategicPlansHttpService {
     );
   }
 
-  findCatalogue(): Observable<InstitutionalStrategicPlanModel[]> {
+  findCatalogues(): Observable<InstitutionalStrategicPlanModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

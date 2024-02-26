@@ -117,7 +117,7 @@ export class ContinentsHttpService {
     );
   }
 
-  findCatalogue(): Observable<ContinentModel[]> {
+  findCatalogues(): Observable<ContinentModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

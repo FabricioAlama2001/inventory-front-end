@@ -117,7 +117,7 @@ export class PndObjectivesHttpService {
     );
   }
 
-  findCatalogue(): Observable<PndObjectiveModel[]> {
+  findCatalogues(): Observable<PndObjectiveModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
