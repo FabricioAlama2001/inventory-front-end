@@ -11,6 +11,9 @@ export interface UnitModel {
   executer: string;
   level: string;
   enabled: boolean;
+
+  principal: UnitModel;
+  parent: UnitModel;
 }
 
 export interface CreateUnitDto extends Omit<UnitModel, 'id'> {}

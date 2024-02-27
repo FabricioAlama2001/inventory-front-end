@@ -3,7 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import { CreateUnitDto, UpdateUnitDto, } from '@models/core';
+import { CreateUnitDto, UnitModel, UpdateUnitDto, } from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
@@ -41,6 +41,9 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
+  protected units: UnitModel[] = [];
+
+
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
     protected readonly coreService: CoreService,
@@ -71,13 +74,16 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
     if (this.id != RoutesEnum.NEW) {
       this.get();
     }
+    this.loadUnits();
   }
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
+      parent: [null, [Validators.required]],
+      principal: [null, [Validators.required]],
       acronym: [null, [Validators.required]],
       name: [null, [Validators.required]],
-      executer: [null, [Validators.required]],
+      executor: [true, [Validators.required]],
       level: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
     });
@@ -85,10 +91,11 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
 
   get validateFormErrors() {
     this.formErrors = [];
-
+    if (this.parentField.errors) this.formErrors.push(UnitsFormEnum.parent);
+    if (this.principalField.errors) this.formErrors.push(UnitsFormEnum.principal);
     if (this.acronymField.errors) this.formErrors.push(UnitsFormEnum.acronym);
     if (this.nameField.errors) this.formErrors.push(UnitsFormEnum.name);
-    if (this.executerField.errors) this.formErrors.push(UnitsFormEnum.executer);
+    if (this.executorField.errors) this.formErrors.push(UnitsFormEnum.executor);
     if (this.levelField.errors) this.formErrors.push(UnitsFormEnum.level);
     if (this.enabledField.errors) this.formErrors.push(UnitsFormEnum.enabled);
 
@@ -114,6 +121,12 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
       this.form.markAllAsTouched();
       this.messageService.errorsFields(this.formErrors);
     }
+  }
+
+  loadUnits(): void {
+    this.unitsHttpService.findCatalogues().subscribe((units) => {
+      this.units = units;
+    });
   }
 
   back(): void {
@@ -148,11 +161,19 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
     return this.form.controls['enabled'];
   }
 
-  get executerField(): AbstractControl {
-    return this.form.controls['executer'];
+  get executorField(): AbstractControl {
+    return this.form.controls['executor'];
   }
 
   get levelField(): AbstractControl {
     return this.form.controls['level'];
+  }
+
+  get parentField(): AbstractControl {
+    return this.form.controls['parent'];
+  }
+
+  get principalField(): AbstractControl {
+    return this.form.controls['principal'];
   }
 }

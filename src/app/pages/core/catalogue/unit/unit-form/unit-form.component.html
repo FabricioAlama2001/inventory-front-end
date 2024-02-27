@@ -24,6 +24,60 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="formgrid grid">
         <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="principal" [label]="UnitsFormEnum.principal"
+                 [required]="principalField"></label>
+          <p-dropdown id="principal"
+                      dataKey="id"
+                      formControlName="principal"
+                      [options]="units"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (principalField.value) {
+                <div>{{ principalField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="principalField.errors"
+                 [touched]="principalField.touched"
+                 [dirty]="principalField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="parent" [label]="UnitsFormEnum.parent"
+                 [required]="parentField"></label>
+          <p-dropdown id="parent"
+                      dataKey="id"
+                      formControlName="parent"
+                      [options]="units"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (parentField.value) {
+                <div>{{ parentField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="parentField.errors"
+                 [touched]="parentField.touched"
+                 [dirty]="parentField.dirty">
+          </small>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
           <label appLabel for="acronym" [label]="UnitsFormEnum.acronym" [required]="acronymField"></label>
           <input pInputText type="text" id="acronym" formControlName="acronym" />
           <small appErrorMessage [errors]="acronymField.errors" [touched]="acronymField.touched" [dirty]="acronymField.dirty">
@@ -31,7 +85,6 @@
         </div>
         <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
           <label appLabel for="name" [label]="UnitsFormEnum.name" [required]="nameField"></label>
-          <app-help-field (mouseenter)="opName.toggle($event)" (mouseleave)="opName.hide()"></app-help-field>
           <input pInputText type="text" id="name" formControlName="name" />
           <small appErrorMessage [errors]="nameField.errors" [touched]="nameField.touched" [dirty]="nameField.dirty">
           </small>
@@ -39,14 +92,17 @@
       </div>
       <div class="formgrid grid">
         <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
-          <label appLabel for="executer" [label]="UnitsFormEnum.executer" [required]="executerField"></label>
-          <input pInputText type="text" id="executer" formControlName="executer" />
-          <small appErrorMessage [errors]="executerField.errors" [touched]="executerField.touched" [dirty]="executerField.dirty">
+          <label appLabel for="executor" [label]="UnitsFormEnum.executor" [required]="executorField"></label>
+          <p>
+            <p-inputSwitch id="executor" formControlName="executor"></p-inputSwitch>
+          </p>
+          <small appErrorMessage [errors]="executorField.errors" [touched]="executorField.touched"
+            [dirty]="executorField.dirty">
           </small>
         </div>
         <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
           <label appLabel for="level" [label]="UnitsFormEnum.level" [required]="levelField"></label>
-          <input pInputText type="number" id="level" formControlName="level" />
+          <p-inputNumber id="level" formControlName="level" [min]="1"></p-inputNumber>
           <small appErrorMessage [errors]="levelField.errors" [touched]="levelField.touched" [dirty]="levelField.dirty">
           </small>
         </div>
@@ -63,8 +119,4 @@
     </form>
   </p-panel>
   }
-  <p-overlayPanel #opName>
-    <ng-template pTemplate="content">
-      Ingrese el nombre de la estrategia
-    </ng-template>
-  </p-overlayPanel>
+

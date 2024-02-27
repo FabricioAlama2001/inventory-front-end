@@ -77,9 +77,11 @@ export class UnitListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
+      {field: 'parent', header: UnitsFormEnum.parent},
+      {field: 'principal', header: UnitsFormEnum.principal},
       {field: 'acronym', header: UnitsFormEnum.acronym},
       {field: 'name', header: UnitsFormEnum.name},
-      {field: 'executer', header: UnitsFormEnum.executer},
+      {field: 'executor', header: UnitsFormEnum.executor},
       {field: 'level', header: UnitsFormEnum.level},
       {field: 'enabled', header: UnitsFormEnum.enabled},
     ];
