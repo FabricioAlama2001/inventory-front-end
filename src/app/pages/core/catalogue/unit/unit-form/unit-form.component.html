@@ -25,14 +25,14 @@
       <div class="formgrid grid">
         <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
           <label appLabel for="acronym" [label]="UnitsFormEnum.acronym" [required]="acronymField"></label>
-          <input pInputText acronym="text" id="acronym" formControlacronym="acronym" />
+          <input pInputText type="text" id="acronym" formControlName="acronym" />
           <small appErrorMessage [errors]="acronymField.errors" [touched]="acronymField.touched" [dirty]="acronymField.dirty">
           </small>
         </div>
         <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
           <label appLabel for="name" [label]="UnitsFormEnum.name" [required]="nameField"></label>
           <app-help-field (mouseenter)="opName.toggle($event)" (mouseleave)="opName.hide()"></app-help-field>
-          <input pInputText name="text" id="name" formControlName="name" />
+          <input pInputText type="text" id="name" formControlName="name" />
           <small appErrorMessage [errors]="nameField.errors" [touched]="nameField.touched" [dirty]="nameField.dirty">
           </small>
         </div>
@@ -46,7 +46,7 @@
         </div>
         <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
           <label appLabel for="level" [label]="UnitsFormEnum.level" [required]="levelField"></label>
-          <input pInputText level="text" id="level" formControllevel="level" />
+          <input pInputText type="number" id="level" formControlName="level" />
           <small appErrorMessage [errors]="levelField.errors" [touched]="levelField.touched" [dirty]="levelField.dirty">
           </small>
         </div>
