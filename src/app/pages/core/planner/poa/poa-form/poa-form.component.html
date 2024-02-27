@@ -1,0 +1,141 @@
+@if (coreService.isLoading) {
+  <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
+}
+
+@if (!coreService.isLoading) {
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <app-header-form [id]="id"></app-header-form>
+    </div>
+    <div class="p-toolbar-group-right">
+      <button pButton pRipple type="button"
+              (click)="back()"
+              [icon]="IconButtonActionEnum.CANCEL"
+              [label]="LabelButtonActionEnum.CANCEL"
+              [loading]="coreService.isLoading"
+              [ngClass]="[ClassButtonActionEnum.CANCEL]"></button>
+      <p-divider layout="vertical"></p-divider>
+      <button pButton pRipple type="button"
+              (click)="onSubmit()"
+              [icon]="IconButtonActionEnum.SAVE"
+              [label]="LabelButtonActionEnum.SAVE"
+              [loading]="coreService.isLoading"
+              [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
+    </div>
+  </p-toolbar>
+
+  <p-panel class="p-fluid">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="expenseType" [label]="PoasFormEnum.expenseType"
+                 [required]="expenseTypeField"></label>
+          <p-dropdown id="expenseType"
+                      dataKey="id"
+                      formControlName="expenseType"
+                      [options]="expenseTypes"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (expenseTypeField.value) {
+                <div>{{ expenseTypeField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="expenseTypeField.errors"
+                 [touched]="expenseTypeField.touched"
+                 [dirty]="expenseTypeField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="budgetItem" [label]="PoasFormEnum.budgetItem"
+                 [required]="budgetItemField"></label>
+          <p-dropdown id="budgetItem"
+                      dataKey="id"
+                      formControlName="budgetItem"
+                      [options]="budgetItems"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (budgetItemField.value) {
+                <div>{{ budgetItemField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="budgetItemField.errors"
+                 [touched]="budgetItemField.touched"
+                 [dirty]="budgetItemField.dirty">
+          </small>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="activity" [label]="PoasFormEnum.activity"
+                 [required]="activityField"></label>
+          <p-dropdown id="activity"
+                      dataKey="id"
+                      formControlName="activity"
+                      [options]="activities"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (activityField.value) {
+                <div>{{ activityField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="activityField.errors"
+                 [touched]="activityField.touched"
+                 [dirty]="activityField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="fundingSource" [label]="PoasFormEnum.fundingSource"
+                 [required]="fundingSourceField"></label>
+          <p-dropdown id="fundingSource"
+                      dataKey="id"
+                      formControlName="fundingSource"
+                      [options]="fundingSources"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (fundingSourceField.value) {
+                <div>{{ fundingSourceField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="fundingSourceField.errors"
+                 [touched]="fundingSourceField.touched"
+                 [dirty]="fundingSourceField.dirty">
+          </small>
+        </div>
+      </div>
+    </form>
+  </p-panel>
+}
+
+

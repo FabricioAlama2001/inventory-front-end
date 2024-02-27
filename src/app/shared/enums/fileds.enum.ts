@@ -145,5 +145,21 @@ export enum FiscalYearsFormEnum {
   code = 'Código',
   name = 'Nombre',
   enabled = 'Estado',
-  sort = 'Orden'
+  sort = 'Orden',
+  year = 'Año'
+}
+
+export enum UnitsFormEnum {
+  acronym = 'Acronimo',
+  name = 'Nombre',
+  executer = 'Unidad ejecutora',
+  level = 'Nivel',
+  enabled = 'Estado'
+}
+
+export enum PoasFormEnum {
+  activity = 'Actividad',
+  budgetItem = 'Item presupuestario',
+  fundingSource = 'Fuente de financiamiento',
+  expenseType = 'Tipo de gasto'
 }

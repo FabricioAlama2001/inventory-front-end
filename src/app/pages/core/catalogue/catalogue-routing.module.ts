@@ -82,6 +82,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.PLANNER]}
   },
+  {
+    path: 'units',
+    loadChildren: () => import('./unit/unit.module').then(m => m.UnitModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RoleEnum.PLANNER]}
+  },
 ];
 
 @NgModule({

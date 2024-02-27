@@ -61,6 +61,14 @@ export class RoutesService {
     return this.core + `planner/components/${componentId}/activities`;
   }
 
+  get poasList(): string {
+    return this.core + 'planner/poas';
+  }
+
+  poasForm(id: string): string {
+    return this.core + `planner/poas/${id}`;
+  }
+
   /** Catalogue Role **/
   get budgetItemsList(): string {
     return this.core + 'catalogue/budget-items';
@@ -164,6 +172,14 @@ export class RoutesService {
 
   fiscalYearsForm(id: string): string {
     return this.core + `catalogue/fiscal-years/${id}`;
+  }
+
+  get unitsList(): string {
+    return this.core + '/catalogue/units';
+  }
+
+  unitsForm(id: string): string {
+    return this.core + `catalogue/units/${id}`;
   }
 
   get common(): string {

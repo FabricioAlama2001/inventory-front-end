@@ -38,4 +38,6 @@ export enum BreadcrumbEnum {
   COMPONENTS = 'Componentes',
   ACTIVITIES = 'Actividades',
   FISCAL_YEARS = 'Años fiscales',
+  UNITS = 'Unidades',
+  POAS = 'Poas'
 }

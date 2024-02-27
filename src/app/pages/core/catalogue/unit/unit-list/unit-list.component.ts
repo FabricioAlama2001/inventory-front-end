@@ -6,11 +6,11 @@ import {debounceTime} from "rxjs";
 
 import {MenuItem, PrimeIcons} from "primeng/api";
 
-import {FiscalYearModel, ColumnModel} from '@models/core';
-import {BreadcrumbService, CoreService, MessageService, FiscalYearsHttpService, RoutesService} from '@services/core';
+import {UnitModel, ColumnModel} from '@models/core';
+import {BreadcrumbService, CoreService, MessageService, RoutesService, UnitsHttpService} from '@services/core';
 import {
   BreadcrumbEnum,
-  FiscalYearsFormEnum,
+  UnitsFormEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
@@ -19,17 +19,17 @@ import {
 import {getHigherSort} from "@shared/helpers";
 
 @Component({
-  selector: 'app-fiscal-year-list',
-  templateUrl: './fiscal-year-list.component.html',
-  styleUrl: './fiscal-year-list.component.scss'
+  selector: 'app-unit-list',
+  templateUrl: './unit-list.component.html',
+  styleUrl: './unit-list.component.scss'
 })
-export class FiscalYearListComponent {
+export class UnitListComponent {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
-  protected readonly FiscalYearsFormEnum = FiscalYearsFormEnum;
+  protected readonly UnitsFormEnum = UnitsFormEnum;
   protected readonly TableEnum = TableEnum;
 
   protected buttonActions: MenuItem[] = this.buildButtonActions;
@@ -39,9 +39,9 @@ export class FiscalYearListComponent {
 
   protected search: FormControl = new FormControl('');
 
-  protected selectedItem!: FiscalYearModel;
-  protected selectedItems: FiscalYearModel[] = [];
-  protected items: FiscalYearModel[] = [];
+  protected selectedItem!: UnitModel;
+  protected selectedItems: UnitModel[] = [];
+  protected items: UnitModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -49,9 +49,9 @@ export class FiscalYearListComponent {
     protected readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly fiscalYearsHttpService: FiscalYearsHttpService,
+    private readonly unitsHttpService: UnitsHttpService,
   ) {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.EXPENSE_TYPES}]);
+    this.breadcrumbService.setItems([{label: BreadcrumbEnum.UNITS}]);
   }
 
   ngOnInit() {
@@ -68,7 +68,7 @@ export class FiscalYearListComponent {
   }
 
   findAll() {
-    this.fiscalYearsHttpService.findAll()
+    this.unitsHttpService.findAll()
       .subscribe((response) => {
         this.items = response;
         this.coreService.higherSort = getHigherSort(this.items);
@@ -77,12 +77,11 @@ export class FiscalYearListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'code', header: FiscalYearsFormEnum.code},
-      {field: 'name', header: FiscalYearsFormEnum.name},
-      {field: 'enabled', header: FiscalYearsFormEnum.enabled},
-      {field: 'sort', header: FiscalYearsFormEnum.sort},
-      {field: 'year', header: FiscalYearsFormEnum.year}
-
+      {field: 'acronym', header: UnitsFormEnum.acronym},
+      {field: 'name', header: UnitsFormEnum.name},
+      {field: 'executer', header: UnitsFormEnum.executer},
+      {field: 'level', header: UnitsFormEnum.level},
+      {field: 'enabled', header: UnitsFormEnum.enabled},
     ];
   }
 
@@ -123,7 +122,7 @@ export class FiscalYearListComponent {
     ];
   }
 
-  validateButtonActions(item: FiscalYearModel): void {
+  validateButtonActions(item: UnitModel): void {
     this.buttonActions = this.buildButtonActions;
 
     if (item.enabled) {
@@ -136,24 +135,24 @@ export class FiscalYearListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.fiscalYearsForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.unitsForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.fiscalYearsForm(id)]);
+    this.router.navigate([this.routesService.unitsForm(id)]);
   }
 
   disable(id: string) {
-    this.fiscalYearsHttpService.disable(id).subscribe(fiscalYear => {
-      const index = this.items.findIndex(fiscalYear => fiscalYear.id === id);
-      this.items[index] = fiscalYear;
+    this.unitsHttpService.disable(id).subscribe(unit => {
+      const index = this.items.findIndex(unit => unit.id === id);
+      this.items[index] = unit;
     });
   }
 
   enable(id: string) {
-    this.fiscalYearsHttpService.enable(id).subscribe(fiscalYear => {
-      const index = this.items.findIndex(fiscalYear => fiscalYear.id === id);
-      this.items[index] = fiscalYear;
+    this.unitsHttpService.enable(id).subscribe(unit => {
+      const index = this.items.findIndex(unit => unit.id === id);
+      this.items[index] = unit;
     });
   }
 
@@ -161,14 +160,14 @@ export class FiscalYearListComponent {
     this.messageService.questionDelete()
       .then((result) => {
         if (result.isConfirmed) {
-          this.fiscalYearsHttpService.remove(id).subscribe((fiscalYear) => {
-            this.items = this.items.filter(item => item.id !== fiscalYear.id);
+          this.unitsHttpService.remove(id).subscribe((unit) => {
+            this.items = this.items.filter(item => item.id !== unit.id);
           });
         }
       });
   }
 
-  selectItem(item: FiscalYearModel) {
+  selectItem(item: UnitModel) {
     this.isButtonActions = true;
     this.selectedItem = item;
     this.validateButtonActions(item);

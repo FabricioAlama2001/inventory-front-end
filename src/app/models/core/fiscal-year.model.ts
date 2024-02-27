@@ -9,6 +9,7 @@ export interface FiscalYearModel {
   name: string;
   enabled: boolean;
   sort: number;
+  year: number;
 }
 
 export interface CreateFiscalYearDto extends Omit<FiscalYearModel, 'id'> {}

@@ -3,13 +3,13 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import { CreateFiscalYearDto, UpdateFiscalYearDto, } from '@models/core';
+import { CreateUnitDto, UpdateUnitDto, } from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
-  FiscalYearsHttpService,
   MessageService,
-  RoutesService
+  RoutesService,
+  UnitsHttpService,
 } from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
@@ -19,21 +19,20 @@ import {
   LabelButtonActionEnum,
   SkeletonEnum,
    RoutesEnum,
-   FiscalYearsFormEnum
+   UnitsFormEnum
 } from "@shared/enums";
 
-
 @Component({
-  selector: 'app-fiscal-year-form',
-  templateUrl: './fiscal-year-form.component.html',
-  styleUrl: './fiscal-year-form.component.scss'
+  selector: 'app-unit-form',
+  templateUrl: './unit-form.component.html',
+  styleUrl: './unit-form.component.scss'
 })
-export class FiscalYearFormComponent {
+export class UnitFormComponent implements OnInit, OnExitInterface{
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
-  protected readonly FiscalYearsFormEnum = FiscalYearsFormEnum;
+  protected readonly UnitsFormEnum = UnitsFormEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
   private saving: boolean = true;
@@ -49,16 +48,15 @@ export class FiscalYearFormComponent {
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly fiscalYearsHttpService: FiscalYearsHttpService
+    private readonly unitsHttpService: UnitsHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.FISCAL_YEARS, routerLink: [this.routesService.fiscalYearsList]},
+      {label: BreadcrumbEnum.UNITS, routerLink: [this.routesService.unitsList]},
       {label: BreadcrumbEnum.FORM},
     ]);
 
     this.form = this.newForm;
 
-    this.checkValueChanges();
   }
 
   async onExit(): Promise<boolean> {
@@ -77,35 +75,22 @@ export class FiscalYearFormComponent {
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      code: [null, [Validators.required]],
+      acronym: [null, [Validators.required]],
       name: [null, [Validators.required]],
+      executer: [null, [Validators.required]],
+      level: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
-      sort: [this.coreService.higherSort, [Validators.required]],
-      year: [null, [Validators.required]],
-    });
-  }
-
-  checkValueChanges() {
-    this.nameField.valueChanges.subscribe(value => {
-      const str = value.toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-
-      this.codeField.setValue(str);
     });
   }
 
   get validateFormErrors() {
     this.formErrors = [];
 
-    if (this.codeField.errors) this.formErrors.push(FiscalYearsFormEnum.code);
-    if (this.nameField.errors) this.formErrors.push(FiscalYearsFormEnum.name);
-    if (this.enabledField.errors) this.formErrors.push(FiscalYearsFormEnum.enabled);
-    if (this.sortField.errors) this.formErrors.push(FiscalYearsFormEnum.sort);
-    if (this.yearField.errors) this.formErrors.push(FiscalYearsFormEnum.year);
-
+    if (this.acronymField.errors) this.formErrors.push(UnitsFormEnum.acronym);
+    if (this.nameField.errors) this.formErrors.push(UnitsFormEnum.name);
+    if (this.executerField.errors) this.formErrors.push(UnitsFormEnum.executer);
+    if (this.levelField.errors) this.formErrors.push(UnitsFormEnum.level);
+    if (this.enabledField.errors) this.formErrors.push(UnitsFormEnum.enabled);
 
     this.formErrors.sort();
 
@@ -113,8 +98,8 @@ export class FiscalYearFormComponent {
   }
 
   get(): void {
-    this.fiscalYearsHttpService.findOne(this.id!).subscribe((fiscalYear) => {
-      this.form.patchValue(fiscalYear);
+    this.unitsHttpService.findOne(this.id!).subscribe((unit) => {
+      this.form.patchValue(unit);
     });
   }
 
@@ -132,27 +117,27 @@ export class FiscalYearFormComponent {
   }
 
   back(): void {
-    this.router.navigate([this.routesService.fiscalYearsList]);
+    this.router.navigate([this.routesService.strategicAxesList]);
   }
 
-  create(fiscalYear: CreateFiscalYearDto): void {
-    this.fiscalYearsHttpService.create(fiscalYear).subscribe(fiscalYear => {
-      //this.form.reset(fiscalYear);
+  create(unit: CreateUnitDto): void {
+    this.unitsHttpService.create(unit).subscribe(unit => {
+      //this.form.reset(unit);
       this.saving = false;
       this.back();
     });
   }
 
-  update(fiscalYear: UpdateFiscalYearDto): void {
-    this.fiscalYearsHttpService.update(this.id!, fiscalYear).subscribe((fiscalYear) => {
-      //this.form.reset(fiscalYear);
+  update(unit: UpdateUnitDto): void {
+    this.unitsHttpService.update(this.id!, unit).subscribe((unit) => {
+      //this.form.reset(unit);
       this.saving = false;
       this.back()
     });
   }
 
-  get codeField(): AbstractControl {
-    return this.form.controls['code'];
+  get acronymField(): AbstractControl {
+    return this.form.controls['acronym'];
   }
 
   get nameField(): AbstractControl {
@@ -163,11 +148,11 @@ export class FiscalYearFormComponent {
     return this.form.controls['enabled'];
   }
 
-  get sortField(): AbstractControl {
-    return this.form.controls['sort'];
+  get executerField(): AbstractControl {
+    return this.form.controls['executer'];
   }
 
-  get yearField(): AbstractControl {
-    return this.form.controls['year'];
+  get levelField(): AbstractControl {
+    return this.form.controls['level'];
   }
 }
