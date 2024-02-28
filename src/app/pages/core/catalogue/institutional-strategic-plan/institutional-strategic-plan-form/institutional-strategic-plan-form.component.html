@@ -22,6 +22,26 @@
   @if (!coreService.isLoading) {
   <p-panel class="p-fluid">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label appLabel for="pndPolice" [label]="InstitutionalStrategicPlansFormEnum.pndPolice+':'"
+          [required]="pndPoliceField"></label>
+        <p-dropdown id="pndPolice" dataKey="id" formControlName="pndPolice" [options]="pndPolices"
+          optionLabel="name" [filter]="true" filterBy="name" placeholder="Seleccione...">
+          <ng-template pTemplate="selectedItem">
+            @if(pndPoliceField.value){
+            <div>
+              <div>{{ pndPoliceField.value.name }}</div>
+            </div>
+            }
+          </ng-template>
+          <ng-template let-item pTemplate="item">
+            <div>{{ item.name }}</div>
+          </ng-template>
+        </p-dropdown>
+        <small appErrorMessage [errors]="pndPoliceField.errors" [touched]="pndPoliceField.touched"
+          [dirty]="pndPoliceField.dirty">
+        </small>
+      </div>
       <div class="formgrid grid">
         <div class="field xl:col-4 lg:col-4 md:col-6 sm:col-12">
           <label appLabel for="code" [label]="InstitutionalStrategicPlansFormEnum.code" [required]="codeField"></label>

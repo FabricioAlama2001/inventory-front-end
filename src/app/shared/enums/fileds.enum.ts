@@ -93,7 +93,8 @@ export enum InstitutionalStrategicPlansFormEnum {
   code = 'Código',
   name = 'Nombre',
   enabled = 'Estado',
-  sort = 'Orden'
+  sort = 'Orden',
+  pndPolice = 'Politica'
 }
 
 export enum StrategicAxesFormEnum {

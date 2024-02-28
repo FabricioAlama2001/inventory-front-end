@@ -3,12 +3,13 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import {CreateInstitutionalStrategicPlanDto,  UpdateInstitutionalStrategicPlanDto} from '@models/core';
+import {CreateInstitutionalStrategicPlanDto,  PndPoliceModel,  UpdateInstitutionalStrategicPlanDto} from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
   InstitutionalStrategicPlansHttpService,
   MessageService,
+  PndPolicesHttpService,
   RoutesService
 } from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
@@ -41,6 +42,9 @@ export class InstitutionalStrategicPlanFormComponent implements OnInit, OnExitIn
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
+  protected pndPolices: PndPoliceModel[] = [];
+
+
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
     protected readonly coreService: CoreService,
@@ -49,6 +53,8 @@ export class InstitutionalStrategicPlanFormComponent implements OnInit, OnExitIn
     private readonly router: Router,
     private readonly routesService: RoutesService,
     private readonly institutionalStrategicPlansHttpService: InstitutionalStrategicPlansHttpService,
+    private readonly pndPolicesHttpService: PndPolicesHttpService,
+
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.INSTITUTIONAL_STRATEGIC_PLANS, routerLink: [this.routesService.institutionalStrategicPlansList]},
@@ -75,6 +81,7 @@ export class InstitutionalStrategicPlanFormComponent implements OnInit, OnExitIn
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
+      pndPolice: [null, [Validators.required]],
       code: [null, [Validators.required]],
       name: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
@@ -96,7 +103,7 @@ export class InstitutionalStrategicPlanFormComponent implements OnInit, OnExitIn
 
   get validateFormErrors() {
     this.formErrors = [];
-
+    if (this.pndPoliceField.errors) this.formErrors.push(InstitutionalStrategicPlansFormEnum.pndPolice);
     if (this.codeField.errors) this.formErrors.push(InstitutionalStrategicPlansFormEnum.code);
     if (this.nameField.errors) this.formErrors.push(InstitutionalStrategicPlansFormEnum.name);
     if (this.enabledField.errors) this.formErrors.push(InstitutionalStrategicPlansFormEnum.enabled);
@@ -124,6 +131,12 @@ export class InstitutionalStrategicPlanFormComponent implements OnInit, OnExitIn
       this.form.markAllAsTouched();
       this.messageService.errorsFields(this.formErrors);
     }
+  }
+
+  loadPndPolices(): void {
+    this.pndPolicesHttpService.findCatalogues().subscribe((pndPolices) => {
+      this.pndPolices = pndPolices;
+    });
   }
 
   back(): void {
@@ -160,5 +173,9 @@ export class InstitutionalStrategicPlanFormComponent implements OnInit, OnExitIn
 
   get sortField(): AbstractControl {
     return this.form.controls['sort'];
+  }
+
+  get pndPoliceField(): AbstractControl {
+    return this.form.controls['pndPolice'];
   }
 }

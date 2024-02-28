@@ -79,6 +79,7 @@ export class InstitutionalStrategicPlanListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
+      {field: 'pndPolice', header: InstitutionalStrategicPlansFormEnum.pndPolice},
       {field: 'code', header: InstitutionalStrategicPlansFormEnum.code},
       {field: 'name', header: InstitutionalStrategicPlansFormEnum.name},
       {field: 'sort', header: InstitutionalStrategicPlansFormEnum.sort},

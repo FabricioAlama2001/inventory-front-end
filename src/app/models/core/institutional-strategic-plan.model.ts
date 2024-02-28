@@ -1,4 +1,4 @@
-import {CatalogueModel} from '@models/core';
+import {CatalogueModel, PndPoliceModel} from '@models/core';
 
 export interface InstitutionalStrategicPlanModel {
   id: string;
@@ -10,6 +10,8 @@ export interface InstitutionalStrategicPlanModel {
   name: string;
   enabled: boolean;
   sort: number;
+
+  pndPolice: PndPoliceModel
 }
 
 export interface CreateInstitutionalStrategicPlanDto extends Omit<InstitutionalStrategicPlanModel, 'id'> {}
