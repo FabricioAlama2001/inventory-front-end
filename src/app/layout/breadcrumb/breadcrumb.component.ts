@@ -17,6 +17,7 @@ export class BreadcrumbComponent {
   protected subscription: Subscription;
   protected items: MenuItem[] = [];
   protected home: MenuItem;
+  protected nickname: string;
 
   constructor(public breadcrumbService: BreadcrumbService,
               public coreService: CoreService,
@@ -28,6 +29,12 @@ export class BreadcrumbComponent {
     });
 
     this.home = {icon: PrimeIcons.HOME, routerLink: `/core/dashboards/${authService.role?.code}`};
+
+    if (authService.fiscalYear) {
+      this.nickname = `${authService.auth.identification} - ${authService.role.name} - ${authService.fiscalYear.year}`;
+    } else {
+      this.nickname = `${authService.auth.identification} - ${authService.role.name}`;
+    }
   }
 
 
@@ -39,7 +46,7 @@ export class BreadcrumbComponent {
     this.authHttpService.signOut();
   }
 
-  updateSystem(){
+  updateSystem() {
     this.coreService.updateSystem();
   }
 }

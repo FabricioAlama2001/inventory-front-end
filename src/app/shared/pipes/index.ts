@@ -8,6 +8,7 @@ export * from './core/required.pipe';
 export * from './core/required-severity.pipe';
 export * from './core/enabled.pipe';
 export * from './core/enabled-severity.pipe';
+export * from './core/yesNo.pipe';
 
 
 

@@ -1,12 +1,12 @@
 <p-toolbar>
   <div class="p-toolbar-group-left">
     <button pButton type="button" (click)="redirectCreateForm()" [icon]="IconButtonActionEnum.CREATE"
-      [label]="LabelButtonActionEnum.CREATE" [loading]="coreService.isLoading"
-      [ngClass]="[ClassButtonActionEnum.CREATE]">
+            [label]="LabelButtonActionEnum.CREATE" [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.CREATE]">
     </button>
     <button pButton type="button" (click)="findAll()" [icon]="IconButtonActionEnum.SYNC"
-      [label]="LabelButtonActionEnum.SYNC" [loading]="coreService.isLoading"
-      [ngClass]="[ClassButtonActionEnum.SYNC,'ml-2']">
+            [label]="LabelButtonActionEnum.SYNC" [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.SYNC,'ml-2']">
     </button>
   </div>
   <div class="p-toolbar-group-right">
@@ -14,26 +14,30 @@
   </div>
 </p-toolbar>
 
-<p-table #dt1 dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns"
-  [globalFilterFields]="['code', 'name']" [loading]="coreService.isLoading"
-  [(selection)]="selectedItems">
+<p-table #dt1 dataKey="id"
+         styleClass="p-datatable-striped"
+         [value]="items"
+         [columns]="columns"
+         [globalFilterFields]="['code', 'name','parent.name','principal.name']"
+         [loading]="coreService.isLoading"
+         [(selection)]="selectedItems">
   <ng-template pTemplate="caption">
     <div class="flex">
       <h1>{{ BreadcrumbEnum.UNITS }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
         <input #search pInputText type="text" placeholder="Buscar..."
-          (input)="dt1.filterGlobal(search.value, 'contains')" />
+               (input)="dt1.filterGlobal(search.value, 'contains')"/>
       </div>
     </div>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
     <tr>
-      @for (col of columns; track col){
-      <th [pSortableColumn]="col.field">
-        {{ col.header }}
-        <p-sortIcon [field]="col.field"></p-sortIcon>
-      </th>
+      @for (col of columns; track col) {
+        <th [pSortableColumn]="col.field">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
       }
       <th class="text-center">
         {{ TableEnum.ACTIONS }}
@@ -43,32 +47,36 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
     <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
       @for (col of columns; track col) {
-      <!--Objects-->
-      @if (rowData[col.field]?.id) {
-        <td>
-          @switch (col.field) {
-            @case ('parent') {
-              {{ rowData[col.field].name }}
+        <!--Objects-->
+        @if (rowData[col.field]?.id) {
+          <td>
+            @switch (col.field) {
+              @case ('parent') {
+                {{ rowData[col.field].name }}
+              }
+              @case ('principal') {
+                {{ rowData[col.field].name }}
+              }
             }
-            @case ('principal') {
-              {{ rowData[col.field].name }}
+          </td>
+        }
+
+        <!--Fields-->
+        @if (!rowData[col.field]?.id) {
+          <td>
+            @switch (col.field) {
+              @default {
+                {{ rowData[col.field] }}
+              }
+              @case ('enabled') {
+                <p-tag [value]="rowData[col.field]|enabled" [severity]="rowData[col.field]|enabledSeverity"></p-tag>
+              }
+              @case ('executor') {
+                <p-tag [value]="rowData[col.field]|yesNo" [severity]="rowData[col.field]|enabledSeverity"></p-tag>
+              }
             }
-          }
-        </td>
-      }
-      <!--Fields-->
-      @if (!rowData[col.field]?.id) {
-      <td>
-        @switch (col.field) {
-        @default {
-        {{ rowData[col.field] }}
+          </td>
         }
-        @case ('enabled') {
-        <p-tag [value]="rowData[col.field]|enabled" [severity]="rowData[col.field]|enabledSeverity"></p-tag>
-        }
-        }
-      </td>
-      }
       }
       <td class="text-center">
         <button type="button" pButton [icon]="PrimeIcons.ELLIPSIS_V" (click)="selectItem(rowData)"></button>

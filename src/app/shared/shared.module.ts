@@ -32,7 +32,7 @@ import {
   RequiredPipe, RequiredSeverityPipe,
   RolePipe,
   SelecetedPipe,
-  StatePipe
+  StatePipe, YesNoPipe
 } from '@shared/pipes';
 import {UserStatePipe} from "@shared/pipes/auth/userState.pipe";
 import {LocationComponent} from './components/location/location.component';
@@ -86,7 +86,8 @@ import {MapComponent} from './components/map/map.component';
     RequiredPipe,
     RequiredSeverityPipe,
     EnabledPipe,
-    EnabledSeverityPipe
+    EnabledSeverityPipe,
+    YesNoPipe,
   ],
   exports: [
     SkeletonComponent,
@@ -117,7 +118,8 @@ import {MapComponent} from './components/map/map.component';
     RequiredPipe,
     RequiredSeverityPipe,
     EnabledPipe,
-    EnabledSeverityPipe
+    EnabledSeverityPipe,
+    YesNoPipe,
   ],
   imports: [
     CommonModule,

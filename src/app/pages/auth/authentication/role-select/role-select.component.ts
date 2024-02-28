@@ -5,6 +5,7 @@ import {RoleModel} from "@models/auth";
 import {AuthService} from '@services/auth';
 import {CoreService, FiscalYearsHttpService, MessageService, RoutesService, UnitsHttpService} from '@services/core';
 import {FiscalYearModel, UnitModel} from "@models/core";
+import {RoleEnum} from "@shared/enums";
 
 @Component({
   selector: 'app-role-select',
@@ -28,19 +29,29 @@ export class RoleSelectComponent implements OnInit {
     private unitsHttpService: UnitsHttpService,
   ) {
     this.form = this.newForm();
+
+    this.roleField.valueChanges.subscribe(value => {
+      if(value.code === RoleEnum.ADMIN || value.code === RoleEnum.CATALOGUE){
+        this.unitField.clearValidators();
+        this.fiscalYearField.clearValidators();
+      }else{
+        this.unitField.setValidators(Validators.required);
+        this.fiscalYearField.setValidators(Validators.required);
+      }
+    });
   }
 
   ngOnInit(): void {
     this.loadFiscalYears();
-    // this.loadUnits();
+    this.loadUnits();
     this.roles = this.authService.roles;
   }
 
   newForm(): FormGroup {
     return this.formBuilder.group({
         role: [null, [Validators.required]],
-        fiscalYear: [null, []],
-        unit: [null, []],
+        fiscalYear: [null],
+        unit: [null],
       }
     );
   }
@@ -85,4 +96,6 @@ export class RoleSelectComponent implements OnInit {
   get unitField() {
     return this.form.controls['unit'];
   }
+
+  protected readonly Validators = Validators;
 }

@@ -152,7 +152,7 @@ export enum FiscalYearsFormEnum {
 export enum UnitsFormEnum {
   acronym = 'Acronimo',
   name = 'Nombre',
-  executor = 'Es Unidad ejecutora?',
+  executor = '¿Es unidad ejecutora?',
   level = 'Nivel',
   enabled = 'Estado',
   parent = 'Padre',
