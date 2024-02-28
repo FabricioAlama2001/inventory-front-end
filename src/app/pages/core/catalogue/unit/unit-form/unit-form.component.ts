@@ -79,8 +79,8 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      parent: [null, [Validators.required]],
-      principal: [null, [Validators.required]],
+      parent: [null, []],
+      principal: [null, []],
       acronym: [null, [Validators.required]],
       name: [null, [Validators.required]],
       executor: [true, [Validators.required]],
@@ -130,7 +130,7 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
   }
 
   back(): void {
-    this.router.navigate([this.routesService.strategicAxesList]);
+    this.router.navigate([this.routesService.unitsList]);
   }
 
   create(unit: CreateUnitDto): void {

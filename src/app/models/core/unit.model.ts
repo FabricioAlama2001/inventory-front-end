@@ -8,7 +8,7 @@ export interface UnitModel {
 
   acronym: string;
   name: string;
-  executer: string;
+  executer: boolean;
   level: string;
   enabled: boolean;
 
