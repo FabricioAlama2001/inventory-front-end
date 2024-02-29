@@ -77,6 +77,7 @@ export class StrategyListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
+      {field: 'strategicAxis', header: StrategiesFormEnum.strategicAxis},
       {field: 'code', header: StrategiesFormEnum.code},
       {field: 'name', header: StrategiesFormEnum.name},
       {field: 'enabled', header: StrategiesFormEnum.enabled},

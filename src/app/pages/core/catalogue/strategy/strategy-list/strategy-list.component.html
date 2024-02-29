@@ -44,7 +44,15 @@
     <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
       @for (col of columns; track col) {
       <!--Objects-->
-
+      @if (rowData[col.field]?.id) {
+        <td>
+          @switch (col.field) {
+          @case ('strategicAxis') {
+          {{ rowData.strategicAxis.name }}
+          }
+          }
+        </td>
+        }
       <!--Fields-->
       @if (!rowData[col.field]?.id) {
       <td>

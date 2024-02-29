@@ -3,10 +3,11 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import { CreateStrategicAxisDto, UpdateStrategicAxisDto, } from '@models/core';
+import { CreateStrategicAxisDto, InstitutionalStrategicPlanModel, UpdateStrategicAxisDto, } from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
+  InstitutionalStrategicPlansHttpService,
   MessageService,
   RoutesService,
   StrategicAxesHttpService
@@ -40,6 +41,8 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
   @Input() id: string = '';
   protected form: FormGroup;
   protected formErrors: string[] = [];
+  protected institutionalStrategicPlans: InstitutionalStrategicPlanModel[] = [];
+
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -48,7 +51,10 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly strategicAxesHttpService: StrategicAxesHttpService
+    private readonly strategicAxesHttpService: StrategicAxesHttpService,
+    private readonly institutionalStrategicPlansHttpService: InstitutionalStrategicPlansHttpService,
+
+
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.STRATEGIC_AXES, routerLink: [this.routesService.strategicAxesList]},
@@ -72,10 +78,13 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
     if (this.id != RoutesEnum.NEW) {
       this.get();
     }
+
+    this.loadInstitutionalStrategicPlans();
   }
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
+      institutionalStrategicPlan: [null, [Validators.required]],
       code: [null, [Validators.required]],
       name: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
@@ -97,7 +106,7 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
 
   get validateFormErrors() {
     this.formErrors = [];
-
+    if (this.institutionalStrategicPlanField.errors) this.formErrors.push(StrategicAxesFormEnum.institutionalStrategicPlan);
     if (this.codeField.errors) this.formErrors.push(StrategicAxesFormEnum.code);
     if (this.nameField.errors) this.formErrors.push(StrategicAxesFormEnum.name);
     if (this.enabledField.errors) this.formErrors.push(StrategicAxesFormEnum.enabled);
@@ -147,6 +156,12 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
     });
   }
 
+  loadInstitutionalStrategicPlans(): void {
+    this.institutionalStrategicPlansHttpService.findCatalogues().subscribe((institutionalStrategicPlans) => {
+      this.institutionalStrategicPlans = institutionalStrategicPlans;
+    });
+  }
+
   get codeField(): AbstractControl {
     return this.form.controls['code'];
   }
@@ -161,5 +176,9 @@ export class StrategicAxisFormComponent implements OnInit, OnExitInterface{
 
   get sortField(): AbstractControl {
     return this.form.controls['sort'];
+  }
+
+  get institutionalStrategicPlanField(): AbstractControl {
+    return this.form.controls['institutionalStrategicPlan'];
   }
 }

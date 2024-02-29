@@ -78,6 +78,7 @@ export class StrategicAxisListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
+      {field: 'institutionalStrategicPlan', header: StrategicAxesFormEnum.institutionalStrategicPlan},
       {field: 'code', header: StrategicAxesFormEnum.code},
       {field: 'name', header: StrategicAxesFormEnum.name},
       {field: 'enabled', header: StrategicAxesFormEnum.enabled},

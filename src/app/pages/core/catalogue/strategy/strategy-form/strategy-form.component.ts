@@ -3,12 +3,13 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import { CreateStrategyDto, UpdateStrategyDto, } from '@models/core';
+import { CreateStrategyDto, StrategicAxisModel, UpdateStrategyDto, } from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
   MessageService,
   RoutesService,
+  StrategicAxesHttpService,
   StrategiesHttpService,
 } from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
@@ -41,6 +42,7 @@ export class StrategyFormComponent implements OnInit, OnExitInterface{
   @Input() id: string = '';
   protected form: FormGroup;
   protected formErrors: string[] = [];
+  protected strategicAxes: StrategicAxisModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -49,7 +51,9 @@ export class StrategyFormComponent implements OnInit, OnExitInterface{
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly strategiesHttpService: StrategiesHttpService
+    private readonly strategiesHttpService: StrategiesHttpService,
+    private readonly strategicAxisHttpService: StrategicAxesHttpService,
+
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.STRATEGIES, routerLink: [this.routesService.strategiesList]},
@@ -73,10 +77,13 @@ export class StrategyFormComponent implements OnInit, OnExitInterface{
     if (this.id != RoutesEnum.NEW) {
       this.get();
     }
+
+    this.loadStrategicAxis();
   }
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
+      strategicAxis: [null, [Validators.required]],
       code: [null, [Validators.required]],
       name: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
@@ -98,7 +105,7 @@ export class StrategyFormComponent implements OnInit, OnExitInterface{
 
   get validateFormErrors() {
     this.formErrors = [];
-
+    if (this.strategicAxisField.errors) this.formErrors.push(StrategiesFormEnum.strategicAxis);
     if (this.codeField.errors) this.formErrors.push(StrategiesFormEnum.code);
     if (this.nameField.errors) this.formErrors.push(StrategiesFormEnum.name);
     if (this.enabledField.errors) this.formErrors.push(StrategiesFormEnum.enabled);
@@ -148,6 +155,12 @@ export class StrategyFormComponent implements OnInit, OnExitInterface{
     });
   }
 
+  loadStrategicAxis(): void {
+    this.strategicAxisHttpService.findCatalogues().subscribe((strategicAxes) => {
+      this.strategicAxes = strategicAxes;
+    });
+  }
+
   get codeField(): AbstractControl {
     return this.form.controls['code'];
   }
@@ -162,5 +175,9 @@ export class StrategyFormComponent implements OnInit, OnExitInterface{
 
   get sortField(): AbstractControl {
     return this.form.controls['sort'];
+  }
+
+  get strategicAxisField(): AbstractControl {
+    return this.form.controls['strategicAxis'];
   }
 }

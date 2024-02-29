@@ -22,6 +22,26 @@
   @if (!coreService.isLoading) {
   <p-panel class="p-fluid">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label appLabel for="institutionalStrategicPlan" [label]="StrategicAxesFormEnum.institutionalStrategicPlan"
+          [required]="institutionalStrategicPlanField"></label>
+        <p-dropdown id="institutionalStrategicPlan" dataKey="id" formControlName="institutionalStrategicPlan" [options]="institutionalStrategicPlans"
+          optionLabel="name" [filter]="true" filterBy="name" placeholder="Seleccione...">
+          <ng-template pTemplate="selectedItem">
+            @if(institutionalStrategicPlanField.value){
+            <div>
+              <div>{{ institutionalStrategicPlanField.value.name }}</div>
+            </div>
+            }
+          </ng-template>
+          <ng-template let-item pTemplate="item">
+            <div>{{ item.name }}</div>
+          </ng-template>
+        </p-dropdown>
+        <small appErrorMessage [errors]="institutionalStrategicPlanField.errors" [touched]="institutionalStrategicPlanField.touched"
+          [dirty]="institutionalStrategicPlanField.dirty">
+        </small>
+      </div>
       <div class="formgrid grid">
         <div class="field xl:col-4 lg:col-4 md:col-6 sm:col-12">
           <label appLabel for="code" [label]="StrategicAxesFormEnum.code" [required]="codeField"></label>

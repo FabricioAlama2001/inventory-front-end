@@ -98,6 +98,7 @@ export enum InstitutionalStrategicPlansFormEnum {
 }
 
 export enum StrategicAxesFormEnum {
+  institutionalStrategicPlan = 'Plan estratégico institucional',
   code = 'Código',
   name = 'Nombre',
   enabled = 'Estado',
@@ -105,6 +106,7 @@ export enum StrategicAxesFormEnum {
 }
 
 export enum StrategiesFormEnum {
+  strategicAxis = 'Eje estratégico',
   code = 'Código',
   name = 'Nombre',
   enabled = 'Estado',
