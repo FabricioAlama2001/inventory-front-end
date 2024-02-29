@@ -23,7 +23,7 @@
 <p-panel class="p-fluid">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="field">
-      <label appLabel for="expenseGroup" [label]="BudgetItemsFormEnum.expenseGroup+':'"
+      <label appLabel for="expenseGroup" [label]="BudgetItemsFormEnum.expenseGroup"
         [required]="expenseGroupField"></label>
       <p-dropdown id="expenseGroup" dataKey="id" formControlName="expenseGroup" [options]="expenseGroups"
         optionLabel="name" [filter]="true" filterBy="name" placeholder="Seleccione...">

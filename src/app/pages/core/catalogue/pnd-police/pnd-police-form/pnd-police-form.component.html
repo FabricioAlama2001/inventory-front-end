@@ -23,7 +23,7 @@
   <p-panel class="p-fluid">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="field">
-        <label appLabel for="pndObjective" [label]="PndPolicesFormEnum.pndObjective+':'"
+        <label appLabel for="pndObjective" [label]="PndPolicesFormEnum.pndObjective"
           [required]="pndObjectiveField"></label>
         <p-dropdown id="pndObjective" dataKey="id" formControlName="pndObjective" [options]="pndObjectives"
           optionLabel="name" [filter]="true" filterBy="name" placeholder="Seleccione...">
