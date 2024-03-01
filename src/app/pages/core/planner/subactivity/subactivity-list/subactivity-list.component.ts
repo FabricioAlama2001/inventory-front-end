@@ -80,7 +80,7 @@ export class SubactivityListComponent {
     return [
       {field: 'fiscalYear', header: SubactivitiesFormEnum.fiscalYear},
       {field: 'indicatorSubactivity', header: SubactivitiesFormEnum.indicatorSubactivity},
-      {field: 'institutionalStrategicPlan', header: SubactivitiesFormEnum.institutionalStrategicPlan},
+      //{field: 'institutionalStrategicPlan', header: SubactivitiesFormEnum.institutionalStrategicPlan},
       {field: 'strategicAxis', header: SubactivitiesFormEnum.strategicAxis},
       {field: 'strategy', header: SubactivitiesFormEnum.strategy},
       //{field: 'continent', header: SubactivitiesFormEnum.continent},
@@ -91,7 +91,7 @@ export class SubactivityListComponent {
       {field: 'poa', header: SubactivitiesFormEnum.poa},
       {field: 'unit', header: SubactivitiesFormEnum.unit},
       {field: 'name', header: SubactivitiesFormEnum.name},
-      {field: 'type', header: SubactivitiesFormEnum.type},
+      //{field: 'type', header: SubactivitiesFormEnum.type},
       {field: 'enabled', header: SubactivitiesFormEnum.enabled},
     ];
   }

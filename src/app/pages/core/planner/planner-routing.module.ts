@@ -28,6 +28,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.PLANNER]}
   },
+  {
+    path: 'poas',
+    loadChildren: () => import('./poa/poa.module').then(m => m.PoaModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RoleEnum.PLANNER]}
+  },
 ];
 
 @NgModule({

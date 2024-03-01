@@ -74,9 +74,29 @@
           </small>
         </div>
         <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
-          <label appLabel for="fiscalYear" [label]="ActivitiesFormEnum.fiscalYear" [required]="fiscalYearField"></label>
-          <p-inputNumber id="fiscalYear" formControlName="fiscalYear" [min]="1"></p-inputNumber>
-          <small appErrorMessage [errors]="fiscalYearField.errors" [touched]="fiscalYearField.touched" [dirty]="fiscalYearField.dirty">
+          <label appLabel for="fiscalYear" [label]="ActivitiesFormEnum.fiscalYear"
+                 [required]="fiscalYearField"></label>
+          <p-dropdown id="fiscalYear"
+                      dataKey="id"
+                      formControlName="fiscalYear"
+                      [options]="fiscalYears"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (fiscalYearField.value) {
+                <div>{{ fiscalYearField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="fiscalYearField.errors"
+                 [touched]="fiscalYearField.touched"
+                 [dirty]="fiscalYearField.dirty">
           </small>
         </div>
         <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">

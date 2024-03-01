@@ -5,6 +5,7 @@ import {PrimeIcons} from "primeng/api";
 
 import {
   CreateComponentDto,
+  FiscalYearModel,
   IndicatorComponentModel,
   ProjectModel,
   UpdateComponentDto
@@ -13,6 +14,7 @@ import {
   BreadcrumbService,
   ComponentsHttpService,
   CoreService,
+  FiscalYearsHttpService,
   IndicatorComponentsHttpService,
   MessageService,
   ProjectsHttpService,
@@ -50,6 +52,7 @@ export class ComponentFormComponent implements OnInit, OnExitInterface {
 
   protected indicators: IndicatorComponentModel[] = [];
   protected projects: ProjectModel[] = [];
+  protected fiscalYears: FiscalYearModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -61,6 +64,8 @@ export class ComponentFormComponent implements OnInit, OnExitInterface {
     private readonly projectsHttpService: ProjectsHttpService,
     private readonly indicatorComponentsHttpService: IndicatorComponentsHttpService,
     private readonly componentsHttpService: ComponentsHttpService,
+    private readonly fiscalYearsHttpService: FiscalYearsHttpService,
+
   ) {
     this.form = this.newForm;
   }
@@ -81,6 +86,7 @@ export class ComponentFormComponent implements OnInit, OnExitInterface {
 
     this.loadIndicatorComponents();
     this.loadProjects();
+    this.loadFiscalYears();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -153,6 +159,12 @@ export class ComponentFormComponent implements OnInit, OnExitInterface {
   loadIndicatorComponents(): void {
     this.indicatorComponentsHttpService.findCatalogues().subscribe((indicators) => {
       this.indicators = indicators;
+    });
+  }
+
+  loadFiscalYears(): void {
+    this.fiscalYearsHttpService.findCatalogues().subscribe((fiscalYears) => {
+      this.fiscalYears = fiscalYears;
     });
   }
 

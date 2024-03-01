@@ -7,7 +7,8 @@ import {
   CreateActivityDto,
   IndicatorComponentModel,
   ComponentModel,
-  UpdateActivityDto
+  UpdateActivityDto,
+  FiscalYearModel
 } from '@models/core';
 import {
   BreadcrumbService,
@@ -15,7 +16,8 @@ import {
   CoreService,
   MessageService,
   RoutesService,
-  ComponentsHttpService
+  ComponentsHttpService,
+  FiscalYearsHttpService
 } from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
@@ -49,6 +51,8 @@ export class ActivityFormComponent implements OnInit, OnExitInterface{
   protected formErrors: string[] = [];
 
   protected components: ComponentModel[] = [];
+  protected fiscalYears: FiscalYearModel[] = [];
+
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -59,6 +63,8 @@ export class ActivityFormComponent implements OnInit, OnExitInterface{
     private readonly routesService: RoutesService,
     private readonly componentsHttpService: ComponentsHttpService,
     private readonly activitiesHttpService: ActivitiesHttpService,
+    private readonly fiscalYearsHttpService: FiscalYearsHttpService,
+
   ) {
     this.form = this.newForm;
   }
@@ -78,6 +84,7 @@ export class ActivityFormComponent implements OnInit, OnExitInterface{
     ]);
 
     this.loadComponents();
+    this.loadFiscalYears();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -149,6 +156,12 @@ export class ActivityFormComponent implements OnInit, OnExitInterface{
     this.componentsHttpService.findCatalogues().subscribe((components) => {
       this.components = components;
       this.componentField.patchValue(this.components.find(item => item.id === this.componentId));
+    });
+  }
+
+  loadFiscalYears(): void {
+    this.fiscalYearsHttpService.findCatalogues().subscribe((fiscalYears) => {
+      this.fiscalYears = fiscalYears;
     });
   }
 

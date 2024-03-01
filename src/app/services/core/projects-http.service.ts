@@ -66,7 +66,7 @@ export class ProjectsHttpService {
   enable(id: string): Observable<ProjectModel> {
     const url = `${this.API_URL}/${id}/enable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -99,7 +99,7 @@ export class ProjectsHttpService {
   disable(id: string): Observable<ProjectModel> {
     const url = `${this.API_URL}/${id}/disable`;
 
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;

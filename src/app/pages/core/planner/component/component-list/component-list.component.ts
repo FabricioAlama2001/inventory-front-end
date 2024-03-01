@@ -68,7 +68,6 @@ export class ComponentListComponent implements OnInit {
       {label: BreadcrumbEnum.COMPONENTS}
     ]);
 
-    console.log('asd');
     this.paginator = this.coreService.paginator;
   }
 
