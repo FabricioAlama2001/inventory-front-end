@@ -182,6 +182,14 @@ export class RoutesService {
     return this.core + `catalogue/units/${id}`;
   }
 
+  get programmingTypesList(): string {
+    return this.core + '/catalogue/programming-types';
+  }
+
+  programmingTypesForm(id: string): string {
+    return this.core + `catalogue/programming-types/${id}`;
+  }
+
   get common(): string {
     return '/common';
   }
@@ -239,4 +247,5 @@ export class RoutesService {
   passwordReset() {
     this.router.navigateByUrl(`/password-reset`);
   }
+
 }

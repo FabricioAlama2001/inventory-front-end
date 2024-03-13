@@ -168,3 +168,9 @@ export enum PoasFormEnum {
   fundingSource = 'Fuente de financiamiento',
   expenseType = 'Tipo de gasto'
 }
+
+export enum ProgrammingTypesFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+}

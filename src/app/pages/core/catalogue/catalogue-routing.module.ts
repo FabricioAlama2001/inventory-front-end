@@ -88,6 +88,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.CATALOGUE,RoleEnum.PLANNER]}
   },
+  {
+    path: 'programming-types',
+    loadChildren: () => import('./programming-type/programming-type.module').then(m => m.ProgrammingTypeModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RoleEnum.CATALOGUE,RoleEnum.PLANNER]}
+  },
 ];
 
 @NgModule({
