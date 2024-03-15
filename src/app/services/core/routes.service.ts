@@ -94,6 +94,14 @@ export class RoutesService {
     return this.core + `catalogue/expense-types/${id}`;
   }
 
+  get documentTypesList(): string {
+    return this.core + '/catalogue/document-types';
+  }
+
+  documentTypesForm(id: string): string {
+    return this.core + `catalogue/document-types/${id}`;
+  }
+
   get pndObjectivesList(): string {
     return this.core + '/catalogue/pnd-objectives';
   }

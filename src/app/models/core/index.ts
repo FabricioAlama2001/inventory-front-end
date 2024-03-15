@@ -34,6 +34,7 @@ export * from './pnd-objective.model';
 export * from './pnd-police.model';
 export * from './fiscal-year.model';
 export * from './programming-type.model';
+export * from './document-type.model';
 
 
 

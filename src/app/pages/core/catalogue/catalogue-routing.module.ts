@@ -94,6 +94,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.CATALOGUE,RoleEnum.PLANNER]}
   },
+  {
+    path: 'document-types',
+    loadChildren: () => import('./document-type/document-type.module').then(m => m.DocumentTypeModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RoleEnum.CATALOGUE,RoleEnum.PLANNER]}
+  },
 ];
 
 @NgModule({

@@ -40,5 +40,6 @@ export enum BreadcrumbEnum {
   FISCAL_YEARS = 'Años fiscales',
   UNITS = 'Unidades',
   POAS = 'Poas',
-  PROGRAMMING_TYPES = 'Tipos de programación'
+  PROGRAMMING_TYPES = 'Tipos de programación',
+  DOCUMENT_TYPES = 'Tipos de documentos'
 }

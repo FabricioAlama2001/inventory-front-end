@@ -174,3 +174,12 @@ export enum ProgrammingTypesFormEnum {
   name = 'Nombre',
   enabled = 'Estado',
 }
+
+export enum DocumentTypesFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  description ='Descripción',
+  acronym ='Acronimo',
+  enabled = 'Estado'
+
+}
