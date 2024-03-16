@@ -41,5 +41,8 @@ export enum BreadcrumbEnum {
   UNITS = 'Unidades',
   POAS = 'Poas',
   PROGRAMMING_TYPES = 'Tipos de programación',
-  DOCUMENT_TYPES = 'Tipos de documentos'
+  DOCUMENT_TYPES = 'Tipos de documentos',
+  APPLICATION_STATUS = 'Estados de solicitud',
+  TRANSACTIONS = 'Transacciones',
+  UNIT_MANAGERS ='Responsables de unidad',
 }

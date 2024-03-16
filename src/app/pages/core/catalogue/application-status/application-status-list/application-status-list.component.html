@@ -4,7 +4,7 @@
       [label]="LabelButtonActionEnum.CREATE" [loading]="coreService.isLoading"
       [ngClass]="[ClassButtonActionEnum.CREATE]">
     </button>
-    <button pButton type="button" (click)="findTransactions()" [icon]="IconButtonActionEnum.SYNC"
+    <button pButton type="button" (click)="findAll()" [icon]="IconButtonActionEnum.SYNC"
       [label]="LabelButtonActionEnum.SYNC" [loading]="coreService.isLoading"
       [ngClass]="[ClassButtonActionEnum.SYNC,'ml-2']">
     </button>
@@ -14,21 +14,16 @@
   </div>
 </p-toolbar>
 
-<p-paginator [rows]="paginator.limit" [totalRecords]="paginator.totalItems"
-  (onPageChange)="paginate($event)"></p-paginator>
-
-<p-table dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns"
-  [globalFilterFields]="['fiscalYear', 'name']" [loading]="coreService.isLoading" [(selection)]="selectedItems">
+<p-table #dt1 dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns"
+  [globalFilterFields]="['code', 'name']" [loading]="coreService.isLoading"
+  [(selection)]="selectedItems">
   <ng-template pTemplate="caption">
     <div class="flex">
-      <h1>{{ BreadcrumbEnum.PROJECTS }}</h1>
-      <div class="p-input-icon-left ml-auto">
-        <div class="p-inputgroup">
-          <input type="text" pInputText [formControl]="search" placeholder="Buscar...">
-          <button pButton pRipple type="button" [icon]="PrimeIcons.SEARCH" [loading]="coreService.isLoading"
-            (click)="findTransactions()">
-          </button>
-        </div>
+      <h1>{{ BreadcrumbEnum.APPLICATION_STATUS }}</h1>
+      <div class="p-input-icon-right ml-auto">
+        <i [class]="PrimeIcons.SEARCH"></i>
+        <input #search pInputText type="text" placeholder="Buscar..."
+          (input)="dt1.filterGlobal(search.value, 'contains')" />
       </div>
     </div>
   </ng-template>
@@ -49,34 +44,7 @@
     <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
       @for (col of columns; track col) {
       <!--Objects-->
-      @if (rowData[col.field]?.id) {
-      <td>
-        @switch (col.field) {
-        @case ('documentType') {
-        {{ rowData.documentType.name }}
-        }
-        @case ('applicationStatus') {
-        {{ rowData.applicationStatus.name }}
-        }
-        @case ('parent') {
-        {{ rowData.parent.name }}
-        }
-        @case ('process') {
-        {{ rowData.process.name }}
-        }
-        @case ('fiscalYear') {
-        {{ rowData.fiscalYear.name }}
-        }
-        @case ('unit') {
-        {{ rowData.unit.name }}
-        }
-        @case ('principalUnit') {
-        {{ rowData.principalUnit.name }}
-        }
-        }
 
-      </td>
-      }
       <!--Fields-->
       @if (!rowData[col.field]?.id) {
       <td>

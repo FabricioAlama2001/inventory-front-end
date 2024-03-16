@@ -34,6 +34,9 @@ export * from './activities-http.service';
 export * from './fiscal-years-http.service';
 export * from './programming-types-http.service';
 export * from './document-types-http.service';
+export * from './transactions-http.service';
+export * from './unit-managers-http.service';
+
 
 
 

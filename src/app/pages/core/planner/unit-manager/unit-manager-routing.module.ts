@@ -1,17 +1,17 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ExitGuard} from "@shared/guards";
-import { TransactionFormComponent } from './transaction-form/transaction-form.component';
-import { TransactionListComponent } from './transaction-list/transaction-list.component';
+import { UnitManagerListComponent } from './unit-manager-list/unit-manager-list.component';
+import { UnitManagerFormComponent } from './unit-manager-form/unit-manager-form.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: TransactionListComponent
+    component: UnitManagerListComponent
   },
   {
     path: ':id',
-    component: TransactionFormComponent,
+    component: UnitManagerFormComponent,
     canDeactivate: [ExitGuard]
   },
 ];
@@ -20,5 +20,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TransactionRoutingModule {
+export class UnitManagerRoutingModule {
 }

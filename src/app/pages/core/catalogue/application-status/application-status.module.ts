@@ -1,8 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule as NgCommonModule} from '@angular/common';
-import { TransactionRoutingModule } from './transaction-routing.module';
+import { ApplicationStatusRoutingModule } from './application-status-routing.module';
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "@shared/shared.module";
+
 
 // PrimeNg Modules
 import {ButtonModule} from "primeng/button";
@@ -26,17 +27,18 @@ import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
 
 // Components
-import { TransactionFormComponent } from './transaction-form/transaction-form.component';
-import { TransactionListComponent } from './transaction-list/transaction-list.component';
+import { ApplicationStatusFormComponent } from './application-status-form/application-status-form.component';
+import { ApplicationStatusListComponent } from './application-status-list/application-status-list.component';
+
 
 @NgModule({
   declarations: [
-    TransactionFormComponent,
-    TransactionListComponent,
+    ApplicationStatusFormComponent,
+    ApplicationStatusListComponent,
   ],
   imports: [
     NgCommonModule,
-    TransactionRoutingModule,
+    ApplicationStatusRoutingModule,
     ReactiveFormsModule,
     SharedModule,
     ButtonModule,
@@ -60,5 +62,5 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
     ToolbarModule,
   ]
 })
-export class TransactionModule {
+export class ApplicationStatusModule {
 }

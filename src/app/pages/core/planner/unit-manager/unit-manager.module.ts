@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule as NgCommonModule} from '@angular/common';
-import { TransactionRoutingModule } from './transaction-routing.module';
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "@shared/shared.module";
 
@@ -24,19 +23,20 @@ import {SplitButtonModule} from "primeng/splitbutton";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
+import { UnitManagerFormComponent } from './unit-manager-form/unit-manager-form.component';
+import { UnitManagerListComponent } from './unit-manager-list/unit-manager-list.component';
+import { UnitManagerRoutingModule } from './unit-manager-routing.module';
 
 // Components
-import { TransactionFormComponent } from './transaction-form/transaction-form.component';
-import { TransactionListComponent } from './transaction-list/transaction-list.component';
 
 @NgModule({
   declarations: [
-    TransactionFormComponent,
-    TransactionListComponent,
+    UnitManagerFormComponent,
+    UnitManagerListComponent,
   ],
   imports: [
     NgCommonModule,
-    TransactionRoutingModule,
+    UnitManagerRoutingModule,
     ReactiveFormsModule,
     SharedModule,
     ButtonModule,
@@ -60,5 +60,5 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
     ToolbarModule,
   ]
 })
-export class TransactionModule {
+export class UnitManagerModule {
 }

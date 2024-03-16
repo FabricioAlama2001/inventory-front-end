@@ -181,5 +181,37 @@ export enum DocumentTypesFormEnum {
   description ='Descripción',
   acronym ='Acronimo',
   enabled = 'Estado'
+}
 
+export enum ApplicationStatusFormEnum {
+  code = 'Código',
+  name = 'Nombre',
+  enabled = 'Estado',
+}
+
+export enum TransactionsFormEnum {
+  code = 'Código',
+  subject = 'Asunto',
+  esigef = 'ESIGEF',
+  value = 'Valor',
+  isIva = 'Tiene IVA',
+  description = 'Descripción',
+  enabled = 'Estado',
+  state = 'Estado transacción',
+  documentType = 'Tipo de documento',
+  applicationStatus = 'Estado de la solicitud',
+  parent = 'Transacción principal',
+  process = 'Proceso transaccional',
+  fiscalYear = 'Año fiscal',
+  unit = 'Unidad ejecutora',
+  principalUnit = 'Unidad principal'
+}
+
+export enum UnitManagersFormEnum {
+  code = 'Código',
+  date = 'Fecha',
+  enabled = 'Estado',
+  user = 'Usuario',
+  role = 'Rol',
+  unit = 'Unidad ejecutora'
 }

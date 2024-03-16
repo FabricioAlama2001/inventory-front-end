@@ -69,6 +69,15 @@ export class RoutesService {
     return this.core + `planner/poas/${id}`;
   }
 
+  get unitManagersList(): string {
+    return this.core + 'planner/unit-managers';
+  }
+
+  unitManagersForm(id: string): string {
+    return this.core + `planner/unit-managers/${id}`;
+  }
+
+
   /** Catalogue Role **/
   get budgetItemsList(): string {
     return this.core + 'catalogue/budget-items';
@@ -196,6 +205,22 @@ export class RoutesService {
 
   programmingTypesForm(id: string): string {
     return this.core + `catalogue/programming-types/${id}`;
+  }
+
+  get applicationStatusList(): string {
+    return this.core + '/catalogue/application-status';
+  }
+
+  applicationStatusForm(id: string): string {
+    return this.core + `catalogue/application-status/${id}`;
+  }
+
+  get transactionsList(): string {
+    return this.core + '/planner/transactions';
+  }
+
+  transactionsForm(id: string): string {
+    return this.core + `planner/transactions/${id}`;
   }
 
   get common(): string {

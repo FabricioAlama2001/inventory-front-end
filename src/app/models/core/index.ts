@@ -35,8 +35,9 @@ export * from './pnd-police.model';
 export * from './fiscal-year.model';
 export * from './programming-type.model';
 export * from './document-type.model';
-
-
+export * from './application-status.model';
+export * from './transaction.model';
+export * from './unit-manager.model';
 
 
 

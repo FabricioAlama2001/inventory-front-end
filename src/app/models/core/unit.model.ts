@@ -1,4 +1,3 @@
-import {CatalogueModel} from '@models/core';
 
 export interface UnitModel {
   id: string;

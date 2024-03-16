@@ -6,30 +6,34 @@ import {debounceTime} from "rxjs";
 
 import {MenuItem, PrimeIcons} from "primeng/api";
 
-import {ColumnModel, PaginatorModel, TransactionModel} from '@models/core';
-import {BreadcrumbService, CoreService, MessageService, RoutesService, TransactionsHttpService} from '@services/core';
+import {ApplicationStatusModel, ColumnModel} from '@models/core';
+import {BreadcrumbService, CoreService, MessageService, RoutesService} from '@services/core';
 import {
   BreadcrumbEnum,
+  ApplicationStatusFormEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   IdButtonActionEnum,
-  LabelButtonActionEnum, TransactionsFormEnum, TableEnum, RoutesEnum
+  LabelButtonActionEnum, RoutesEnum, TableEnum
 } from "@shared/enums";
+import {getHigherSort} from "@shared/helpers";
+import { ApplicationStatusHttpService } from '@services/core/application-status-http.service';
+
 
 @Component({
-  selector: 'app-transaction-list',
-  templateUrl: './transaction-list.component.html',
-  styleUrl: './transaction-list.component.scss'
+  selector: 'app-application-status-list',
+  templateUrl: './application-status-list.component.html',
+  styleUrl: './application-status-list.component.scss'
 })
-export class TransactionListComponent {
+export class ApplicationStatusListComponent {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
+  protected readonly ApplicationStatusFormEnum = ApplicationStatusFormEnum;
+  protected readonly IdButtonActionEnum = IdButtonActionEnum;
   protected readonly TableEnum = TableEnum;
-
-  protected paginator: PaginatorModel;
 
   protected buttonActions: MenuItem[] = this.buildButtonActions;
   protected isButtonActions: boolean = false;
@@ -38,9 +42,9 @@ export class TransactionListComponent {
 
   protected search: FormControl = new FormControl('');
 
-  protected selectedItem!: TransactionModel;
-  protected selectedItems: TransactionModel[] = [];
-  protected items: TransactionModel[] = [];
+  protected selectedItem!: ApplicationStatusModel;
+  protected selectedItems: ApplicationStatusModel[] = [];
+  protected items: ApplicationStatusModel[] = [];
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -48,45 +52,37 @@ export class TransactionListComponent {
     protected readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
-    private readonly transactionsHttpService: TransactionsHttpService,
+    private readonly applicationStatusHttpService: ApplicationStatusHttpService,
   ) {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.TRANSACTIONS}]);
-
-    this.paginator = this.coreService.paginator;
+    this.breadcrumbService.setItems([{label: BreadcrumbEnum.APPLICATION_STATUS}]);
   }
 
   ngOnInit() {
     this.checkValueChanges();
-    this.findTransactions();
+    this.findAll();
   }
 
   checkValueChanges() {
     this.search.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(value => {
-      this.findTransactions();
+      this.findAll();
     });
   }
 
-  findTransactions(page: number = 0) {
-    this.transactionsHttpService.findTransactions(page, this.search.value)
+  findAll() {
+    this.applicationStatusHttpService.findAll()
       .subscribe((response) => {
-        this.paginator = response.pagination!;
-        this.items = response.data;
+        this.items = response;
+        this.coreService.higherSort = getHigherSort(this.items);
       });
   }
 
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'code', header: TransactionsFormEnum.code},
-      {field: 'subject', header: TransactionsFormEnum.subject},
-      {field: 'esigef', header: TransactionsFormEnum.esigef},
-      {field: 'value', header: TransactionsFormEnum.value},
-      {field: 'isIva', header: TransactionsFormEnum.isIva},
-      {field: 'description', header: TransactionsFormEnum.description},
-      {field: 'applicationStatus', header: TransactionsFormEnum.applicationStatus},
-      {field: 'unit', header: TransactionsFormEnum.unit},
-      {field: 'enabled', header: TransactionsFormEnum.enabled},
+      {field: 'code', header: ApplicationStatusFormEnum.code},
+      {field: 'name', header: ApplicationStatusFormEnum.name},
+      {field: 'enabled', header: ApplicationStatusFormEnum.enabled}
     ];
   }
 
@@ -127,7 +123,7 @@ export class TransactionListComponent {
     ];
   }
 
-  validateButtonActions(item: TransactionModel): void {
+  validateButtonActions(item: ApplicationStatusModel): void {
     this.buttonActions = this.buildButtonActions;
 
     if (item.enabled) {
@@ -140,24 +136,24 @@ export class TransactionListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.transactionsForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.applicationStatusForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.transactionsForm(id)]);
+    this.router.navigate([this.routesService.applicationStatusForm(id)]);
   }
 
   disable(id: string) {
-    this.transactionsHttpService.disable(id).subscribe(transaction => {
-      const index = this.items.findIndex(transaction => transaction.id === id);
-      this.items[index] = transaction;
+    this.applicationStatusHttpService.disable(id).subscribe(applicationStatus => {
+      const index = this.items.findIndex(applicationStatus => applicationStatus.id === id);
+      this.items[index] = applicationStatus;
     });
   }
 
   enable(id: string) {
-    this.transactionsHttpService.enable(id).subscribe(transaction => {
-      const index = this.items.findIndex(transaction => transaction.id === id);
-      this.items[index] = transaction;
+    this.applicationStatusHttpService.enable(id).subscribe(applicationStatus => {
+      const index = this.items.findIndex(applicationStatus => applicationStatus.id === id);
+      this.items[index] = applicationStatus;
     });
   }
 
@@ -165,19 +161,14 @@ export class TransactionListComponent {
     this.messageService.questionDelete()
       .then((result) => {
         if (result.isConfirmed) {
-          this.transactionsHttpService.remove(id).subscribe((transaction) => {
-            this.items = this.items.filter(item => item.id !== transaction.id);
-            this.paginator.totalItems--;
+          this.applicationStatusHttpService.remove(id).subscribe((applicationStatus) => {
+            this.items = this.items.filter(item => item.id !== applicationStatus.id);
           });
         }
       });
   }
 
-  paginate(event: any) {
-    this.findTransactions(event.page);
-  }
-
-  selectItem(item: TransactionModel) {
+  selectItem(item: ApplicationStatusModel) {
     this.isButtonActions = true;
     this.selectedItem = item;
     this.validateButtonActions(item);

@@ -100,6 +100,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.CATALOGUE,RoleEnum.PLANNER]}
   },
+  {
+    path: 'application-status',
+    loadChildren: () => import('./application-status/application-status.module').then(m => m.ApplicationStatusModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RoleEnum.CATALOGUE,RoleEnum.PLANNER]}
+  },
 ];
 
 @NgModule({
