@@ -79,9 +79,9 @@ export class FiscalYearListComponent {
     return [
       {field: 'code', header: FiscalYearsFormEnum.code},
       {field: 'name', header: FiscalYearsFormEnum.name},
-      {field: 'enabled', header: FiscalYearsFormEnum.enabled},
+      {field: 'year', header: FiscalYearsFormEnum.year},
       {field: 'sort', header: FiscalYearsFormEnum.sort},
-      {field: 'year', header: FiscalYearsFormEnum.year}
+      {field: 'enabled', header: FiscalYearsFormEnum.enabled}
 
     ];
   }

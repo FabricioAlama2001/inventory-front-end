@@ -1,12 +1,28 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import {ContinentModel, CreateSubactivityDto, ExpenseTypeModel, FiscalYearModel, IndicatorSubactivityModel, InstitutionalStrategicPlanModel, LocationModel, PndObjectiveModel, PndPoliceModel, PoaModel, StrategicAxisModel, StrategyModel, UnitModel, UpdateSubactivityDto} from '@models/core';
+import {
+  ActivityModel,
+  CatalogueModel, ComponentModel,
+  ContinentModel,
+  CreateSubactivityDto,
+  FiscalYearModel,
+  IndicatorSubactivityModel,
+  InstitutionalStrategicPlanModel,
+  LocationModel,
+  PoaModel, ProjectModel,
+  StrategicAxisModel,
+  StrategyModel,
+  UnitModel,
+  UpdateSubactivityDto
+} from '@models/core';
 import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
 import {
+  ActivitiesHttpService,
   BreadcrumbService,
+  CataloguesHttpService, ComponentsHttpService,
   ContinentsHttpService,
   CoreService,
   FiscalYearsHttpService,
@@ -14,7 +30,7 @@ import {
   InstitutionalStrategicPlansHttpService,
   LocationsHttpService,
   MessageService,
-  PoasHttpService,
+  PoasHttpService, ProjectsHttpService,
   RoutesService,
   StrategicAxesHttpService,
   StrategiesHttpService,
@@ -24,19 +40,26 @@ import {
 import {OnExitInterface} from '@shared/interfaces';
 import {
   BreadcrumbEnum,
+  CatalogueTypeEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
-  LabelButtonActionEnum,
+  LabelButtonActionEnum, ProjectsFormEnum,
+  RoutesEnum,
   SkeletonEnum,
-  SubactivitiesFormEnum, RoutesEnum
+  SubactivitiesFormEnum
 } from "@shared/enums";
+import {AuthService} from "@services/auth";
 
 @Component({
   selector: 'app-subactivity-form',
   templateUrl: './subactivity-form.component.html',
   styleUrl: './subactivity-form.component.scss'
 })
-export class SubactivityFormComponent implements OnInit, OnExitInterface{
+export class SubactivityFormComponent implements OnInit, OnExitInterface {
+  private readonly projectHttpService = inject(ProjectsHttpService);
+  private readonly componentsHttpService = inject(ComponentsHttpService);
+  private readonly activitiesHttpService = inject(ActivitiesHttpService);
+  private readonly authService = inject(AuthService);
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -54,7 +77,7 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
   protected institutionalStrategicPlans: InstitutionalStrategicPlanModel[] = [];
   protected strategicAxes: StrategicAxisModel[] = [];
   protected strategies: StrategyModel[] = [];
-  protected continents: ContinentModel[] = [];
+  protected continents: CatalogueModel[] = [];
   protected poas: PoaModel[] = [];
   protected units: UnitModel[] = [];
 
@@ -62,17 +85,21 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
   protected provinces: LocationModel[] = [];
   protected cantons: LocationModel[] = [];
   protected parishes: LocationModel[] = [];
+  protected projects: ProjectModel[] = [];
+  protected components: ComponentModel[] = [];
+  protected activities: ActivityModel[] = [];
+
   private saving: boolean = true;
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
     protected readonly coreService: CoreService,
+    protected readonly cataloguesHttpService: CataloguesHttpService,
     private readonly formBuilder: FormBuilder,
     public readonly messageService: MessageService,
     private readonly router: Router,
     private readonly routesService: RoutesService,
     private readonly subactivitiesHttpService: SubactivitiesHttpService,
-
     private readonly expenseTypesHttpService: ExpenseTypesHttpService,
     private readonly locationsHttpService: LocationsHttpService,
     private readonly fiscalYearsHttpService: FiscalYearsHttpService,
@@ -83,7 +110,6 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
     private readonly continentsHttpService: ContinentsHttpService,
     private readonly poasHttpService: PoasHttpService,
     private readonly unitsHttpService: UnitsHttpService,
-
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.SUBACTIVITIES, routerLink: [this.routesService.subactivitiesList]},
@@ -92,6 +118,7 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
 
     this.form = this.newForm;
 
+    this.checkValueChanges();
   }
 
   async onExit(): Promise<boolean> {
@@ -107,11 +134,10 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
     this.loadFiscalYears();
     this.loadIndicatorSubactivities();
     this.loadInstitutionalStrategicPlans();
-    this.loadStrategicAxis();
-    this.loadStrategies();
     this.loadContinents();
     this.loadPoas();
     this.loadUnits();
+    this.loadProjects();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -120,7 +146,9 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      fiscalYear: [null, [Validators.required]],
+      activity: [null, [Validators.required]],
+      component: [null, [Validators.required]],
+      fiscalYear: [this.authService.fiscalYear, [Validators.required]],
       indicatorSubactivity: [null, [Validators.required]],
       institutionalStrategicPlan: [null, [Validators.required]],
       strategicAxis: [null, [Validators.required]],
@@ -129,12 +157,33 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
       country: [null, [Validators.required]],
       province: [null, [Validators.required]],
       canton: [null, [Validators.required]],
+      project: [null, [Validators.required]],
       parish: [null, [Validators.required]],
       poa: [null, [Validators.required]],
       unit: [null, [Validators.required]],
       name: [null, [Validators.required]],
       type: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
+    });
+  }
+
+  checkValueChanges() {
+    this.projectField.valueChanges.subscribe(value => {
+      this.loadComponents();
+      this.activities = [];
+    });
+
+    this.componentField.valueChanges.subscribe(value => {
+      this.loadActivities();
+    });
+
+    this.institutionalStrategicPlanField.valueChanges.subscribe(value => {
+      this.loadStrategicAxis();
+      this.strategies = [];
+    });
+
+    this.strategicAxisField.valueChanges.subscribe(value => {
+      this.loadStrategies();
     });
   }
 
@@ -234,12 +283,9 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
     });
   }
 
-  //FK
-
+  /**Load Foreign Keys**/
   loadFiscalYears(): void {
-    this.fiscalYearsHttpService.findCatalogues().subscribe((fiscalYears) => {
-      this.fiscalYears = fiscalYears;
-    });
+    this.fiscalYears = [this.authService.fiscalYear];
   }
 
   loadIndicatorSubactivities(): void {
@@ -256,20 +302,18 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
 
   loadStrategicAxis(): void {
     this.strategicAxesHttpService.findCatalogues().subscribe((strategicAxes) => {
-      this.strategicAxes = strategicAxes;
+      this.strategicAxes = strategicAxes.filter(item => item.institutionalStrategicPlanId === this.institutionalStrategicPlanField.value.id);
     });
   }
 
   loadStrategies(): void {
     this.strategiesHttpService.findCatalogues().subscribe((strategies) => {
-      this.strategies = strategies;
+      this.strategies = strategies.filter(item => item.strategicAxisId === this.strategicAxisField.value.id);
     });
   }
 
   loadContinents(): void {
-    this.continentsHttpService.findCatalogues().subscribe((continents) => {
-      this.continents = continents;
-    });
+    this.continents = this.cataloguesHttpService.findByType(CatalogueTypeEnum.CONTINENT);
   }
 
   loadPoas(): void {
@@ -300,6 +344,37 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
     this.parishes = this.locationsHttpService.findParishesByCanton(cantonId);
   }
 
+  loadProjects(): void {
+    this.projectHttpService.findCatalogues().subscribe((projects) => {
+      this.projects = projects;
+    });
+  }
+
+  loadComponents(): void {
+    this.componentsHttpService.findCatalogues().subscribe((components) => {
+      this.components = components.filter(item => item.projectId === this.projectField.value.id);
+    });
+  }
+
+  loadActivities(): void {
+    this.activitiesHttpService.findCatalogues().subscribe((activities) => {
+      this.activities = activities.filter(item => item.componentId === this.componentField.value.id);
+      ;
+    });
+  }
+
+  /** Getters **/
+  get projectField(): AbstractControl {
+    return this.form.controls['project'];
+  }
+
+  get componentField(): AbstractControl {
+    return this.form.controls['component'];
+  }
+
+  get activityField(): AbstractControl {
+    return this.form.controls['activity'];
+  }
 
   get nameField(): AbstractControl {
     return this.form.controls['name'];
@@ -360,4 +435,6 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface{
   get unitField(): AbstractControl {
     return this.form.controls['unit'];
   }
+
+  protected readonly ProjectsFormEnum = ProjectsFormEnum;
 }

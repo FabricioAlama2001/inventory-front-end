@@ -10,6 +10,8 @@ export interface StrategyModel {
   name: string;
   enabled: boolean;
   sort: number;
+
+  strategicAxisId:string;
 }
 
 export interface CreateStrategyDto extends Omit<StrategyModel, 'id'> {}

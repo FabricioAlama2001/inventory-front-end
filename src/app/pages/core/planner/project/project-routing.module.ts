@@ -18,11 +18,12 @@ const routes: Routes = [
   },
   {
     path: ':id/components',
-    component: ComponentListComponent
+    component: ComponentListComponent,
   },
   {
     path: ':projectId/components/:componentId',
-    component: ComponentFormComponent
+    component: ComponentFormComponent,
+    canDeactivate: [ExitGuard]
   },
 ];
 

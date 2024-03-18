@@ -9,6 +9,8 @@ export interface StrategicAxisModel {
   name: string;
   enabled: boolean;
   sort: number;
+
+  institutionalStrategicPlanId:string;
 }
 
 export interface CreateStrategicAxisDto extends Omit<StrategicAxisModel, 'id'> {}

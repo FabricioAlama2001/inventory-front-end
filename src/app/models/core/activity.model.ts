@@ -12,6 +12,7 @@ export interface ActivityModel {
 
   fiscalYear: FiscalYearModel;
   component: ComponentModel;
+  componentId: string;
 }
 
 export interface CreateActivityDto extends Omit<ActivityModel, 'id'> {}

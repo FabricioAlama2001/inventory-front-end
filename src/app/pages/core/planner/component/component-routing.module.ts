@@ -22,7 +22,8 @@ const routes: Routes = [
   },
   {
     path: ':componentId/activities/:activityId',
-    component: ActivityFormComponent
+    component: ActivityFormComponent,
+    canDeactivate: [ExitGuard]
   },
 ];
 

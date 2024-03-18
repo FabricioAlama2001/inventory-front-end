@@ -78,6 +78,7 @@ export class ProjectListComponent {
 
   get buildColumns(): ColumnModel[] {
     return [
+      {field: 'code', header: ProjectsFormEnum.code},
       {field: 'name', header: ProjectsFormEnum.name},
       {field: 'pndObjective', header: ProjectsFormEnum.pndObjective},
       {field: 'pndPolice', header: ProjectsFormEnum.pndPolice},

@@ -82,6 +82,7 @@ export class DocumentTypeListComponent {
       {field: 'name', header: DocumentTypesFormEnum.name},
       {field: 'description', header: DocumentTypesFormEnum.description},
       {field: 'acronym', header: DocumentTypesFormEnum.acronym},
+      {field: 'sort', header: DocumentTypesFormEnum.sort},
       {field: 'enabled', header: DocumentTypesFormEnum.enabled},
     ];
   }

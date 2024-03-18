@@ -3,7 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
-import { CreateExpenseTypeDto, UpdateExpenseTypeDto, } from '@models/core';
+import {CreateExpenseTypeDto, UpdateExpenseTypeDto,} from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
@@ -18,8 +18,8 @@ import {
   IconButtonActionEnum,
   LabelButtonActionEnum,
   SkeletonEnum,
-   RoutesEnum,
-   ExpenseTypesFormEnum
+  RoutesEnum,
+  ExpenseTypesFormEnum
 } from "@shared/enums";
 
 @Component({
@@ -27,7 +27,7 @@ import {
   templateUrl: './expense-type-form.component.html',
   styleUrl: './expense-type-form.component.scss'
 })
-export class ExpenseTypeFormComponent implements OnInit, OnExitInterface{
+export class ExpenseTypeFormComponent implements OnInit, OnExitInterface {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -68,7 +68,6 @@ export class ExpenseTypeFormComponent implements OnInit, OnExitInterface{
   }
 
   ngOnInit(): void {
-
     if (this.id != RoutesEnum.NEW) {
       this.get();
     }
@@ -85,13 +84,15 @@ export class ExpenseTypeFormComponent implements OnInit, OnExitInterface{
 
   checkValueChanges() {
     this.nameField.valueChanges.subscribe(value => {
-      const str = value.toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
+      if (this.id == RoutesEnum.NEW) {
+        const str = value.toLowerCase()
+          .trim()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
 
-      this.codeField.setValue(str);
+        this.codeField.setValue(str);
+      }
     });
   }
 
