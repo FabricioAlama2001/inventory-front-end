@@ -46,7 +46,7 @@ import {
   LabelButtonActionEnum, ProjectsFormEnum,
   RoutesEnum,
   SkeletonEnum,
-  SubactivitiesFormEnum
+  SubactivitiesFormEnum, SubactivityTypeEnum
 } from "@shared/enums";
 import {AuthService} from "@services/auth";
 
@@ -65,6 +65,7 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly SubactivitiesFormEnum = SubactivitiesFormEnum;
+  protected readonly SubactivityTypeEnum = SubactivityTypeEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
 
@@ -88,6 +89,7 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
   protected projects: ProjectModel[] = [];
   protected components: ComponentModel[] = [];
   protected activities: ActivityModel[] = [];
+  protected types: string[] = [SubactivityTypeEnum.nuevo,SubactivityTypeEnum.arrastre];
 
   private saving: boolean = true;
 

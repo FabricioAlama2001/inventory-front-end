@@ -6,5 +6,6 @@ export * from './breadcrumb.enum';
 export * from './skeleton.enum';
 export * from './core.enum';
 export * from './fileds.enum';
+export * from './entity.enum';
 
 // export * from './routes.enum';
