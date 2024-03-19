@@ -21,6 +21,7 @@ import {
    RoutesEnum,
    FiscalYearsFormEnum
 } from "@shared/enums";
+import { getSlug } from '@shared/helpers/slug.helper';
 
 
 @Component({
@@ -87,13 +88,9 @@ export class FiscalYearFormComponent {
 
   checkValueChanges() {
     this.nameField.valueChanges.subscribe(value => {
-      const str = value.toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-
-      this.codeField.setValue(str);
+      if (this.id == RoutesEnum.NEW) {
+        this.codeField.setValue(getSlug(value));
+      }
     });
   }
 

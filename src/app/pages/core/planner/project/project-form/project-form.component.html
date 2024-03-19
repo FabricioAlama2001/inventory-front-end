@@ -107,7 +107,16 @@
         </div>
       </div>
       <div class="formgrid grid">
-        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <label appLabel for="code" [label]="ProjectsFormEnum.code" [required]="codeField"></label>
+          <input pInputText type="text" id="code" formControlName="code"/>
+          <small appErrorMessage
+                 [errors]="codeField.errors"
+                 [touched]="codeField.touched"
+                 [dirty]="codeField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
           <label appLabel for="name" [label]="ProjectsFormEnum.name" [required]="nameField"></label>
           <input pInputText type="text" id="name" formControlName="name"/>
           <small appErrorMessage
@@ -116,7 +125,7 @@
                  [dirty]="nameField.dirty">
           </small>
         </div>
-        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
           <label appLabel for="fiscalYear" [label]="ProjectsFormEnum.fiscalYear"
                  [required]="fiscalYearField"></label>
           <p-dropdown id="fiscalYear"
@@ -142,7 +151,7 @@
                  [dirty]="fiscalYearField.dirty">
           </small>
         </div>
-        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
           <label appLabel for="enabled" [label]="ProjectsFormEnum.enabled" [required]="enabledField"></label>
           <p>
             <p-inputSwitch id="enabled" formControlName="enabled"></p-inputSwitch>
