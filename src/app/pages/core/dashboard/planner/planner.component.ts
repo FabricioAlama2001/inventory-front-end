@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
-import {BreadcrumbService} from "@services/core";
+import {Component, inject} from '@angular/core';
+import {BreadcrumbService, RoutesService} from "@services/core";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-planner',
@@ -10,9 +11,14 @@ export class PlannerComponent {
   protected catalogueMenus: any = [];
   protected transactionMenus: any = [];
   protected reportMenus: any = [];
+  private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly router = inject(Router);
+  private readonly routesService = inject(RoutesService);
 
-  constructor(private breadcrumbService: BreadcrumbService) {
-    breadcrumbService.setItems([{label: 'Dashboard'}]);
+
+  constructor() {
+    this.breadcrumbService.setItems([{label: 'Dashboard'}]);
+
     this.loadMenus();
   }
 
@@ -25,21 +31,21 @@ export class PlannerComponent {
         header: 'Proyectos',
         subheader: 'Proyectos',
         img: `${assetsPath}/project.png`,
-        routerLink: '',
+        routerLink: this.routesService.projectsList,
       },
       {
         code: 'components',
         header: 'Componentes',
         subheader: 'Componentes',
         img: `${assetsPath}/component.png`,
-        routerLink: '',
+        routerLink: this.routesService.componentsList(),
       },
       {
         code: 'activities',
         header: 'Actividades',
         subheader: 'Actividades',
         img: `${assetsPath}/activity.png`,
-        routerLink: '',
+        routerLink: this.routesService.activitiesList(),
       },
     );
 
@@ -49,7 +55,7 @@ export class PlannerComponent {
         header: 'Subactividades',
         subheader: 'Subactividades',
         img: `${assetsPath}/subactivity.png`,
-        routerLink: '',
+        routerLink: this.routesService.subactivitiesList,
       },
       {
         code: 'scp',
@@ -83,5 +89,9 @@ export class PlannerComponent {
         routerLink: '',
       },
     );
+  }
+
+  redirect(url: string) {
+    this.router.navigate([url]);
   }
 }

@@ -14,7 +14,7 @@
               <img alt="Card" [src]="menu.img"/>
             </p>
             <ng-template pTemplate="footer">
-              <p-button label="Ingresar" icon="pi pi-check"></p-button>
+              <p-button label="Ingresar" icon="pi pi-check" (click)="redirect(menu.routerLink)"></p-button>
             </ng-template>
           </p-card>
         }
@@ -37,7 +37,7 @@
               <img alt="Card" [src]="menu.img"/>
             </p>
             <ng-template pTemplate="footer">
-              <p-button label="Ingresar" icon="pi pi-check"></p-button>
+              <p-button label="Ingresar" icon="pi pi-check" (click)="redirect(menu.routerLink)"></p-button>
             </ng-template>
           </p-card>
         }
@@ -60,7 +60,7 @@
               <img alt="Card" [src]="menu.img"/>
             </p>
             <ng-template pTemplate="footer">
-              <p-button label="Ingresar" icon="pi pi-check"></p-button>
+              <p-button label="Ingresar" icon="pi pi-check" (click)="redirect(menu.routerLink)"></p-button>
             </ng-template>
           </p-card>
         }
