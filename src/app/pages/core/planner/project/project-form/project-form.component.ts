@@ -107,6 +107,7 @@ export class ProjectFormComponent implements OnInit, OnExitInterface {
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
+      code: [null, [Validators.required]],
       name: [null, [Validators.required]],
       fiscalYear: [this.authService.fiscalYear, [Validators.required]],
       enabled: [true, [Validators.required]],
@@ -124,7 +125,7 @@ export class ProjectFormComponent implements OnInit, OnExitInterface {
 
   get validateFormErrors() {
     this.formErrors = [];
-
+    if (this.codeField.errors) this.formErrors.push(ProjectsFormEnum.code);
     if (this.nameField.errors) this.formErrors.push(ProjectsFormEnum.name);
     if (this.fiscalYearField.errors) this.formErrors.push(ProjectsFormEnum.fiscalYear);
     if (this.enabledField.errors) this.formErrors.push(ProjectsFormEnum.enabled);
@@ -196,6 +197,10 @@ export class ProjectFormComponent implements OnInit, OnExitInterface {
 
   loadFiscalYears(): void {
     this.fiscalYears = [this.authService.fiscalYear];
+  }
+
+  get codeField(): AbstractControl {
+    return this.form.controls['code'];
   }
 
   get nameField(): AbstractControl {

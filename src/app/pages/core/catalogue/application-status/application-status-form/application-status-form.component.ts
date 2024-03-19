@@ -21,6 +21,7 @@ import {
    ApplicationStatusFormEnum
 } from "@shared/enums";
 import { ApplicationStatusHttpService } from '@services/core/application-status-http.service';
+import { getSlug } from '@shared/helpers/slug.helper';
 
 @Component({
   selector: 'app-application-status-form',
@@ -83,13 +84,9 @@ export class ApplicationStatusFormComponent implements OnInit, OnExitInterface{
 
   checkValueChanges() {
     this.nameField.valueChanges.subscribe(value => {
-      const str = value.toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-
-      this.codeField.setValue(str);
+      if (this.id == RoutesEnum.NEW) {
+        this.codeField.setValue(getSlug(value));
+      }
     });
   }
 
