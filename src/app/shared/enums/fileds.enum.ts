@@ -12,9 +12,12 @@ export enum UsersFormEnum {
 }
 
 export enum SubactivitiesFormEnum {
+  activity = 'Actividad',
   name = 'Nombre',
+  project = 'Proyecto',
+  component = 'Componente',
   type = 'Tipo',
-  enabled = 'Disponible',
+  enabled = 'Estado',
   fiscalYear = 'Año fiscal',
   indicatorSubactivity = 'Indicador de la sub-actividad',
   institutionalStrategicPlan = 'Plan estrategico institucional',
@@ -26,13 +29,14 @@ export enum SubactivitiesFormEnum {
   canton = 'Canton',
   parish = 'Parroquia',
   poa = 'POA',
-  unit = 'unidad'
+  unit = 'Unidad Ejecutora'
 }
 
 export enum ProjectsFormEnum {
+  code= 'Código',
   name= 'Nombre',
   fiscalYear = 'Año Fiscal',
-  enabled = 'Disponible',
+  enabled = 'Estado',
   pndObjective = 'Objetivo',
   pndPolice = 'Politica',
   expenseType = 'Tipo de gasto',
@@ -180,6 +184,7 @@ export enum DocumentTypesFormEnum {
   name = 'Nombre',
   description ='Descripción',
   acronym ='Acronimo',
+  sort ='Orden',
   enabled = 'Estado'
 }
 

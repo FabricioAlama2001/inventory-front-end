@@ -13,6 +13,7 @@ export interface ComponentModel {
   fiscalYear: FiscalYearModel;
   indicatorComponent: IndicatorComponentModel;
   project: ProjectModel;
+  projectId: string;
 }
 
 export interface CreateComponentDto extends Omit<ComponentModel, 'id'> {}

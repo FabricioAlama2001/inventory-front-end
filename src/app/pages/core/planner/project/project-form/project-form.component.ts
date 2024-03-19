@@ -195,9 +195,7 @@ export class ProjectFormComponent implements OnInit, OnExitInterface {
   }
 
   loadFiscalYears(): void {
-    this.fiscalYearsHttpService.findCatalogues().subscribe((fiscalYears) => {
-      this.fiscalYears = fiscalYears;
-    });
+    this.fiscalYears = [this.authService.fiscalYear];
   }
 
   get nameField(): AbstractControl {
@@ -223,5 +221,4 @@ export class ProjectFormComponent implements OnInit, OnExitInterface {
   get expenseTypeField(): AbstractControl {
     return this.form.controls['expenseType'];
   }
-
 }

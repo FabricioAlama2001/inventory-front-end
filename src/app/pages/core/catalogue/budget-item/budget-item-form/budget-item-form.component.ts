@@ -91,13 +91,15 @@ export class BudgetItemFormComponent implements OnInit, OnExitInterface{
 
   checkValueChanges() {
     this.nameField.valueChanges.subscribe(value => {
-      const str = value.toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
+      if (this.id == RoutesEnum.NEW) {
+        const str = value.toLowerCase()
+          .trim()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
 
-      this.codeField.setValue(str);
+        this.codeField.setValue(str);
+      }
     });
   }
 
@@ -117,6 +119,7 @@ export class BudgetItemFormComponent implements OnInit, OnExitInterface{
 
   get(): void {
     this.budgetItemsHttpService.findOne(this.id!).subscribe((budgetItem) => {
+      console.log(budgetItem);
       this.form.patchValue(budgetItem);
     });
   }
