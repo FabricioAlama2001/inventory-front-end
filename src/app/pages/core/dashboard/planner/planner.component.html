@@ -1,1 +1,70 @@
-<p>planner works!</p>
+<p-accordion>
+  <p-accordionTab>
+    <ng-template pTemplate="header">
+      <i class="pi pi-book mr-2"></i>
+      <h3>Catálogos</h3>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <div class="p-fluid grid">
+        @for (menu of catalogueMenus; track menu.code) {
+          <p-card [header]="menu.header"
+                  subheader="Card Subheader"
+                  class="xl:col-4 lg:col-4 md:col-4 sm:col-12">
+            <p class="text-center">
+              <img alt="Card" [src]="menu.img"/>
+            </p>
+            <ng-template pTemplate="footer">
+              <p-button label="Ingresar" icon="pi pi-check"></p-button>
+            </ng-template>
+          </p-card>
+        }
+      </div>
+    </ng-template>
+  </p-accordionTab>
+
+  <p-accordionTab>
+    <ng-template pTemplate="header">
+      <i class="pi pi-arrow-right-arrow-left mr-2"></i>
+      <h3>Transacciones</h3>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <div class="p-fluid grid">
+        @for (menu of transactionMenus; track menu.code) {
+          <p-card [header]="menu.header"
+                  subheader="Card Subheader"
+                  class="xl:col-4 lg:col-4 md:col-4 sm:col-12">
+            <p class="text-center">
+              <img alt="Card" [src]="menu.img"/>
+            </p>
+            <ng-template pTemplate="footer">
+              <p-button label="Ingresar" icon="pi pi-check"></p-button>
+            </ng-template>
+          </p-card>
+        }
+      </div>
+    </ng-template>
+  </p-accordionTab>
+
+  <p-accordionTab>
+    <ng-template pTemplate="header">
+      <i class="pi pi-chart-pie mr-2"></i>
+      <h3>Reportes</h3>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <div class="p-fluid grid">
+        @for (menu of reportMenus; track menu.code) {
+          <p-card [header]="menu.header"
+                  subheader="Card Subheader"
+                  class="xl:col-4 lg:col-4 md:col-4 sm:col-12">
+            <p class="text-center">
+              <img alt="Card" [src]="menu.img"/>
+            </p>
+            <ng-template pTemplate="footer">
+              <p-button label="Ingresar" icon="pi pi-check"></p-button>
+            </ng-template>
+          </p-card>
+        }
+      </div>
+    </ng-template>
+  </p-accordionTab>
+</p-accordion>

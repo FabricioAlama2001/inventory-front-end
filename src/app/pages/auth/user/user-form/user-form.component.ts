@@ -1,11 +1,18 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, inject, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 import {CreateUserDto, RoleModel, UpdateUserDto} from '@models/auth';
-import {CatalogueModel} from "@models/core";
+import {CatalogueModel, UnitModel} from "@models/core";
 import {RolesHttpService, UsersHttpService} from '@services/auth';
-import {BreadcrumbService, CataloguesHttpService, CoreService, MessageService, RoutesService} from '@services/core';
+import {
+  BreadcrumbService,
+  CataloguesHttpService,
+  CoreService,
+  MessageService,
+  RoutesService,
+  UnitsHttpService
+} from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
   BreadcrumbEnum,
@@ -38,8 +45,12 @@ export class UserFormComponent implements OnInit, OnExitInterface {
 
   protected roles: RoleModel[] = [];
   protected identificationTypes: CatalogueModel[] = [];
+  protected units: UnitModel[] = [];
 
   protected isChangePassword: FormControl = new FormControl(false);
+  private saving: boolean = true;
+
+  private readonly unitsHttpService = inject(UnitsHttpService);
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -81,7 +92,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   }
 
   async onExit(): Promise<boolean> {
-    if (this.form.touched || this.form.dirty) {
+    if ((this.form.touched || this.form.dirty) && this.saving) {
       return await this.messageService.questionOnExit().then(result => result.isConfirmed);
     }
     return true;
@@ -90,6 +101,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   ngOnInit(): void {
     this.loadRoles();
     this.loadIdentificationTypes();
+    this.loadUnits();
 
     if (this.id != 'new') {
       this.get();
@@ -115,6 +127,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
       passwordChanged: [{value: true, disabled: true}],
       roles: [null, [Validators.required]],
       username: [null, [Validators.required]],
+      units: [null, [Validators.required]],
     });
   }
 
@@ -165,6 +178,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
 
     this.usersHttpService.create(user).subscribe(user => {
       //this.form.reset(user);
+      this.saving = false;
       this.back();
     });
   }
@@ -174,6 +188,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
 
     this.usersHttpService.update(this.id!, user).subscribe((user) => {
       //this.form.reset(user);
+      this.saving = false;
       this.back()
     });
   }
@@ -184,6 +199,12 @@ export class UserFormComponent implements OnInit, OnExitInterface {
 
   loadIdentificationTypes(): void {
     this.identificationTypes = this.cataloguesHttpService.findByType(CatalogueTypeEnum.IDENTIFICATION_TYPE);
+  }
+
+  loadUnits(): void {
+    this.unitsHttpService.findCatalogues().subscribe(units => {
+      this.units = units;
+    });
   }
 
   handleChangePassword(event: any) {
@@ -236,5 +257,9 @@ export class UserFormComponent implements OnInit, OnExitInterface {
 
   get usernameField(): AbstractControl {
     return this.form.controls['username'];
+  }
+
+  get unitsField(): AbstractControl {
+    return this.form.controls['units'];
   }
 }

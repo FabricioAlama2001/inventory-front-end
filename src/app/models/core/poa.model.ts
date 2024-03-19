@@ -10,6 +10,11 @@ export interface PoaModel {
   budgetItem: BudgetItemModel;
   fundingSource: FundingSourceModel;
   expenseType: ExpenseTypeModel;
+
+  activityId: string;
+  budgetItemId: string;
+  fundingSourceId: string;
+  expenseTypeId: string;
 }
 
 export interface CreatePoaDto extends Omit<PoaModel, 'id'> {}

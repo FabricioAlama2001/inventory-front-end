@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {BreadcrumbService} from "@services/core";
 
 @Component({
@@ -7,7 +7,81 @@ import {BreadcrumbService} from "@services/core";
   styleUrls: ['./planner.component.scss']
 })
 export class PlannerComponent {
-  constructor(private breadcrumbService:BreadcrumbService) {
-    breadcrumbService.setItems([{label: 'Dashboard'}])
+  protected catalogueMenus: any = [];
+  protected transactionMenus: any = [];
+  protected reportMenus: any = [];
+
+  constructor(private breadcrumbService: BreadcrumbService) {
+    breadcrumbService.setItems([{label: 'Dashboard'}]);
+    this.loadMenus();
+  }
+
+  loadMenus() {
+    const assetsPath = 'assets/images/components/dashboards/planner';
+
+    this.catalogueMenus.push(
+      {
+        code: 'projects',
+        header: 'Proyectos',
+        subheader: 'Proyectos',
+        img: `${assetsPath}/project.png`,
+        routerLink: '',
+      },
+      {
+        code: 'components',
+        header: 'Componentes',
+        subheader: 'Componentes',
+        img: `${assetsPath}/component.png`,
+        routerLink: '',
+      },
+      {
+        code: 'activities',
+        header: 'Actividades',
+        subheader: 'Actividades',
+        img: `${assetsPath}/activity.png`,
+        routerLink: '',
+      },
+    );
+
+    this.transactionMenus.push(
+      {
+        code: 'subactivities',
+        header: 'Subactividades',
+        subheader: 'Subactividades',
+        img: `${assetsPath}/subactivity.png`,
+        routerLink: '',
+      },
+      {
+        code: 'scp',
+        header: 'Solicitar Certificación Presupuestaria',
+        subheader: 'SCP',
+        img: `${assetsPath}/scp.png`,
+        routerLink: '',
+      },
+      {
+        code: 'reforma',
+        header: 'Reforma / Reprogramación',
+        subheader: 'SCP',
+        img: `${assetsPath}/reforma.png`,
+        routerLink: '',
+      }
+    );
+
+    this.reportMenus.push(
+      {
+        code: 'subactivities',
+        header: 'Subactividades',
+        subheader: 'Subactividades',
+        img: `${assetsPath}/subactivity.png`,
+        routerLink: '',
+      },
+      {
+        code: 'scp',
+        header: 'Solicitar Certificación Presupuestaria',
+        subheader: 'SCP',
+        img: `${assetsPath}/scp.png`,
+        routerLink: '',
+      },
+    );
   }
 }

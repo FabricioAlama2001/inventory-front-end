@@ -27,7 +27,7 @@
   <p-panel class="p-fluid">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="formgrid grid">
-        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
           <label appLabel for="expenseType" [label]="SubactivitiesFormEnum.expenseType"
                  [required]="expenseType"></label>
           <p-dropdown id="expenseType"
@@ -45,7 +45,113 @@
                  [dirty]="expenseType.dirty">
           </small>
         </div>
-        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="project" [label]="SubactivitiesFormEnum.project"
+                 [required]="project"></label>
+          <p-dropdown id="project"
+                      dataKey="id"
+                      [formControl]="project"
+                      [options]="projects"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="project.errors"
+                 [touched]="project.touched"
+                 [dirty]="project.dirty">
+          </small>
+        </div>
+
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="component" [label]="SubactivitiesFormEnum.component"
+                 [required]="component"></label>
+          <p-dropdown id="component"
+                      dataKey="id"
+                      [formControl]="component"
+                      [options]="components"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="component.errors"
+                 [touched]="component.touched"
+                 [dirty]="component.dirty">
+          </small>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="activity" [label]="SubactivitiesFormEnum.activity"
+                 [required]="component"></label>
+          <p-dropdown id="activity"
+                      dataKey="id"
+                      [formControl]="activity"
+                      [options]="activities"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="component.errors"
+                 [touched]="component.touched"
+                 [dirty]="component.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="budgetItem" [label]="SubactivitiesFormEnum.budgetItem"
+                 [required]="budgetItem"></label>
+          <p-dropdown id="budgetItem"
+                      dataKey="id"
+                      [formControl]="budgetItem"
+                      [options]="budgetItems"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (budgetItem.value) {
+                <div>{{ budgetItem.value.code }} - {{ budgetItem.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.code }} - {{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="budgetItem.errors"
+                 [touched]="budgetItem.touched"
+                 [dirty]="budgetItem.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="fundingSource" [label]="SubactivitiesFormEnum.fundingSource"
+                 [required]="fundingSource"></label>
+          <p-dropdown id="fundingSource"
+                      dataKey="id"
+                      [formControl]="fundingSource"
+                      [options]="fundingSources"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="fundingSource.errors"
+                 [touched]="fundingSource.touched"
+                 [dirty]="fundingSource.dirty">
+          </small>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
           <label appLabel for="name" [label]="SubactivitiesFormEnum.name" [required]="nameField"></label>
           <input pInputText type="text" id="name" formControlName="name"/>
           <small appErrorMessage
@@ -54,7 +160,7 @@
                  [dirty]="nameField.dirty">
           </small>
         </div>
-        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
           <label appLabel for="type" [label]="SubactivitiesFormEnum.type" [required]="typeField"></label>
           <p-dropdown id="type"
                       formControlName="type"
@@ -158,65 +264,6 @@
 
       <div class="formgrid grid">
         <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-          <label appLabel for="project" [label]="SubactivitiesFormEnum.project"
-                 [required]="projectField"></label>
-          <p-dropdown id="project"
-                      dataKey="id"
-                      formControlName="project"
-                      [options]="projects"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="projectField.errors"
-                 [touched]="projectField.touched"
-                 [dirty]="projectField.dirty">
-          </small>
-        </div>
-
-        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-          <label appLabel for="component" [label]="SubactivitiesFormEnum.component"
-                 [required]="componentField"></label>
-          <p-dropdown id="component"
-                      dataKey="id"
-                      formControlName="component"
-                      [options]="components"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="componentField.errors"
-                 [touched]="componentField.touched"
-                 [dirty]="componentField.dirty">
-          </small>
-        </div>
-
-        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-          <label appLabel for="activity" [label]="SubactivitiesFormEnum.activity"
-                 [required]="activityField"></label>
-          <p-dropdown id="activity"
-                      dataKey="id"
-                      formControlName="activity"
-                      [options]="activities"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="activityField.errors"
-                 [touched]="activityField.touched"
-                 [dirty]="activityField.dirty">
-          </small>
-        </div>
-      </div>
-
-      <div class="formgrid grid">
-        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
           <label appLabel for="institutionalStrategicPlan" [label]="SubactivitiesFormEnum.institutionalStrategicPlan"
                  [required]="institutionalStrategicPlanField"></label>
           <p-dropdown id="institutionalStrategicPlan"
@@ -281,35 +328,6 @@
       </div>
 
       <div class="formgrid grid">
-        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
-          <label appLabel for="poa" [label]="SubactivitiesFormEnum.poa"
-                 [required]="poaField"></label>
-          <p-dropdown id="poa"
-                      dataKey="id"
-                      formControlName="poa"
-                      [options]="poas"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (poaField.value) {
-                <div>{{ poaField.value.fundingSource.name }} - {{ poaField.value.budgetItem.name}}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.fundingSource.name }} - {{item.budgetItem.name}}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="poaField.errors"
-                 [touched]="poaField.touched"
-                 [dirty]="poaField.dirty">
-          </small>
-        </div>
-      </div>
-
-      <div class="formgrid grid">
         <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
           <label appLabel for="continent" [label]="SubactivitiesFormEnum.continent"
                  [required]="continentField"></label>
@@ -362,84 +380,86 @@
                  [dirty]="countryField.dirty">
           </small>
         </div>
-        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
-          <label appLabel for="province" [label]="SubactivitiesFormEnum.province"
-                 [required]="provinceField"></label>
-          <p-dropdown id="province"
-                      dataKey="id"
-                      formControlName="province"
-                      [options]="provinces"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (provinceField.value) {
-                <div>{{ provinceField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="provinceField.errors"
-                 [touched]="provinceField.touched"
-                 [dirty]="provinceField.dirty">
-          </small>
-        </div>
-        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
-          <label appLabel for="canton" [label]="SubactivitiesFormEnum.canton"
-                 [required]="cantonField"></label>
-          <p-dropdown id="canton"
-                      dataKey="id"
-                      formControlName="canton"
-                      [options]="cantons"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (cantonField.value) {
-                <div>{{ cantonField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="cantonField.errors"
-                 [touched]="cantonField.touched"
-                 [dirty]="cantonField.dirty">
-          </small>
-        </div>
-        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
-          <label appLabel for="parish" [label]="SubactivitiesFormEnum.parish"
-                 [required]="parishField"></label>
-          <p-dropdown id="parish"
-                      dataKey="id"
-                      formControlName="parish"
-                      [options]="parishes"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (parishField.value) {
-                <div>{{ parishField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="parishField.errors"
-                 [touched]="parishField.touched"
-                 [dirty]="parishField.dirty">
-          </small>
-        </div>
+        @if (countryField.value && countryField.value?.alpha3Code === 'ECU') {
+          <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+            <label appLabel for="province" [label]="SubactivitiesFormEnum.province"
+                   [required]="provinceField"></label>
+            <p-dropdown id="province"
+                        dataKey="id"
+                        formControlName="province"
+                        [options]="provinces"
+                        optionLabel="name"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione...">
+              <ng-template pTemplate="selectedItem">
+                @if (provinceField.value) {
+                  <div>{{ provinceField.value.name }}</div>
+                }
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div>{{ item.name }}</div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="provinceField.errors"
+                   [touched]="provinceField.touched"
+                   [dirty]="provinceField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+            <label appLabel for="canton" [label]="SubactivitiesFormEnum.canton"
+                   [required]="cantonField"></label>
+            <p-dropdown id="canton"
+                        dataKey="id"
+                        formControlName="canton"
+                        [options]="cantons"
+                        optionLabel="name"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione...">
+              <ng-template pTemplate="selectedItem">
+                @if (cantonField.value) {
+                  <div>{{ cantonField.value.name }}</div>
+                }
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div>{{ item.name }}</div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="cantonField.errors"
+                   [touched]="cantonField.touched"
+                   [dirty]="cantonField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+            <label appLabel for="parish" [label]="SubactivitiesFormEnum.parish"
+                   [required]="parishField"></label>
+            <p-dropdown id="parish"
+                        dataKey="id"
+                        formControlName="parish"
+                        [options]="parishes"
+                        optionLabel="name"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione...">
+              <ng-template pTemplate="selectedItem">
+                @if (parishField.value) {
+                  <div>{{ parishField.value.name }}</div>
+                }
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div>{{ item.name }}</div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="parishField.errors"
+                   [touched]="parishField.touched"
+                   [dirty]="parishField.dirty">
+            </small>
+          </div>
+        }
       </div>
     </form>
   </p-panel>

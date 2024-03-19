@@ -114,7 +114,6 @@ export class BudgetItemFormComponent implements OnInit, OnExitInterface{
 
   get(): void {
     this.budgetItemsHttpService.findOne(this.id!).subscribe((budgetItem) => {
-      console.log(budgetItem);
       this.form.patchValue(budgetItem);
     });
   }

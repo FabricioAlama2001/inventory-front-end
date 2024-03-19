@@ -4,11 +4,11 @@ import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
 import {
-  ActivityModel,
+  ActivityModel, BudgetItemModel,
   CatalogueModel, ComponentModel,
   ContinentModel,
   CreateSubactivityDto, ExpenseTypeModel,
-  FiscalYearModel,
+  FiscalYearModel, FundingSourceModel,
   IndicatorSubactivityModel,
   InstitutionalStrategicPlanModel,
   LocationModel,
@@ -21,11 +21,11 @@ import {
 import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
 import {
   ActivitiesHttpService,
-  BreadcrumbService,
+  BreadcrumbService, BudgetItemsHttpService,
   CataloguesHttpService, ComponentsHttpService,
   ContinentsHttpService,
   CoreService,
-  FiscalYearsHttpService,
+  FiscalYearsHttpService, FundingSourcesHttpService,
   IndicatorSubactivitiesHttpService,
   InstitutionalStrategicPlansHttpService,
   LocationsHttpService,
@@ -89,11 +89,18 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
   protected components: ComponentModel[] = [];
   protected activities: ActivityModel[] = [];
   protected expenseTypes: ExpenseTypeModel[] = [];
-  protected types: string[] = [SubactivityTypeEnum.nuevo,SubactivityTypeEnum.arrastre];
+  protected fundingSources: FundingSourceModel[] = [];
+  protected budgetItems: BudgetItemModel[] = [];
+  protected types: string[] = [SubactivityTypeEnum.nuevo, SubactivityTypeEnum.arrastre];
 
   private saving: boolean = true;
 
-  protected expenseType: FormControl = new FormControl(null);
+  protected project: FormControl = new FormControl(null, [Validators.required]);
+  protected component: FormControl = new FormControl(null, [Validators.required]);
+  protected activity: FormControl = new FormControl(null, [Validators.required]);
+  protected fundingSource: FormControl = new FormControl(null, [Validators.required]);
+  protected budgetItem: FormControl = new FormControl(null, [Validators.required]);
+  protected expenseType: FormControl = new FormControl(null, [Validators.required]);
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -114,6 +121,8 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
     private readonly continentsHttpService: ContinentsHttpService,
     private readonly poasHttpService: PoasHttpService,
     private readonly unitsHttpService: UnitsHttpService,
+    private readonly budgetItemsHttpService: BudgetItemsHttpService,
+    private readonly fundingSourcesHttpService: FundingSourcesHttpService,
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.SUBACTIVITIES, routerLink: [this.routesService.subactivitiesList]},
@@ -134,15 +143,14 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
 
   ngOnInit(): void {
     this.loadFiscalYears();
-    this.loadCountries();
-    this.loadFiscalYears();
     this.loadIndicatorSubactivities();
     this.loadInstitutionalStrategicPlans();
     this.loadContinents();
-    this.loadPoas();
     this.loadUnits();
     this.loadProjects();
     this.loadExpenseTypes();
+    this.loadFundingSources();
+    this.loadBudgetItems();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -151,8 +159,6 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      activity: [null, [Validators.required]],
-      component: [null, [Validators.required]],
       fiscalYear: [this.authService.fiscalYear, [Validators.required]],
       indicatorSubactivity: [null, [Validators.required]],
       institutionalStrategicPlan: [null, [Validators.required]],
@@ -160,12 +166,10 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
       strategy: [null, [Validators.required]],
       continent: [null, [Validators.required]],
       country: [null, [Validators.required]],
-      province: [null, [Validators.required]],
-      canton: [null, [Validators.required]],
-      project: [null, [Validators.required]],
-      parish: [null, [Validators.required]],
-      poa: [null, [Validators.required]],
-      unit: [null, [Validators.required]],
+      province: [null],
+      canton: [null],
+      parish: [null],
+      unit: [this.authService.unit, [Validators.required]],
       name: [null, [Validators.required]],
       type: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
@@ -173,13 +177,18 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
   }
 
   checkValueChanges() {
-    this.projectField.valueChanges.subscribe(value => {
+    this.project.valueChanges.subscribe(value => {
       this.loadComponents();
       this.activities = [];
     });
 
-    this.componentField.valueChanges.subscribe(value => {
+    this.component.valueChanges.subscribe(value => {
       this.loadActivities();
+    });
+
+    this.continentField.valueChanges.subscribe(value => {
+      if (value)
+        this.loadCountries(value.id);
     });
 
     this.institutionalStrategicPlanField.valueChanges.subscribe(value => {
@@ -189,6 +198,30 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
 
     this.strategicAxisField.valueChanges.subscribe(value => {
       this.loadStrategies();
+    });
+
+    this.countryField.valueChanges.subscribe(value => {
+      if (value.alpha3Code === 'ECU') {
+        this.provinceField.setValidators(Validators.required);
+        this.cantonField.setValidators(Validators.required);
+        this.loadProvinces(value.id);
+      } else {
+        this.provinceField.clearValidators();
+        this.cantonField.clearValidators();
+      }
+
+      this.provinceField.updateValueAndValidity();
+      this.cantonField.updateValueAndValidity();
+    });
+
+    this.provinceField.valueChanges.subscribe(value => {
+      if (value)
+        this.loadCantons(value.id);
+    });
+
+    this.cantonField.valueChanges.subscribe(value => {
+      if (value)
+        this.loadParishes(value.id);
     });
   }
 
@@ -204,9 +237,7 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
     if (this.provinceField.errors) this.formErrors.push(SubactivitiesFormEnum.province);
     if (this.cantonField.errors) this.formErrors.push(SubactivitiesFormEnum.canton);
     if (this.parishField.errors) this.formErrors.push(SubactivitiesFormEnum.parish);
-    if (this.poaField.errors) this.formErrors.push(SubactivitiesFormEnum.poa);
     if (this.unitField.errors) this.formErrors.push(SubactivitiesFormEnum.unit);
-
     if (this.nameField.errors) this.formErrors.push(SubactivitiesFormEnum.name);
     if (this.typeField.errors) this.formErrors.push(SubactivitiesFormEnum.type);
     if (this.enabledField.errors) this.formErrors.push(SubactivitiesFormEnum.enabled);
@@ -321,20 +352,12 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
     this.continents = this.cataloguesHttpService.findByType(CatalogueTypeEnum.CONTINENT);
   }
 
-  loadPoas(): void {
-    this.poasHttpService.findCatalogues().subscribe((poas) => {
-      this.poas = poas;
-    });
-  }
-
   loadUnits(): void {
-    this.unitsHttpService.findCatalogues().subscribe((units) => {
-      this.units = units;
-    });
+    this.units = [this.authService.unit];
   }
 
-  loadCountries(): void {
-    this.countries = this.locationsHttpService.findCountries();
+  loadCountries(continentId: string): void {
+    this.countries = this.locationsHttpService.findCountries().filter(country => country.continentId === continentId);
   }
 
   loadProvinces(countryId: string): void {
@@ -357,14 +380,13 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
 
   loadComponents(): void {
     this.componentsHttpService.findCatalogues().subscribe((components) => {
-      this.components = components.filter(item => item.projectId === this.projectField.value.id);
+      this.components = components.filter(item => item.projectId === this.project.value.id);
     });
   }
 
   loadActivities(): void {
     this.activitiesHttpService.findCatalogues().subscribe((activities) => {
-      this.activities = activities.filter(item => item.componentId === this.componentField.value.id);
-      ;
+      this.activities = activities.filter(item => item.componentId === this.component.value.id);
     });
   }
 
@@ -374,19 +396,19 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
     });
   }
 
+  loadBudgetItems(): void {
+    this.budgetItemsHttpService.findCatalogues().subscribe((budgetItems) => {
+      this.budgetItems = budgetItems;
+    });
+  }
+
+  loadFundingSources(): void {
+    this.fundingSourcesHttpService.findCatalogues().subscribe((fundingSources) => {
+      this.fundingSources = fundingSources;
+    });
+  }
+
   /** Getters **/
-  get projectField(): AbstractControl {
-    return this.form.controls['project'];
-  }
-
-  get componentField(): AbstractControl {
-    return this.form.controls['component'];
-  }
-
-  get activityField(): AbstractControl {
-    return this.form.controls['activity'];
-  }
-
   get nameField(): AbstractControl {
     return this.form.controls['name'];
   }
@@ -439,14 +461,7 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
     return this.form.controls['parish'];
   }
 
-  get poaField(): AbstractControl {
-    return this.form.controls['poa'];
-  }
-
   get unitField(): AbstractControl {
     return this.form.controls['unit'];
   }
-
-  protected readonly ProjectsFormEnum = ProjectsFormEnum;
-  protected readonly ExpenseTypesFormEnum = ExpenseTypesFormEnum;
 }

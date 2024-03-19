@@ -71,10 +71,7 @@ export class ComponentFormComponent implements OnInit, OnExitInterface {
   }
 
   async onExit(): Promise<boolean> {
-    console.log(this.form.touched);
-    console.log(this.form.dirty);
     if (this.form.touched || this.form.dirty) {
-      console.log('entro');
       return await this.messageService.questionOnExit().then(result => result.isConfirmed);
     }
     return true;
