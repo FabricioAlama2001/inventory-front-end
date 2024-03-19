@@ -24,15 +24,16 @@ import {SplitButtonModule} from "primeng/splitbutton";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
+import { TransactionListComponent } from './transaction-list/transaction-list.component';
+import { TransactionFormComponent } from './transaction-form/transaction-form.component';
 
 // Components
-import { TransactionFormComponent } from './transaction-form/transaction-form.component';
-import { TransactionListComponent } from './transaction-list/transaction-list.component';
+
 
 @NgModule({
   declarations: [
-    TransactionFormComponent,
     TransactionListComponent,
+    TransactionFormComponent,
   ],
   imports: [
     NgCommonModule,

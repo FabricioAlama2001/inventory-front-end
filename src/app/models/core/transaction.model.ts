@@ -25,7 +25,7 @@ export interface TransactionModel {
   process?: TransactionModel;
   fiscalYear: FiscalYearModel;
   unit: UnitModel;
-  principalUnit: UnitModel;
+  principalUnit?: UnitModel;
 }
 
 export interface CreateTransactionDto extends Omit<TransactionModel, 'id'> {}

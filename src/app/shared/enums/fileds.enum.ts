@@ -215,3 +215,21 @@ export enum UnitManagersFormEnum {
   role = 'Rol',
   unit = 'Unidad ejecutora'
 }
+
+export enum TransactionDetailsFormEnum {
+  amount = 'Monto',
+  advance = 'Avance',
+  cur = 'CUR',
+  goal = 'Meta',
+  date = 'Fecha',
+  isIva = '¿Tiene IVA?',
+  enabled = 'Estado',
+  state = 'Estado transacción',
+  documentType = 'Tipo de documento',
+  process = 'Proceso transaccional',
+  transaction = 'Transacción',
+  unit = 'Unidad ejecutora',
+  principalUnit = 'Unidad principal',
+  subactivity = 'Sub-actividad',
+  programmingType = 'Tipo de programacón'
+}

@@ -34,6 +34,18 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {roles: [RoleEnum.PLANNER]}
   },
+  {
+    path: 'transactions',
+    loadChildren: () => import('./transaction/transaction.module').then(m => m.TransactionModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RoleEnum.PLANNER]}
+  },
+  {
+    path: 'transaction-details',
+    loadChildren: () => import('./transaction-detail/transaction-detail.module').then(m => m.TransactionDetailModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RoleEnum.PLANNER]}
+  },
 ];
 
 @NgModule({
