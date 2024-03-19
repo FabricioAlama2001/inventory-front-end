@@ -28,29 +28,21 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="formgrid grid">
         <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
-          <label appLabel for="poa" [label]="SubactivitiesFormEnum.poa"
-                 [required]="poaField"></label>
-          <p-dropdown id="poa"
+          <label appLabel for="expenseType" [label]="SubactivitiesFormEnum.expenseType"
+                 [required]="expenseType"></label>
+          <p-dropdown id="expenseType"
                       dataKey="id"
-                      formControlName="poa"
-                      [options]="poas"
+                      [formControl]="expenseType"
+                      [options]="expenseTypes"
                       optionLabel="name"
                       [filter]="true"
                       filterBy="name"
                       placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (poaField.value) {
-                <div>{{ poaField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
           </p-dropdown>
           <small appErrorMessage
-                 [errors]="poaField.errors"
-                 [touched]="poaField.touched"
-                 [dirty]="poaField.dirty">
+                 [errors]="expenseType.errors"
+                 [touched]="expenseType.touched"
+                 [dirty]="expenseType.dirty">
           </small>
         </div>
         <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
@@ -284,6 +276,35 @@
                  [errors]="strategyField.errors"
                  [touched]="strategyField.touched"
                  [dirty]="strategyField.dirty">
+          </small>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="poa" [label]="SubactivitiesFormEnum.poa"
+                 [required]="poaField"></label>
+          <p-dropdown id="poa"
+                      dataKey="id"
+                      formControlName="poa"
+                      [options]="poas"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (poaField.value) {
+                <div>{{ poaField.value.fundingSource.name }} - {{ poaField.value.budgetItem.name}}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.fundingSource.name }} - {{item.budgetItem.name}}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="poaField.errors"
+                 [touched]="poaField.touched"
+                 [dirty]="poaField.dirty">
           </small>
         </div>
       </div>

@@ -22,6 +22,7 @@ import {
    RoutesEnum,
    BudgetItemsFormEnum
 } from "@shared/enums";
+import {getSlug} from "@shared/helpers/slug.helper";
 
 @Component({
   selector: 'app-budget-item-form',
@@ -92,13 +93,7 @@ export class BudgetItemFormComponent implements OnInit, OnExitInterface{
   checkValueChanges() {
     this.nameField.valueChanges.subscribe(value => {
       if (this.id == RoutesEnum.NEW) {
-        const str = value.toLowerCase()
-          .trim()
-          .replace(/[^\w\s-]/g, '')
-          .replace(/[\s_-]+/g, '-')
-          .replace(/^-+|-+$/g, '');
-
-        this.codeField.setValue(str);
+        this.codeField.setValue(getSlug(value));
       }
     });
   }

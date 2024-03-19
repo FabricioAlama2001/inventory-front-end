@@ -15,21 +15,22 @@ export enum SubactivitiesFormEnum {
   activity = 'Actividad',
   name = 'Nombre',
   project = 'Proyecto',
+  expenseType = 'Tipo de gasto',
   component = 'Componente',
   type = 'Tipo',
   enabled = 'Estado',
   fiscalYear = 'Año fiscal',
-  indicatorSubactivity = 'Indicador de la sub-actividad',
-  institutionalStrategicPlan = 'Plan estrategico institucional',
-  strategicAxis = 'Eje estrategico',
+  indicatorSubactivity = 'Indicador de la subactividad',
+  institutionalStrategicPlan = 'Plan estratégico institucional',
+  strategicAxis = 'Eje estratégico',
   strategy = 'Estrategia',
   continent = 'Continente',
-  country = 'Pais',
+  country = 'País',
   province = 'Provincia',
-  canton = 'Canton',
+  canton = 'Cantón',
   parish = 'Parroquia',
-  poa = 'POA',
-  unit = 'Unidad Ejecutora'
+  poa = 'Fuente de finaciamiento - Item presupuestario',
+  unit = 'Unidad ejecutora'
 }
 
 export enum ProjectsFormEnum {

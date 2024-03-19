@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
@@ -7,7 +7,7 @@ import {
   ActivityModel,
   CatalogueModel, ComponentModel,
   ContinentModel,
-  CreateSubactivityDto,
+  CreateSubactivityDto, ExpenseTypeModel,
   FiscalYearModel,
   IndicatorSubactivityModel,
   InstitutionalStrategicPlanModel,
@@ -41,7 +41,7 @@ import {OnExitInterface} from '@shared/interfaces';
 import {
   BreadcrumbEnum,
   CatalogueTypeEnum,
-  ClassButtonActionEnum,
+  ClassButtonActionEnum, ExpenseTypesFormEnum,
   IconButtonActionEnum,
   LabelButtonActionEnum, ProjectsFormEnum,
   RoutesEnum,
@@ -65,7 +65,6 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly SubactivitiesFormEnum = SubactivitiesFormEnum;
-  protected readonly SubactivityTypeEnum = SubactivityTypeEnum;
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
 
@@ -89,9 +88,12 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
   protected projects: ProjectModel[] = [];
   protected components: ComponentModel[] = [];
   protected activities: ActivityModel[] = [];
+  protected expenseTypes: ExpenseTypeModel[] = [];
   protected types: string[] = [SubactivityTypeEnum.nuevo,SubactivityTypeEnum.arrastre];
 
   private saving: boolean = true;
+
+  protected expenseType: FormControl = new FormControl(null);
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -140,6 +142,7 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
     this.loadPoas();
     this.loadUnits();
     this.loadProjects();
+    this.loadExpenseTypes();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -365,6 +368,12 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
     });
   }
 
+  loadExpenseTypes(): void {
+    this.expenseTypesHttpService.findCatalogues().subscribe((expenseTypes) => {
+      this.expenseTypes = expenseTypes;
+    });
+  }
+
   /** Getters **/
   get projectField(): AbstractControl {
     return this.form.controls['project'];
@@ -439,4 +448,5 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
   }
 
   protected readonly ProjectsFormEnum = ProjectsFormEnum;
+  protected readonly ExpenseTypesFormEnum = ExpenseTypesFormEnum;
 }
