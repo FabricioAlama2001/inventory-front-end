@@ -22,7 +22,7 @@ import {
    RoutesEnum,
    BudgetItemsFormEnum
 } from "@shared/enums";
-import {getSlug} from "@shared/helpers/slug.helper";
+import {getSlug} from "@shared/helpers";
 
 @Component({
   selector: 'app-budget-item-form',
