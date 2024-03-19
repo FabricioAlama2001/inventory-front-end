@@ -45,4 +45,6 @@ export enum BreadcrumbEnum {
   APPLICATION_STATUS = 'Estados de solicitud',
   TRANSACTIONS = 'Transacciones',
   UNIT_MANAGERS ='Responsables de unidad',
+  TRANSACTION_DETAILS ='Detalles de la transacción',
+
 }

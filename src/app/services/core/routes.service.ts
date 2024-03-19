@@ -77,6 +77,14 @@ export class RoutesService {
     return this.core + `planner/unit-managers/${id}`;
   }
 
+  get transactionDetailsList(): string {
+    return this.core + 'planner/transaction-details';
+  }
+
+  transactionDetailsForm(id: string): string {
+    return this.core + `planner/transaction-details/${id}`;
+  }
+
 
   /** Catalogue Role **/
   get budgetItemsList(): string {

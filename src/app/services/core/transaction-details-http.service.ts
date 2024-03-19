@@ -3,20 +3,20 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {CreateUnitManagerDto, UpdateUnitManagerDto, UnitManagerModel} from '@models/core';
+import {CreateTransactionDetailDto, UpdateTransactionDetailDto, TransactionDetailModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UnitManagersHttpService {
-  API_URL = `${environment.API_URL}/core/unit-managers`;
+export class TransactionDetailsHttpService {
+  API_URL = `${environment.API_URL}/core/transaction-details`;
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) {
   }
 
-  create(payload: CreateUnitManagerDto): Observable<UnitManagerModel> {
+  create(payload: CreateTransactionDetailDto): Observable<TransactionDetailModel> {
     const url = `${this.API_URL}`;
 
     return this.httpClient.post<ServerResponse>(url, payload).pipe(
@@ -27,7 +27,7 @@ export class UnitManagersHttpService {
     );
   }
 
-  findAll(): Observable<UnitManagerModel[]> {
+  findAll(): Observable<TransactionDetailModel[]> {
     const url = this.API_URL;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -37,22 +37,22 @@ export class UnitManagersHttpService {
     );
   }
 
-  findUnitManagers(page: number = 0, search: string = ''): Observable<ServerResponse> {
+  findTransactionDetails(page: number = 0, search: string = ''): Observable<ServerResponse> {
     const url = this.API_URL;
 
     const headers = new HttpHeaders().append('pagination', 'true');
     const params = new HttpParams()
       .append('page', page)
-      .append('search', search)
+      .append('search', search);
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
-        return response.data;
+        return response;
       })
     );
   }
 
-  findOne(id: string): Observable<UnitManagerModel> {
+  findOne(id: string): Observable<TransactionDetailModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -62,7 +62,7 @@ export class UnitManagersHttpService {
     );
   }
 
-  update(id: string, payload: UpdateUnitManagerDto): Observable<UnitManagerModel> {
+  update(id: string, payload: UpdateTransactionDetailDto): Observable<TransactionDetailModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.put<ServerResponse>(url, payload).pipe(
@@ -73,7 +73,7 @@ export class UnitManagersHttpService {
     );
   }
 
-  enable(id: string): Observable<UnitManagerModel> {
+  enable(id: string): Observable<TransactionDetailModel> {
     const url = `${this.API_URL}/${id}/enable`;
 
     return this.httpClient.patch<ServerResponse>(url, null).pipe(
@@ -84,7 +84,7 @@ export class UnitManagersHttpService {
     );
   }
 
-  remove(id: string): Observable<UnitManagerModel> {
+  remove(id: string): Observable<TransactionDetailModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.delete<ServerResponse>(url).pipe(
@@ -95,10 +95,10 @@ export class UnitManagersHttpService {
     );
   }
 
-  removeAll(unitManagers: UnitManagerModel[]): Observable<UnitManagerModel[]> {
+  removeAll(transactionDetail: TransactionDetailModel[]): Observable<TransactionDetailModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
-    return this.httpClient.patch<ServerResponse>(url, unitManagers).pipe(
+    return this.httpClient.patch<ServerResponse>(url, transactionDetail).pipe(
       map((response) => {
         this.messageService.success(response);
         return response.data;
@@ -106,7 +106,7 @@ export class UnitManagersHttpService {
     );
   }
 
-  disable(id: string): Observable<UnitManagerModel> {
+  disable(id: string): Observable<TransactionDetailModel> {
     const url = `${this.API_URL}/${id}/disable`;
 
     return this.httpClient.patch<ServerResponse>(url, null).pipe(
@@ -117,7 +117,7 @@ export class UnitManagersHttpService {
     );
   }
 
-  findCatalogues(): Observable<UnitManagerModel[]> {
+  findCatalogues(): Observable<TransactionDetailModel[]> {
     const url = `${this.API_URL}/catalogues`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(

@@ -38,11 +38,4 @@ export * from './document-type.model';
 export * from './application-status.model';
 export * from './transaction.model';
 export * from './unit-manager.model';
-
-
-
-
-
-
-
-
+export * from './transaction-detail.model';

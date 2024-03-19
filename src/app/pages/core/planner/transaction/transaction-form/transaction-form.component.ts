@@ -1,42 +1,38 @@
-/*import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
 import {
-  CreateProjectDto,
-  ExpenseTypeModel,
+  ApplicationStatusModel,
+  CreateTransactionDto,
+  DocumentTypeModel,
   FiscalYearModel,
-  PndObjectiveModel,
-  PndPoliceModel,
-  UpdateProjectDto
+  TransactionModel,
+  UnitModel,
+  UpdateTransactionDto
 } from '@models/core';
-import {PndObjectivesHttpService} from '@services/core/pnd-objectives-http.service';
-import {PndPolicesHttpService} from '@services/core/pnd-polices-http.service';
-import {ExpenseTypesHttpService} from '@services/core/expense-types-http.service';
 import {
   BreadcrumbService,
   CoreService,
+  DocumentTypesHttpService,
   FiscalYearsHttpService,
   MessageService,
   RoutesService,
-  TransactionsHttpService
+  TransactionsHttpService,
+  UnitsHttpService
 } from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
   BreadcrumbEnum,
-  CatalogueTypeEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   LabelButtonActionEnum,
-  SubactivitiesFormEnum,
-  SkeletonEnum, UsersFormEnum,
-  UsersIdentificationTypeStateEnum,
-  CatalogueEnum,
+  SkeletonEnum,
   TransactionsFormEnum, RoutesEnum
 } from "@shared/enums";
-import {debounceTime} from "rxjs";
 import {AuthService} from "@services/auth";
+import { ApplicationStatusHttpService } from '@services/core/application-status-http.service';
 
 
 @Component({
@@ -57,10 +53,11 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
-  protected pndObjectives: PndObjectiveModel[] = [];
-  protected pndPolices: PndPoliceModel[] = [];
-  protected expenseTypes: ExpenseTypeModel[] = [];
+  protected documentTypes: DocumentTypeModel[] = [];
+  protected applicationStatus: ApplicationStatusModel[] = [];
+  protected transactions: TransactionModel[] = [];
   protected fiscalYears: FiscalYearModel[] = [];
+  protected units: UnitModel[] = [];
 
   private saving: boolean = true;
 
@@ -73,10 +70,11 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
     private readonly router: Router,
     private readonly routesService: RoutesService,
     private readonly transactionsHttpService: TransactionsHttpService,
-    private readonly pndObjectivesHttpService: PndObjectivesHttpService,
-    private readonly pndPolicesHttpService: PndPolicesHttpService,
-    private readonly expenseTypesHttpService: ExpenseTypesHttpService,
+    private readonly documentTypesHttpService: DocumentTypesHttpService,
+    private readonly applicationStatusHttpService: ApplicationStatusHttpService,
     private readonly fiscalYearsHttpService: FiscalYearsHttpService,
+    private readonly unitsHttpService: UnitsHttpService,
+
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.TRANSACTIONS, routerLink: [this.routesService.transactionsList]},
@@ -84,8 +82,6 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
     ]);
 
     this.form = this.newForm;
-
-    this.checkValueChanges();
   }
 
   async onExit(): Promise<boolean> {
@@ -96,10 +92,11 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
   }
 
   ngOnInit(): void {
-    this.loadExpenseTypes();
-    this.loadPndObjectives();
-    this.loadExpenseTypes();
+    this.loadDocumentTypes();
+    this.loadApplicationStatus();
+    this.loadTransactions();
     this.loadFiscalYears();
+    this.loadUnits();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -108,30 +105,45 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      name: [null, [Validators.required]],
-      fiscalYear: [this.authService.fiscalYear, [Validators.required]],
+      code: [null, [Validators.required]],
+      subject: [null, [Validators.required]],
+      esigef: [null, [Validators.required]],
+      value: [null, [Validators.required]],
+      isIva: [true, [Validators.required]],
+      description: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
-      pndObjective: [null, [Validators.required]],
-      pndPolice: [null, [Validators.required]],
-      expenseType: [null, [Validators.required]],
-    });
-  }
+      state: [true, [Validators.required]],
+      documentType: [null, [Validators.required]],
+      applicationStatus: [null, [Validators.required]],
+      parent: [null, []],
+      process: [null, []],
+      fiscalYear: [null, [Validators.required]],
+      unit: [null, [Validators.required]],
+      principalUnit: [null, []],
 
-  checkValueChanges() {
-    this.pndObjectiveField.valueChanges.subscribe(value => {
-      this.loadPndPolices();
+
     });
   }
 
   get validateFormErrors() {
     this.formErrors = [];
 
-    if (this.nameField.errors) this.formErrors.push(TransactionsFormEnum.name);
-    if (this.fiscalYearField.errors) this.formErrors.push(TransactionsFormEnum.fiscalYear);
+    if (this.codeField.errors) this.formErrors.push(TransactionsFormEnum.code);
+    if (this.subjectField.errors) this.formErrors.push(TransactionsFormEnum.subject);
+    if (this.esigefField.errors) this.formErrors.push(TransactionsFormEnum.esigef);
+    if (this.valueField.errors) this.formErrors.push(TransactionsFormEnum.value);
+    if (this.isIvaField.errors) this.formErrors.push(TransactionsFormEnum.isIva);
+    if (this.descriptionField.errors) this.formErrors.push(TransactionsFormEnum.description);
     if (this.enabledField.errors) this.formErrors.push(TransactionsFormEnum.enabled);
-    if (this.pndObjectiveField.errors) this.formErrors.push(TransactionsFormEnum.pndObjective);
-    if (this.pndPoliceField.errors) this.formErrors.push(TransactionsFormEnum.pndPolice);
-    if (this.expenseTypeField.errors) this.formErrors.push(TransactionsFormEnum.expenseType);
+    if (this.stateField.errors) this.formErrors.push(TransactionsFormEnum.state);
+    if (this.documentTypeField.errors) this.formErrors.push(TransactionsFormEnum.documentType);
+    if (this.applicationStatusField.errors) this.formErrors.push(TransactionsFormEnum.applicationStatus);
+    if (this.parentField.errors) this.formErrors.push(TransactionsFormEnum.parent);
+    if (this.processField.errors) this.formErrors.push(TransactionsFormEnum.process);
+    if (this.fiscalYearField.errors) this.formErrors.push(TransactionsFormEnum.fiscalYear);
+    if (this.unitField.errors) this.formErrors.push(TransactionsFormEnum.unit);
+    if (this.principalUnitField.errors) this.formErrors.push(TransactionsFormEnum.principalUnit);
+
 
     this.formErrors.sort();
 
@@ -139,8 +151,8 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
   }
 
   get(): void {
-    this.transactionsHttpService.findOne(this.id!).subscribe((project) => {
-      this.form.patchValue(project);
+    this.transactionsHttpService.findOne(this.id!).subscribe((transaction) => {
+      this.form.patchValue(transaction);
     });
   }
 
@@ -160,38 +172,38 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
   }
 
   back(): void {
-    this.router.navigate([this.routesService.projectsList]);
+    this.router.navigate([this.routesService.transactionsList]);
   }
 
-  create(project: CreateProjectDto): void {
-    this.transactionsHttpService.create(project).subscribe(project => {
-      //this.form.reset(project);
+  create(transaction: CreateTransactionDto): void {
+    this.transactionsHttpService.create(transaction).subscribe(transaction => {
+      //this.form.reset(transaction);
       this.back();
     });
   }
 
-  update(project: UpdateProjectDto): void {
-    this.transactionsHttpService.update(this.id!, project).subscribe((project) => {
-      //this.form.reset(project);
+  update(transaction: UpdateTransactionDto): void {
+    this.transactionsHttpService.update(this.id!, transaction).subscribe((transaction) => {
+      //this.form.reset(transaction);
       this.back()
     });
   }
 
-  loadExpenseTypes(): void {
-    this.expenseTypesHttpService.findCatalogues().subscribe((expenseTypes) => {
-      this.expenseTypes = expenseTypes;
+  loadDocumentTypes(): void {
+    this.documentTypesHttpService.findCatalogues().subscribe((documentTypes) => {
+      this.documentTypes = documentTypes;
     });
   }
 
-  loadPndObjectives(): void {
-    this.pndObjectivesHttpService.findCatalogues().subscribe((pndObjectives) => {
-      this.pndObjectives = pndObjectives;
+  loadApplicationStatus(): void {
+    this.applicationStatusHttpService.findCatalogues().subscribe((applicationStatus) => {
+      this.applicationStatus = applicationStatus;
     });
   }
 
-  loadPndPolices(): void {
-    this.pndPolicesHttpService.findCatalogues().subscribe((pndPolices) => {
-      this.pndPolices = pndPolices.filter(item => item.pndObjectiveId === this.pndObjectiveField.value.id);
+  loadTransactions(): void {
+    this.transactionsHttpService.findCatalogues().subscribe((transactions) => {
+      this.transactions = transactions;
     });
   }
 
@@ -201,28 +213,70 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
     });
   }
 
-  get nameField(): AbstractControl {
-    return this.form.controls['name'];
+  loadUnits(): void {
+    this.unitsHttpService.findCatalogues().subscribe((units) => {
+      this.units = units;
+    });
   }
 
-  get fiscalYearField(): AbstractControl {
-    return this.form.controls['fiscalYear'];
+  get codeField(): AbstractControl {
+    return this.form.controls['code'];
+  }
+
+  get subjectField(): AbstractControl {
+    return this.form.controls['subject'];
   }
 
   get enabledField(): AbstractControl {
     return this.form.controls['enabled'];
   }
 
-  get pndObjectiveField(): AbstractControl {
-    return this.form.controls['pndObjective'];
+  get esigefField(): AbstractControl {
+    return this.form.controls['esigef'];
   }
 
-  get pndPoliceField(): AbstractControl {
-    return this.form.controls['pndPolice'];
+  get valueField(): AbstractControl {
+    return this.form.controls['value'];
   }
 
-  get expenseTypeField(): AbstractControl {
-    return this.form.controls['expenseType'];
+  get isIvaField(): AbstractControl {
+    return this.form.controls['isIva'];
+  }
+
+  get descriptionField(): AbstractControl {
+    return this.form.controls['description'];
+  }
+
+  get stateField(): AbstractControl {
+    return this.form.controls['state'];
+  }
+
+  get documentTypeField(): AbstractControl {
+    return this.form.controls['documentType'];
+  }
+
+  get applicationStatusField(): AbstractControl {
+    return this.form.controls['applicationStatus'];
+  }
+
+  get parentField(): AbstractControl {
+    return this.form.controls['parent'];
+  }
+
+  get processField(): AbstractControl {
+    return this.form.controls['process'];
+  }
+
+  get fiscalYearField(): AbstractControl {
+    return this.form.controls['fiscalYear'];
+  }
+
+  get unitField(): AbstractControl {
+    return this.form.controls['unit'];
+  }
+
+  get principalUnitField(): AbstractControl {
+    return this.form.controls['principalUnit'];
   }
 }
-*/
+
