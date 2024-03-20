@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
-
 import {CreateApplicationStatusDto, UpdateApplicationStatusDto} from '@models/core';
 import {
+  ApplicationStatusHttpService,
   BreadcrumbService,
   CoreService,
   MessageService,
@@ -17,40 +17,45 @@ import {
   IconButtonActionEnum,
   LabelButtonActionEnum,
   SkeletonEnum,
-   RoutesEnum,
-   ApplicationStatusFormEnum
+  RoutesEnum,
+  ApplicationStatusFormEnum
 } from "@shared/enums";
-import { ApplicationStatusHttpService } from '@services/core/application-status-http.service';
-import { getSlug } from '@shared/helpers/slug.helper';
+import {getSlug} from '@shared/helpers';
 
 @Component({
   selector: 'app-application-status-form',
   templateUrl: './application-status-form.component.html',
   styleUrl: './application-status-form.component.scss'
 })
-export class ApplicationStatusFormComponent implements OnInit, OnExitInterface{
-  protected readonly PrimeIcons = PrimeIcons;
-  protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
-  protected readonly IconButtonActionEnum = IconButtonActionEnum;
-  protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
-  protected readonly ApplicationStatusFormEnum = ApplicationStatusFormEnum;
-  protected readonly SkeletonEnum = SkeletonEnum;
-  protected helpText: string = '';
-  private saving: boolean = true;
+export class ApplicationStatusFormComponent implements OnInit, OnExitInterface {
+  /** Services **/
+  private readonly applicationStatusHttpService = inject(ApplicationStatusHttpService);
+  private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly routesService = inject(RoutesService);
+  protected readonly coreService = inject(CoreService);
+  public readonly messageService = inject(MessageService);
 
+  /** Form **/
   @Input() id: string = '';
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
-  constructor(
-    private readonly breadcrumbService: BreadcrumbService,
-    protected readonly coreService: CoreService,
-    private readonly formBuilder: FormBuilder,
-    public readonly messageService: MessageService,
-    private readonly router: Router,
-    private readonly routesService: RoutesService,
-    private readonly applicationStatusHttpService: ApplicationStatusHttpService,
-  ) {
+  /** Enums **/
+  protected readonly ApplicationStatusFormEnum = ApplicationStatusFormEnum;
+  protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
+  protected readonly IconButtonActionEnum = IconButtonActionEnum;
+  protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
+  protected readonly PrimeIcons = PrimeIcons;
+  protected readonly SkeletonEnum = SkeletonEnum;
+
+  /** Helpers **/
+  protected helpText: string = '';
+
+  private saving: boolean = true;
+
+  constructor() {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.APPLICATION_STATUS, routerLink: [this.routesService.applicationStatusList]},
       {label: BreadcrumbEnum.FORM},
@@ -74,6 +79,7 @@ export class ApplicationStatusFormComponent implements OnInit, OnExitInterface{
     }
   }
 
+  /** Form **/
   get newForm(): FormGroup {
     return this.formBuilder.group({
       code: [null, [Validators.required]],
@@ -108,6 +114,7 @@ export class ApplicationStatusFormComponent implements OnInit, OnExitInterface{
     });
   }
 
+  /** Actions **/
   onSubmit(): void {
     if (this.validateFormErrors) {
       if (this.id === RoutesEnum.NEW) {
@@ -127,7 +134,6 @@ export class ApplicationStatusFormComponent implements OnInit, OnExitInterface{
 
   create(applicationStatus: CreateApplicationStatusDto): void {
     this.applicationStatusHttpService.create(applicationStatus).subscribe(applicationStatus => {
-      //this.form.reset(applicationStatus);
       this.saving = false;
       this.back();
     });
@@ -135,12 +141,12 @@ export class ApplicationStatusFormComponent implements OnInit, OnExitInterface{
 
   update(applicationStatus: UpdateApplicationStatusDto): void {
     this.applicationStatusHttpService.update(this.id!, applicationStatus).subscribe((applicationStatus) => {
-      //this.form.reset(applicationStatus);
       this.saving = false;
       this.back()
     });
   }
 
+  /** Getters **/
   get codeField(): AbstractControl {
     return this.form.controls['code'];
   }

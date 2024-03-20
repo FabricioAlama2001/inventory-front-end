@@ -1,13 +1,16 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {Router} from '@angular/router';
-
 import {debounceTime} from "rxjs";
-
 import {MenuItem, PrimeIcons} from "primeng/api";
-
 import {ApplicationStatusModel, ColumnModel} from '@models/core';
-import {BreadcrumbService, CoreService, MessageService, RoutesService} from '@services/core';
+import {
+  ApplicationStatusHttpService,
+  BreadcrumbService,
+  CoreService,
+  MessageService,
+  RoutesService
+} from '@services/core';
 import {
   BreadcrumbEnum,
   ApplicationStatusFormEnum,
@@ -17,8 +20,6 @@ import {
   LabelButtonActionEnum, RoutesEnum, TableEnum
 } from "@shared/enums";
 import {getHigherSort} from "@shared/helpers";
-import { ApplicationStatusHttpService } from '@services/core/application-status-http.service';
-
 
 @Component({
   selector: 'app-application-status-list',
@@ -26,34 +27,36 @@ import { ApplicationStatusHttpService } from '@services/core/application-status-
   styleUrl: './application-status-list.component.scss'
 })
 export class ApplicationStatusListComponent {
-  protected readonly PrimeIcons = PrimeIcons;
-  protected readonly IconButtonActionEnum = IconButtonActionEnum;
-  protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
-  protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
+  /** Services **/
+  private readonly applicationStatusHttpService = inject(ApplicationStatusHttpService);
+  private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly router = inject(Router);
+  private readonly routesService = inject(RoutesService);
+  protected readonly coreService = inject(CoreService);
+  protected readonly messageService = inject(MessageService);
+
+  /** Enums **/
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
-  protected readonly ApplicationStatusFormEnum = ApplicationStatusFormEnum;
+  protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
+  protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly IdButtonActionEnum = IdButtonActionEnum;
+  protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
+  protected readonly PrimeIcons = PrimeIcons;
   protected readonly TableEnum = TableEnum;
 
+  /** Buttons Actions **/
   protected buttonActions: MenuItem[] = this.buildButtonActions;
   protected isButtonActions: boolean = false;
 
+  /** Table **/
   protected columns: ColumnModel[] = this.buildColumns;
-
+  protected items: ApplicationStatusModel[] = [];
   protected search: FormControl = new FormControl('');
-
   protected selectedItem!: ApplicationStatusModel;
   protected selectedItems: ApplicationStatusModel[] = [];
-  protected items: ApplicationStatusModel[] = [];
+  protected globalFilterFields: string[] = ['code', 'name'];
 
-  constructor(
-    private readonly breadcrumbService: BreadcrumbService,
-    protected readonly coreService: CoreService,
-    protected readonly messageService: MessageService,
-    private readonly router: Router,
-    private readonly routesService: RoutesService,
-    private readonly applicationStatusHttpService: ApplicationStatusHttpService,
-  ) {
+  constructor() {
     this.breadcrumbService.setItems([{label: BreadcrumbEnum.APPLICATION_STATUS}]);
   }
 
@@ -143,6 +146,7 @@ export class ApplicationStatusListComponent {
     this.router.navigate([this.routesService.applicationStatusForm(id)]);
   }
 
+  /** Actions **/
   disable(id: string) {
     this.applicationStatusHttpService.disable(id).subscribe(applicationStatus => {
       const index = this.items.findIndex(applicationStatus => applicationStatus.id === id);
