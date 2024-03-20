@@ -23,22 +23,25 @@
 </p-toolbar>
 
 <p-table
-  #dt1
+  #dt
   dataKey="id"
   styleClass="p-datatable-striped"
   [value]="items"
   [columns]="columns"
   [globalFilterFields]="['code', 'name']"
   [loading]="coreService.isLoading"
-  [(selection)]="selectedItems">
+  [(selection)]="selectedItems"
+  >
   <ng-template pTemplate="caption">
     <div class="flex">
       <h1>{{ BreadcrumbEnum.EXPENSE_GROUPS }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
-        <input #search pInputText type="text"
-               placeholder="Buscar..."
-               (input)="dt1.filterGlobal(search.value, 'contains')"/>
+        <input #search
+              pInputText
+              type="text"
+              [placeholder]="TableEnum.SEARCH"
+              (input)="dt.filterGlobal(search.value, 'contains')"/>
       </div>
     </div>
   </ng-template>

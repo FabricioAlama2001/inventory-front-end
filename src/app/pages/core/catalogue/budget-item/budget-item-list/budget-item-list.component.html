@@ -1,12 +1,12 @@
 <p-toolbar>
   <div class="p-toolbar-group-left">
     <button pButton type="button" (click)="redirectCreateForm()" [icon]="IconButtonActionEnum.CREATE"
-      [label]="LabelButtonActionEnum.CREATE" [loading]="coreService.isLoading"
-      [ngClass]="[ClassButtonActionEnum.CREATE]">
+            [label]="LabelButtonActionEnum.CREATE" [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.CREATE]">
     </button>
     <button pButton type="button" (click)="findAll()" [icon]="IconButtonActionEnum.SYNC"
-      [label]="LabelButtonActionEnum.SYNC" [loading]="coreService.isLoading"
-      [ngClass]="[ClassButtonActionEnum.SYNC,'ml-2']">
+            [label]="LabelButtonActionEnum.SYNC" [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.SYNC,'ml-2']">
     </button>
   </div>
   <div class="p-toolbar-group-right">
@@ -14,16 +14,27 @@
   </div>
 </p-toolbar>
 
-<p-table #dt1 dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns"
-  [globalFilterFields]="['code', 'name', 'expenseGroup.name']" [loading]="coreService.isLoading"
-  [(selection)]="selectedItems">
+<p-table
+  #dt
+  dataKey="id"
+  styleClass="p-datatable-striped"
+  [value]="items"
+  [columns]="columns"
+  [globalFilterFields]="['code', 'name', 'expenseGroup.name']"
+  [loading]="coreService.isLoading"
+  [(selection)]="selectedItems"
+>
   <ng-template pTemplate="caption">
     <div class="flex">
       <h1>{{ BreadcrumbEnum.BUDGET_ITEMS }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
-        <input #search pInputText type="text" placeholder="Buscar..."
-          (input)="dt1.filterGlobal(search.value, 'contains')" />
+        <input
+          #search
+          pInputText
+          type="text"
+          [placeholder]="TableEnum.SEARCH"
+          (input)="dt.filterGlobal(search.value, 'contains')" />
       </div>
     </div>
   </ng-template>
