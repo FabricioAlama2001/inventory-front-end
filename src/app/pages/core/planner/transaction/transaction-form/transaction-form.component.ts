@@ -1,12 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, inject, Input, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons} from "primeng/api";
 
 import {
   ApplicationStatusModel,
   CreateTransactionDto,
-  DocumentTypeModel,
+  DocumentTypeModel, ExpenseTypeModel,
   FiscalYearModel,
   TransactionModel,
   UnitModel,
@@ -15,7 +15,7 @@ import {
 import {
   BreadcrumbService,
   CoreService,
-  DocumentTypesHttpService,
+  DocumentTypesHttpService, ExpenseTypesHttpService,
   FiscalYearsHttpService,
   MessageService,
   RoutesService,
@@ -29,10 +29,10 @@ import {
   IconButtonActionEnum,
   LabelButtonActionEnum,
   SkeletonEnum,
-  TransactionsFormEnum, RoutesEnum
+  TransactionsFormEnum, RoutesEnum, SubactivitiesFormEnum
 } from "@shared/enums";
 import {AuthService} from "@services/auth";
-import { ApplicationStatusHttpService } from '@services/core/application-status-http.service';
+import {ApplicationStatusHttpService} from '@services/core/application-status-http.service';
 
 
 @Component({
@@ -40,7 +40,7 @@ import { ApplicationStatusHttpService } from '@services/core/application-status-
   templateUrl: './transaction-form.component.html',
   styleUrl: './transaction-form.component.scss'
 })
-export class TransactionFormComponent implements OnInit, OnExitInterface{
+export class TransactionFormComponent implements OnInit, OnExitInterface {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -58,8 +58,12 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
   protected transactions: TransactionModel[] = [];
   protected fiscalYears: FiscalYearModel[] = [];
   protected units: UnitModel[] = [];
+  protected expenseType: FormControl = new FormControl(null, [Validators.required]);
+  protected expenseTypes: ExpenseTypeModel[] = [];
 
   private saving: boolean = true;
+
+  private readonly expenseTypesHttpService = inject(ExpenseTypesHttpService);
 
   constructor(
     private readonly authService: AuthService,
@@ -74,7 +78,6 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
     private readonly applicationStatusHttpService: ApplicationStatusHttpService,
     private readonly fiscalYearsHttpService: FiscalYearsHttpService,
     private readonly unitsHttpService: UnitsHttpService,
-
   ) {
     this.breadcrumbService.setItems([
       {label: BreadcrumbEnum.TRANSACTIONS, routerLink: [this.routesService.transactionsList]},
@@ -97,6 +100,7 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
     this.loadTransactions();
     this.loadFiscalYears();
     this.loadUnits();
+    this.loadExpenseTypes();
 
     if (this.id != RoutesEnum.NEW) {
       this.get();
@@ -117,11 +121,8 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
       applicationStatus: [null, [Validators.required]],
       parent: [null, []],
       process: [null, []],
-      fiscalYear: [null, [Validators.required]],
-      unit: [null, [Validators.required]],
-      principalUnit: [null, []],
-
-
+      fiscalYear: [this.authService.fiscalYear, [Validators.required]],
+      unit: [this.authService.unit, [Validators.required]],
     });
   }
 
@@ -142,8 +143,6 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
     if (this.processField.errors) this.formErrors.push(TransactionsFormEnum.process);
     if (this.fiscalYearField.errors) this.formErrors.push(TransactionsFormEnum.fiscalYear);
     if (this.unitField.errors) this.formErrors.push(TransactionsFormEnum.unit);
-    if (this.principalUnitField.errors) this.formErrors.push(TransactionsFormEnum.principalUnit);
-
 
     this.formErrors.sort();
 
@@ -208,14 +207,16 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
   }
 
   loadFiscalYears(): void {
-    this.fiscalYearsHttpService.findCatalogues().subscribe((fiscalYears) => {
-      this.fiscalYears = fiscalYears;
-    });
+    this.fiscalYears = [this.authService.fiscalYear];
   }
 
   loadUnits(): void {
-    this.unitsHttpService.findCatalogues().subscribe((units) => {
-      this.units = units;
+    this.units = [this.authService.unit];
+  }
+
+  loadExpenseTypes(): void {
+    this.expenseTypesHttpService.findCatalogues().subscribe((expenseTypes) => {
+      this.expenseTypes = expenseTypes;
     });
   }
 
@@ -275,8 +276,6 @@ export class TransactionFormComponent implements OnInit, OnExitInterface{
     return this.form.controls['unit'];
   }
 
-  get principalUnitField(): AbstractControl {
-    return this.form.controls['principalUnit'];
-  }
+  protected readonly SubactivitiesFormEnum = SubactivitiesFormEnum;
 }
 

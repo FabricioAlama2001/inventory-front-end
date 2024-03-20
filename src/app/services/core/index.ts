@@ -37,6 +37,7 @@ export * from './document-types-http.service';
 export * from './transactions-http.service';
 export * from './unit-managers-http.service';
 export * from './transaction-details-http.service';
+export * from './application-status-http.service';
 
 
 

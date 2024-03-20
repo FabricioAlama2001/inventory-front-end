@@ -73,7 +73,6 @@ export class SubactivityListComponent {
       .subscribe((response) => {
         this.paginator = response.pagination!;
         this.items = response.data;
-        console.log(response.data);
       });
   }
 

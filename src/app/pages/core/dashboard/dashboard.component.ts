@@ -26,6 +26,10 @@ export class DashboardComponent {
     switch (this.role.code) {
       case RoleEnum.ADMIN:
         this.routesService.dashboardAdmin();
+        break;
+      case RoleEnum.PLANNER:
+        this.routesService.dashboardPlanner();
+        break;
     }
   }
 }

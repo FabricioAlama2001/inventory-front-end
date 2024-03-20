@@ -69,7 +69,6 @@ export class ActivityListComponent {
       {label: BreadcrumbEnum.ACTIVITIES}
     ]);
 
-    console.log('asd');
     this.paginator = this.coreService.paginator;
   }
 

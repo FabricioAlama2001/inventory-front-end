@@ -26,6 +26,78 @@
 
   <p-panel class="p-fluid">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="expenseType" [label]="SubactivitiesFormEnum.expenseType"
+                 [required]="expenseType"></label>
+          <p-dropdown id="expenseType"
+                      dataKey="id"
+                      [formControl]="expenseType"
+                      [options]="expenseTypes"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="expenseType.errors"
+                 [touched]="expenseType.touched"
+                 [dirty]="expenseType.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="fiscalYear" [label]="TransactionsFormEnum.fiscalYear"
+                 [required]="fiscalYearField"></label>
+          <p-dropdown id="fiscalYear"
+                      dataKey="id"
+                      formControlName="fiscalYear"
+                      [options]="fiscalYears"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (fiscalYearField.value) {
+                <div>{{ fiscalYearField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="fiscalYearField.errors"
+                 [touched]="fiscalYearField.touched"
+                 [dirty]="fiscalYearField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="unit" [label]="TransactionsFormEnum.unit"
+                 [required]="unitField"></label>
+          <p-dropdown id="unit"
+                      dataKey="id"
+                      formControlName="unit"
+                      [options]="units"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (unitField.value) {
+                <div>{{ unitField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="unitField.errors"
+                 [touched]="unitField.touched"
+                 [dirty]="unitField.dirty">
+          </small>
+        </div>
+      </div>
       <div class="field">
         <label appLabel for="parent" [label]="TransactionsFormEnum.parent"
           [required]="parentField"></label>
@@ -127,86 +199,9 @@
                  [dirty]="applicationStatusField.dirty">
           </small>
         </div>
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-          <label appLabel for="fiscalYear" [label]="TransactionsFormEnum.fiscalYear"
-                 [required]="fiscalYearField"></label>
-          <p-dropdown id="fiscalYear"
-                      dataKey="id"
-                      formControlName="fiscalYear"
-                      [options]="fiscalYears"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (fiscalYearField.value) {
-                <div>{{ fiscalYearField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="fiscalYearField.errors"
-                 [touched]="fiscalYearField.touched"
-                 [dirty]="fiscalYearField.dirty">
-          </small>
-        </div>
       </div>
       <div class="formgrid grid">
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-          <label appLabel for="unit" [label]="TransactionsFormEnum.unit"
-                 [required]="unitField"></label>
-          <p-dropdown id="unit"
-                      dataKey="id"
-                      formControlName="unit"
-                      [options]="units"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (unitField.value) {
-                <div>{{ unitField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="unitField.errors"
-                 [touched]="unitField.touched"
-                 [dirty]="unitField.dirty">
-          </small>
-        </div>
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-          <label appLabel for="principalUnit" [label]="TransactionsFormEnum.principalUnit"
-                 [required]="principalUnitField"></label>
-          <p-dropdown id="principalUnit"
-                      dataKey="id"
-                      formControlName="principalUnit"
-                      [options]="units"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (principalUnitField.value) {
-                <div>{{ principalUnitField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="principalUnitField.errors"
-                 [touched]="principalUnitField.touched"
-                 [dirty]="principalUnitField.dirty">
-          </small>
-        </div>
+
       </div>
       <div class="formgrid grid">
         <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">

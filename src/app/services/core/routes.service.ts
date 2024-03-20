@@ -37,11 +37,15 @@ export class RoutesService {
     return this.core + `planner/projects/${id}`;
   }
 
-  componentsList(projectId: string): string {
-    return this.core + `planner/projects/${projectId}/components`;
+  componentsList(projectId: string | null = null): string {
+    if (projectId) {
+      return this.core + `planner/projects/${projectId}/components`;
+    }
+
+    return this.core + `planner/components`;
   }
 
-  componentsForm(projectId:string,id: string): string {
+  componentsForm(projectId: string, id: string): string {
     return this.core + `planner/projects/${projectId}/components/${id}`;
   }
 
@@ -53,12 +57,16 @@ export class RoutesService {
     return this.core + `planner/subactivities/${id}`;
   }
 
-  activitiesForm(componentId:string,id: string): string {
+  activitiesForm(componentId: string, id: string): string {
     return this.core + `planner/components/${componentId}/activities/${id}`;
   }
 
-  activitiesList(componentId: string): string {
-    return this.core + `planner/components/${componentId}/activities`;
+  activitiesList(componentId: string | null = null): string {
+    if (componentId) {
+      return this.core + `planner/components/${componentId}/activities`;
+    }
+
+    return this.core + `planner/activities`;
   }
 
   get poasList(): string {

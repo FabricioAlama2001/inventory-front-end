@@ -1,13 +1,17 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {Router} from '@angular/router';
-
 import {debounceTime} from "rxjs";
-
 import {MenuItem, PrimeIcons} from "primeng/api";
-
 import {ColumnModel, PaginatorModel, TransactionModel} from '@models/core';
-import {BreadcrumbService, CoreService, MessageService, RoutesService, TransactionsHttpService} from '@services/core';
+import {
+  BreadcrumbService,
+  CoreService,
+  MessageService,
+  RoutesService,
+  TransactionsHttpService,
+  UnitsHttpService
+} from '@services/core';
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
@@ -15,32 +19,31 @@ import {
   IdButtonActionEnum,
   LabelButtonActionEnum, TransactionsFormEnum, TableEnum, RoutesEnum
 } from "@shared/enums";
+import {AuthService} from "@services/auth";
 
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',
   styleUrl: './transaction-list.component.scss'
 })
-export class TransactionListComponent {
+export class TransactionListComponent implements OnInit {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly BreadcrumbEnum = BreadcrumbEnum;
   protected readonly TableEnum = TableEnum;
-
   protected paginator: PaginatorModel;
-
   protected buttonActions: MenuItem[] = this.buildButtonActions;
   protected isButtonActions: boolean = false;
-
   protected columns: ColumnModel[] = this.buildColumns;
-
   protected search: FormControl = new FormControl('');
-
   protected selectedItem!: TransactionModel;
   protected selectedItems: TransactionModel[] = [];
   protected items: TransactionModel[] = [];
+
+  private readonly authService = inject(AuthService);
+  private readonly unitsHttpService = inject(UnitsHttpService);
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -57,22 +60,21 @@ export class TransactionListComponent {
 
   ngOnInit() {
     this.checkValueChanges();
-    this.findTransactions();
+    this.findTransactionsByUser();
   }
 
   checkValueChanges() {
     this.search.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(value => {
-      this.findTransactions();
+      this.findTransactionsByUser();
     });
   }
 
-  findTransactions(page: number = 0) {
-    this.transactionsHttpService.findTransactions(page, this.search.value)
+  findTransactionsByUser(page: number = 0) {
+    this.unitsHttpService.findTransactionsByUnit(this.authService.unit.id, this.authService.role.id)
       .subscribe((response) => {
-        this.paginator = response.pagination!;
-        this.items = response.data;
+        this.items = response;
       });
   }
 
@@ -174,7 +176,7 @@ export class TransactionListComponent {
   }
 
   paginate(event: any) {
-    this.findTransactions(event.page);
+    this.findTransactionsByUser(event.page);
   }
 
   selectItem(item: TransactionModel) {

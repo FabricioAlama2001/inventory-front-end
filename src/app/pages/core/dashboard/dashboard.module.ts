@@ -9,6 +9,11 @@ import { StudentComponent } from './student/student.component';
 import { CoordinatorAdministrativeComponent } from './coordinator-administrative/coordinator-administrative.component';
 import { CoordinatorCareerComponent } from './coordinator-career/coordinator-career.component';
 import {DashboardComponent} from "./dashboard.component";
+import {ButtonModule} from "primeng/button";
+import {RippleModule} from "primeng/ripple";
+import {DividerModule} from "primeng/divider";
+import {CardModule} from "primeng/card";
+import {AccordionModule} from "primeng/accordion";
 
 
 @NgModule({
@@ -23,7 +28,12 @@ import {DashboardComponent} from "./dashboard.component";
   ],
   imports: [
     CommonModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    ButtonModule,
+    RippleModule,
+    DividerModule,
+    CardModule,
+    AccordionModule
   ]
 })
 export class DashboardModule { }

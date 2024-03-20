@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {CreateUnitDto, UpdateUnitDto, UnitModel} from '@models/core';
+import {CreateUnitDto, UpdateUnitDto, UnitModel, TransactionModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
 
@@ -126,4 +126,17 @@ export class UnitsHttpService {
       })
     );
   }
+
+  findTransactionsByUnit(id: string, roleId: string): Observable<TransactionModel[]> {
+    const url = `${this.API_URL}/${id}/transactions`;
+
+    const params = new HttpParams().append('roleId', roleId);
+
+    return this.httpClient.get<ServerResponse>(url, {params}).pipe(
+      map((response) => {
+        return response.data;
+      })
+    );
+  }
+
 }
