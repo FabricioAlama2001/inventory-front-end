@@ -55,6 +55,7 @@ import {VisibleComponent} from './components/visible/visible.component';
 import {DialogModule} from "primeng/dialog";
 import {ButtonActionComponent} from './components/button-action/button-action.component';
 import {MapComponent} from './components/map/map.component';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import {MapComponent} from './components/map/map.component';
     EnabledPipe,
     EnabledSeverityPipe,
     YesNoPipe,
+    MenuModule
   ],
   imports: [
     CommonModule,
@@ -147,6 +149,7 @@ import {MapComponent} from './components/map/map.component';
     ConfirmDialogModule,
     PanelModule,
     DialogModule,
+    MenuModule
   ],
   providers: [ConfirmationService]
 })

@@ -3,9 +3,9 @@
     {{LabelButtonActionEnum.ACTIONS}}
   </ng-template>
   <ng-template pTemplate="content">
-    <p-panelMenu [model]="buttonActions"
-                 [style]="{'width':'300px'}"
-                 (click)="enabled=false; isHide.emit(true)"></p-panelMenu>
+    <p-menu [model]="buttonActions" (click)="enabled=false; isHide.emit(true)" [style]="{'width':'300px'}"></p-menu>
   </ng-template>
   <ng-template pTemplate="footer">Footer Content</ng-template>
+
+
 </p-sidebar>
