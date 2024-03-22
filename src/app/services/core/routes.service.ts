@@ -93,6 +93,15 @@ export class RoutesService {
     return this.core + `planner/transaction-details/${id}`;
   }
 
+  /** Applicant Routes **/
+  get scpList(): string {
+    return this.core + 'applicant/transactions/scp';
+  }
+
+  scpForm(id: string): string {
+    return this.core + `applicant/transactions/scp/${id}`;
+  }
+  /** Applicant Routes **/
 
   /** Catalogue Role **/
   get budgetItemsList(): string {

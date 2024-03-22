@@ -21,6 +21,12 @@ const routes: Routes = [
     data: {roles: [RoleEnum.PLANNER]}
   },
   {
+    path: 'applicant',
+    loadChildren: () => import('./applicant/applicant.module').then(m => m.ApplicantModule),
+    canActivate: [RoleGuard],
+    data: {roles: [RoleEnum.APPLICANT]}
+  },
+  {
     path: 'catalogue',
     loadChildren: () => import('./catalogue/catalogue.module').then(m => m.CatalogueModule),
     canActivate: [RoleGuard],

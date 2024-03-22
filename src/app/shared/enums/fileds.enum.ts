@@ -200,6 +200,8 @@ export enum ApplicationStatusFormEnum {
 
 export enum TransactionsFormEnum {
   code = 'Código',
+  subactivities = 'Subactividades',
+  date = 'Fecha de certificación',
   subject = 'Asunto',
   esigef = 'ESIGEF',
   value = 'Valor',

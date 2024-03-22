@@ -44,6 +44,7 @@ export enum BreadcrumbEnum {
   DOCUMENT_TYPES = 'Tipos de documentos',
   APPLICATION_STATUS = 'Estados de solicitud',
   TRANSACTIONS = 'Transacciones',
+  TRANSACTION_SCP = 'Solicitud Certificación Presupuestaria',
   UNIT_MANAGERS ='Responsables de unidad',
   TRANSACTION_DETAILS ='Detalles de la transacción',
 

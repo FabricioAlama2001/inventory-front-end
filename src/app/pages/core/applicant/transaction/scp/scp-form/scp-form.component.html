@@ -1,0 +1,199 @@
+@if (coreService.isLoading) {
+  <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
+}
+
+@if (!coreService.isLoading) {
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <app-header-form [id]="id"></app-header-form>
+    </div>
+    <div class="p-toolbar-group-right">
+      <button pButton pRipple type="button"
+              (click)="back()"
+              [icon]="IconButtonActionEnum.CANCEL"
+              [label]="LabelButtonActionEnum.CANCEL"
+              [loading]="coreService.isLoading"
+              [ngClass]="[ClassButtonActionEnum.CANCEL]"></button>
+      <p-divider layout="vertical"></p-divider>
+      <button pButton pRipple type="button"
+              (click)="onSubmit()"
+              [icon]="IconButtonActionEnum.SAVE"
+              [label]="LabelButtonActionEnum.SAVE"
+              [loading]="coreService.isLoading"
+              [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
+    </div>
+  </p-toolbar>
+
+  <p-panel class="p-fluid">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="documentType" [label]="TransactionsFormEnum.documentType"
+                 [required]="documentTypeField"></label>
+          <p-dropdown id="documentType"
+                      dataKey="id"
+                      formControlName="documentType"
+                      [options]="documentTypes"
+                      optionLabel="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (documentTypeField.value) {
+                <div>{{ documentTypeField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="documentTypeField.errors"
+                 [touched]="documentTypeField.touched"
+                 [dirty]="documentTypeField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="applicationStatus" [label]="TransactionsFormEnum.applicationStatus"
+                 [required]="applicationStatusField"></label>
+          <p-dropdown id="applicationStatus"
+                      dataKey="id"
+                      formControlName="applicationStatus"
+                      [options]="applicationStatus"
+                      optionLabel="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (applicationStatusField.value) {
+                <div>{{ applicationStatusField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="applicationStatusField.errors"
+                 [touched]="applicationStatusField.touched"
+                 [dirty]="applicationStatusField.dirty">
+          </small>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="expenseType" [label]="SubactivitiesFormEnum.expenseType"
+                 [required]="expenseType"></label>
+          <p-dropdown id="expenseType"
+                      dataKey="id"
+                      [formControl]="expenseType"
+                      [options]="expenseTypes"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Seleccione...">
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="expenseType.errors"
+                 [touched]="expenseType.touched"
+                 [dirty]="expenseType.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="fiscalYear" [label]="TransactionsFormEnum.fiscalYear"
+                 [required]="fiscalYearField"></label>
+          <p-dropdown id="fiscalYear"
+                      dataKey="id"
+                      formControlName="fiscalYear"
+                      [options]="fiscalYears"
+                      optionLabel="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (fiscalYearField.value) {
+                <div>{{ fiscalYearField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="fiscalYearField.errors"
+                 [touched]="fiscalYearField.touched"
+                 [dirty]="fiscalYearField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="unit" [label]="TransactionsFormEnum.unit"
+                 [required]="unitField"></label>
+          <p-dropdown id="unit"
+                      dataKey="id"
+                      formControlName="unit"
+                      [options]="units"
+                      optionLabel="name"
+                      placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (unitField.value) {
+                <div>{{ unitField.value.name }}</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.name }}</div>
+            </ng-template>
+          </p-dropdown>
+          <small appErrorMessage
+                 [errors]="unitField.errors"
+                 [touched]="unitField.touched"
+                 [dirty]="unitField.dirty">
+          </small>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <label appLabel for="date" [label]="TransactionsFormEnum.date"
+                 [required]="dateField"></label>
+          <p-calendar id="date"
+                      formControlName="date"
+                      dateFormat="yy-mm-dd"
+                      [firstDayOfWeek]="1"
+                      [showIcon]="true"></p-calendar>
+          <small appErrorMessage
+                 [errors]="dateField.errors"
+                 [touched]="dateField.touched"
+                 [dirty]="dateField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="subject" [label]="TransactionsFormEnum.subject" [required]="subjectField"></label>
+          <input pInputText type="text" id="subject" formControlName="subject"/>
+          <small appErrorMessage
+                 [errors]="subjectField.errors"
+                 [touched]="subjectField.touched"
+                 [dirty]="subjectField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+          <label appLabel for="description" [label]="TransactionsFormEnum.description"
+                 [required]="descriptionField"></label>
+          <input pInputText type="text" id="description" formControlName="description"/>
+          <small appErrorMessage
+                 [errors]="descriptionField.errors"
+                 [touched]="descriptionField.touched"
+                 [dirty]="descriptionField.dirty">
+          </small>
+        </div>
+      </div>
+
+      <div class="field">
+        <label appLabel for="date" [label]="TransactionsFormEnum.subactivities" [required]="dateField"></label>
+        <button pButton pRipple label="Agregar" class="p-button-success" [icon]="PrimeIcons.PLUS"></button>
+        <p-tree
+          [filter]="true"
+          [value]="files"
+          selectionMode="single"
+          [(selection)]="selectedFiles"
+          (selectionChange)="test($event)"
+        ></p-tree>
+      </div>
+    </form>
+  </p-panel>
+}
+
