@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PrimeIcons, TreeNode} from "primeng/api";
@@ -6,8 +6,10 @@ import {PrimeIcons, TreeNode} from "primeng/api";
 import {
   ApplicationStatusModel,
   CreateTransactionDto,
-  DocumentTypeModel, ExpenseTypeModel,
+  DocumentTypeModel,
+  ExpenseTypeModel,
   FiscalYearModel,
+  ProjectModel,
   TransactionModel,
   UnitModel,
   UpdateTransactionDto
@@ -21,17 +23,22 @@ import {
   FiscalYearsHttpService,
   MessageService,
   RoutesService,
+  SubactivitiesHttpService,
   TransactionsHttpService,
   UnitsHttpService
 } from '@services/core';
 import {OnExitInterface} from '@shared/interfaces';
 import {
+  ApplicationStatusEnum,
   BreadcrumbEnum,
   ClassButtonActionEnum,
+  DocumentTypeEnum,
   IconButtonActionEnum,
   LabelButtonActionEnum,
+  RoutesEnum,
   SkeletonEnum,
-  TransactionsFormEnum, RoutesEnum, SubactivitiesFormEnum, DocumentTypeEnum, ApplicationStatusEnum
+  SubactivitiesFormEnum,
+  TransactionsFormEnum
 } from "@shared/enums";
 import {AuthService} from "@services/auth";
 
@@ -39,7 +46,7 @@ import {AuthService} from "@services/auth";
 @Component({
   selector: 'app-scp-form',
   templateUrl: './scp-form.component.html',
-  styleUrl: './scp-form.component.scss'
+  styleUrl: './scp-form.component.scss',
 })
 export class ScpFormComponent implements OnInit, OnExitInterface {
   protected readonly PrimeIcons = PrimeIcons;
@@ -51,8 +58,9 @@ export class ScpFormComponent implements OnInit, OnExitInterface {
   protected readonly SubactivitiesFormEnum = SubactivitiesFormEnum;
   protected helpText: string = '';
 
-  @Input() id: string = '';
+  @Input({required:true}) id: string = '';
   protected form: FormGroup;
+  private saving: boolean = true;
   protected formErrors: string[] = [];
 
   protected documentTypes: DocumentTypeModel[] = [];
@@ -62,9 +70,9 @@ export class ScpFormComponent implements OnInit, OnExitInterface {
   protected units: UnitModel[] = [];
   protected expenseType: FormControl = new FormControl(null, [Validators.required]);
   protected expenseTypes: ExpenseTypeModel[] = [];
-  protected files!: TreeNode[];
-  protected selectedFiles!: TreeNode[];
-  private saving: boolean = true;
+  protected projects!: TreeNode[];
+  protected selectedSubactivity!: TreeNode;
+  protected isProgrammingForm: boolean = false;
 
   private readonly expenseTypesHttpService = inject(ExpenseTypesHttpService);
   private readonly authService = inject(AuthService);
@@ -79,6 +87,7 @@ export class ScpFormComponent implements OnInit, OnExitInterface {
   private readonly applicationStatusHttpService = inject(ApplicationStatusHttpService);
   private readonly fiscalYearsHttpService = inject(FiscalYearsHttpService);
   private readonly unitsHttpService = inject(UnitsHttpService);
+  private readonly subactivitiesHttpService = inject(SubactivitiesHttpService);
 
   constructor() {
     this.breadcrumbService.setItems([
@@ -87,34 +96,6 @@ export class ScpFormComponent implements OnInit, OnExitInterface {
     ]);
 
     this.form = this.newForm;
-
-    this.files = [
-      {
-        key: '0',
-        label: 'Documents',
-        data: 'Documents Folder',
-        icon: 'pi pi-fw pi-inbox',
-        children: [
-          {
-            key: '0-0',
-            label: 'Work',
-            data: 'Work Folder',
-            icon: 'pi pi-fw pi-cog',
-            children: [
-              {key: '0-0-0', label: 'Expenses.doc', icon: 'pi pi-fw pi-file', data: 'Expenses Document'},
-              {key: '0-0-1', label: 'Resume.doc', icon: 'pi pi-fw pi-file', data: 'Resume Document'}
-            ]
-          },
-          {
-            key: '0-1',
-            label: 'Home',
-            data: 'Home Folder',
-            icon: 'pi pi-fw pi-home',
-            children: [{key: '0-1-0', label: 'Invoices.txt', icon: 'pi pi-fw pi-file', data: 'Invoices for this month'}]
-          }
-        ]
-      },
-    ]
   }
 
   async onExit(): Promise<boolean> {
@@ -219,6 +200,13 @@ export class ScpFormComponent implements OnInit, OnExitInterface {
     });
   }
 
+  openProgrammingForm(event: any) {
+    if (event.data) {
+      this.isProgrammingForm = true;
+      // this.router.navigate([this.routesService.programingFormApplicant(event.key)]);
+    }
+  }
+
   loadDocumentTypes(): void {
     this.documentTypesHttpService.findCatalogues().subscribe((documentTypes) => {
       this.documentTypes = documentTypes.filter(documentType => documentType.code === DocumentTypeEnum.SCP);
@@ -247,6 +235,67 @@ export class ScpFormComponent implements OnInit, OnExitInterface {
 
   loadUnits(): void {
     this.units = [this.authService.unit];
+  }
+
+  loadSubactivities(): void {
+    this.subactivitiesHttpService.findSubactivitiesByExpenseType(this.expenseType.value.id, this.form.value)
+      .subscribe((projects) => {
+        this.convertSubactivitiesToTreeNode(projects)
+      });
+  }
+
+  private convertSubactivitiesToTreeNode(projects: ProjectModel[]) {
+    this.projects = [];
+
+    projects.forEach(project => {
+      project.components.forEach(component => {
+        const activities: TreeNode[] = [];
+        component.activities.forEach(activity => {
+          const subactivities: TreeNode[] = [];
+          activity.subactivities.forEach(subactivity => {
+            subactivities.push({
+              key: subactivity.id,
+              label: '(Subactividad) ' + subactivity.name,
+              icon: PrimeIcons.EXTERNAL_LINK,
+              data: true,
+            });
+          });
+
+          activities.push({
+            key: activity.id,
+            label: '(Actividad) ' + activity.name,
+            icon: PrimeIcons.BOOKMARK,
+            data: false,
+            children: subactivities
+          });
+        });
+
+        const components: TreeNode[] = [];
+        components.push({
+          key: component.id,
+          label: '(Componente) ' + component.name,
+          icon: PrimeIcons.TAG,
+          data: false,
+          children: activities
+        });
+
+        this.projects.push({
+          key: project.id,
+          label: '(Proyecto) ' + project.name,
+          icon: PrimeIcons.BOOK,
+          data: false,
+          children: components
+        });
+      });
+    });
+  }
+
+  expandNode(event: any) {
+    event.node.expanded = true;
+  }
+
+  collapseNode(event: any) {
+    event.node.expanded = false;
   }
 
   loadExpenseTypes(): void {
@@ -313,10 +362,6 @@ export class ScpFormComponent implements OnInit, OnExitInterface {
 
   get dateField(): AbstractControl {
     return this.form.controls['date'];
-  }
-
-  test(event: any) {
-    console.log(event);
   }
 }
 

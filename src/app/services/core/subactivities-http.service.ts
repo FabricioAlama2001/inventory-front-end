@@ -3,7 +3,13 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {CreateSubactivityDto, UpdateSubactivityDto, SubactivityModel} from '@models/core';
+import {
+  CreateSubactivityDto,
+  UpdateSubactivityDto,
+  SubactivityModel,
+  ProjectModel,
+  TransactionModel
+} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
 
@@ -127,10 +133,23 @@ export class SubactivitiesHttpService {
     );
   }
 
-  findLocations(): Observable<SubactivityModel[]> {
-    const url = `${this.API_URL}/locations`;
+  findSubactivitiesByExpenseType(expenseTypeId: string, payload: any): Observable<ProjectModel[]> {
+    const url = `${this.API_URL}/expense-types/${expenseTypeId}`;
 
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    const params = new HttpParams().append('unitId', payload.unit.id);
+    return this.httpClient.get<ServerResponse>(url,{params}).pipe(
+      map(response => {
+        return response.data;
+      })
+    );
+  }
+
+  findTransactionBySubactivity(subactivityId: string, payload: any): Observable<TransactionModel> {
+    const url = `${this.API_URL}/${subactivityId}/transactions`;
+
+    const params = new HttpParams().append('fiscalYearId', payload.fiscalYearId);
+
+    return this.httpClient.get<ServerResponse>(url,{params}).pipe(
       map(response => {
         return response.data;
       })

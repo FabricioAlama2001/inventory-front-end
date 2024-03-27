@@ -64,6 +64,16 @@ body {
   border-radius: 5px;
 }
 
+.panel-messages-warning {
+  background: rgba(255, 255, 0, 0.2);
+  color: #0d3c61;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}
+
 .panel-messages-info h1 {
   margin-bottom: 10px;
 }

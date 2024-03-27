@@ -141,11 +141,11 @@ export class ScpListComponent {
   }
 
   redirectCreateForm() {
-    this.router.navigate([this.routesService.scpForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.scpFormApplicant(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.scpForm(id)]);
+    this.router.navigate([this.routesService.scpFormApplicant(id)]);
   }
 
   disable(id: string) {

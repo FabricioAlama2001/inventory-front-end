@@ -26,12 +26,14 @@ import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ToolbarModule} from "primeng/toolbar";
 import {TreeModule} from "primeng/tree";
-
+import {ProgrammingFormComponent} from "./programming-form/programming-form.component";
+import {DialogModule} from "primeng/dialog";
 
 @NgModule({
   declarations: [
     ScpListComponent,
-    ScpFormComponent
+    ScpFormComponent,
+    ProgrammingFormComponent
   ],
   imports: [
     CommonModule,
@@ -58,6 +60,7 @@ import {TreeModule} from "primeng/tree";
     TagModule,
     ToolbarModule,
     TreeModule,
+    DialogModule,
   ]
 })
 export class ScpModule { }

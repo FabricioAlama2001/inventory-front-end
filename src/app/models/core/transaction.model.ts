@@ -2,6 +2,7 @@ import { ApplicationStatusModel } from "./application-status.model";
 import { DocumentTypeModel } from "./document-type.model";
 import { FiscalYearModel } from "./fiscal-year.model";
 import { UnitModel } from "./unit.model";
+import {TransactionDetailModel} from "@models/core/transaction-detail.model";
 
 
 export interface TransactionModel {
@@ -26,6 +27,7 @@ export interface TransactionModel {
   fiscalYear: FiscalYearModel;
   unit: UnitModel;
   principalUnit?: UnitModel;
+  transactionDetails?: TransactionDetailModel[];
 }
 
 export interface CreateTransactionDto extends Omit<TransactionModel, 'id'> {}

@@ -1,4 +1,11 @@
-import { ExpenseGroupModel, FiscalYearModel, IndicatorComponentModel, ProjectModel} from '@models/core';
+import {
+  ActivityModel,
+  ExpenseGroupModel,
+  FiscalYearModel,
+  IndicatorComponentModel,
+  ProjectModel,
+  SubactivityModel
+} from '@models/core';
 
 export interface ComponentModel {
   id: string;
@@ -14,6 +21,8 @@ export interface ComponentModel {
   indicatorComponent: IndicatorComponentModel;
   project: ProjectModel;
   projectId: string;
+
+  activities: ActivityModel[];
 }
 
 export interface CreateComponentDto extends Omit<ComponentModel, 'id'> {}

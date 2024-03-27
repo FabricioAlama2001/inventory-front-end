@@ -31,7 +31,7 @@ export class ApplicantComponent {
         header: 'Solicitar Certificación Presupuestaria',
         subheader: 'SCP',
         img: `${assetsPath}/scp.png`,
-        routerLink: this.routesService.scpList,
+        routerLink: this.routesService.scpListApplicant,
       },
       {
         code: 'reform',

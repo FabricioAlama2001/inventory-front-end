@@ -1,0 +1,57 @@
+@if (subactivity) {
+  <div class="p-fluid">
+    <div class="formgrid grid panel-messages-info">
+      <div class="field xl:col-2">
+        <h4>Proyecto</h4>
+        <small>{{ subactivity.activity.component.project.name }}</small>
+      </div>
+      <div class="field xl:col-2">
+        <h4>Componente</h4>
+        <small>{{ subactivity.activity.component.name }}</small>
+      </div>
+      <div class="field xl:col-3">
+        <h4>Actividad</h4>
+        <small>{{ subactivity.activity.name }}</small>
+      </div>
+      <div class="field xl:col-3">
+        <h4>Ítem</h4>
+        <small>{{ subactivity.budgetItem.name }}</small>
+      </div>
+      <div class="field xl:col-2">
+        <h4>Subactividad</h4>
+        <small>{{ subactivity.name }}</small>
+      </div>
+    </div>
+    <div class="formgrid grid panel-messages-warning">
+      <div class="field xl:col-3 text-center">
+        <h4>Codificado</h4>
+        3500.00
+      </div>
+      <div class="field xl:col-3 text-center">
+        <h4>Certificado</h4>
+        0.00
+      </div>
+      <div class="field xl:col-3 text-center">
+        <div class="formgrid grid">
+          <div class="field xl:col-12">
+            <h4>Solicitado</h4>
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field xl:col-6">
+            <h4>Por C/F</h4>
+            1100.00
+          </div>
+          <div class="field xl:col-6">
+            <h4>Por Reformas</h4>
+            0.00
+          </div>
+        </div>
+      </div>
+      <div class="field xl:col-3 text-center">
+        <h4>Disponible</h4>
+        $2400
+      </div>
+    </div>
+  </div>
+}

@@ -1,4 +1,4 @@
-import {ExpenseTypeModel, FiscalYearModel, PndObjectiveModel, PndPoliceModel} from '@models/core';
+import {ComponentModel, ExpenseTypeModel, FiscalYearModel, PndObjectiveModel, PndPoliceModel} from '@models/core';
 
 export interface ProjectModel {
   id: string;
@@ -13,6 +13,8 @@ export interface ProjectModel {
   pndObjective: PndObjectiveModel;
   pndPolice: PndPoliceModel;
   expenseType: ExpenseTypeModel,
+
+  components: ComponentModel[],
 
 }
 

@@ -69,14 +69,6 @@ export class RoutesService {
     return this.core + `planner/activities`;
   }
 
-  get poasList(): string {
-    return this.core + 'planner/poas';
-  }
-
-  poasForm(id: string): string {
-    return this.core + `planner/poas/${id}`;
-  }
-
   get unitManagersList(): string {
     return this.core + 'planner/unit-managers';
   }
@@ -94,12 +86,16 @@ export class RoutesService {
   }
 
   /** Applicant Routes **/
-  get scpList(): string {
+  get scpListApplicant(): string {
     return this.core + 'applicant/transactions/scp';
   }
 
-  scpForm(id: string): string {
+  scpFormApplicant(id: string): string {
     return this.core + `applicant/transactions/scp/${id}`;
+  }
+
+  programingFormApplicant(id: string): string {
+    return this.core + `applicant/transactions/scp/programming/${id}`;
   }
   /** Applicant Routes **/
 

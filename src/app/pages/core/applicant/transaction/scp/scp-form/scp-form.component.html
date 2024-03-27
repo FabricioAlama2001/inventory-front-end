@@ -88,6 +88,7 @@
                       optionLabel="name"
                       [filter]="true"
                       filterBy="name"
+                      (onChange)="loadSubactivities()"
                       placeholder="Seleccione...">
           </p-dropdown>
           <small appErrorMessage
@@ -182,18 +183,37 @@
         </div>
       </div>
 
-      <div class="field">
+      <div *ngIf="expenseType.valid" class="field">
         <label appLabel for="date" [label]="TransactionsFormEnum.subactivities" [required]="dateField"></label>
-        <button pButton pRipple label="Agregar" class="p-button-success" [icon]="PrimeIcons.PLUS"></button>
+
         <p-tree
+          [metaKeySelection]="true"
           [filter]="true"
-          [value]="files"
+          [value]="projects"
           selectionMode="single"
-          [(selection)]="selectedFiles"
-          (selectionChange)="test($event)"
-        ></p-tree>
+          (onNodeSelect)="expandNode($event)"
+          (onNodeUnselect)="collapseNode($event)"
+          [(selection)]="selectedSubactivity"
+          (selectionChange)="openProgrammingForm($event)">
+          <ng-template let-node pTemplate="default">
+            @if (!node.data) {
+              <p>{{ node.label }}</p>
+            } @else {
+              <b>{{ node.label }}</b>
+            }
+          </ng-template>
+        </p-tree>
       </div>
     </form>
   </p-panel>
 }
 
+@if (selectedSubactivity && isProgrammingForm) {
+  <p-dialog header="Planificación"
+            [(visible)]="isProgrammingForm"
+            [modal]="true"
+            [style]="{ width: '100vw' }"
+            [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <app-programming-form [subActivityId]="selectedSubactivity.key!"></app-programming-form>
+  </p-dialog>
+}

@@ -1,4 +1,18 @@
-import {CantonModel, ContinentModel, CountryModel, FiscalYearModel, IndicatorSubactivityModel, InstitutionalStrategicPlanModel, ParishModel, PoaModel, ProvinceModel, StrategicAxisModel, StrategyModel, UnitModel} from '@models/core';
+import {
+  ActivityModel, BudgetItemModel,
+  CantonModel,
+  ContinentModel,
+  CountryModel,
+  FiscalYearModel,
+  IndicatorSubactivityModel,
+  InstitutionalStrategicPlanModel,
+  ParishModel,
+  PoaModel,
+  ProvinceModel,
+  StrategicAxisModel,
+  StrategyModel,
+  UnitModel
+} from '@models/core';
 
 export interface SubactivityModel {
   id: string;
@@ -10,6 +24,8 @@ export interface SubactivityModel {
   type: string;
   enabled: boolean;
 
+  activity: ActivityModel;
+  budgetItem: BudgetItemModel;
   fiscalYear: FiscalYearModel;
   indicatorSubactivity: IndicatorSubactivityModel;
   institutionalStrategicPlan: InstitutionalStrategicPlanModel;

@@ -29,12 +29,6 @@ const routes: Routes = [
     data: {roles: [RoleEnum.PLANNER]}
   },
   {
-    path: 'poas',
-    loadChildren: () => import('./poa/poa.module').then(m => m.PoaModule),
-    canActivate: [RoleGuard],
-    data: {roles: [RoleEnum.PLANNER]}
-  },
-  {
     path: 'transactions',
     loadChildren: () => import('./transaction/transaction.module').then(m => m.TransactionModule),
     canActivate: [RoleGuard],

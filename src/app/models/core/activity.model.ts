@@ -1,4 +1,4 @@
-import {ComponentModel, FiscalYearModel} from '@models/core';
+import {ComponentModel, FiscalYearModel, SubactivityModel} from '@models/core';
 
 export interface ActivityModel {
   id: string;
@@ -13,6 +13,8 @@ export interface ActivityModel {
   fiscalYear: FiscalYearModel;
   component: ComponentModel;
   componentId: string;
+
+  subactivities: SubactivityModel[];
 }
 
 export interface CreateActivityDto extends Omit<ActivityModel, 'id'> {}
