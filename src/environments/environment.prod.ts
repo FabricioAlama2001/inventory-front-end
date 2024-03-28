@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  API_URL: 'https://apisiaaw.uaw.edu.ec/api/v1',
-  HOST_URL: 'https://apisiaaw.uaw.edu.ec/',
-  APP_NAME:'Sistema de Gestión Académica - SIAAW',
-  APP_SHORT_NAME:'SIAAW',
+  API_URL: 'https://siplaneo.yavirac.dev:8443/api/v1',
+  HOST_URL: 'https://siplaneo.yavirac.dev:8443/',
+  APP_NAME:'Sistema de Planificación - Siplaneo',
+  APP_SHORT_NAME:'SiPlaneo',
 };
