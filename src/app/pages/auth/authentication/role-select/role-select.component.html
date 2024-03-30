@@ -24,47 +24,7 @@
                  [dirty]="roleField.dirty">
           </small>
         </div>
-
-        @if (unitField.hasValidator(Validators.required)) {
-          <div class="field">
-            <label for="unit" appLabel label="Seleccione una Unidad" [required]="unitField"></label>
-            <p-dropdown id="unit"
-                        formControlName="unit"
-                        dataKey="id"
-                        [options]="units"
-                        optionLabel="name"
-                        [filter]="true"
-                        filterBy="name"
-                        placeholder="Seleccione...">
-            </p-dropdown>
-            <small appErrorMessage
-                   [errors]="roleField.errors"
-                   [touched]="roleField.touched"
-                   [dirty]="roleField.dirty">
-            </small>
-          </div>
-        }
-
-        @if (fiscalYearField.hasValidator(Validators.required)) {
-        <div class="field">
-          <label for="fiscalYear" appLabel label="Seleccione un año fiscal" [required]="fiscalYearField"></label>
-          <p-dropdown id="fiscalYear"
-                      formControlName="fiscalYear"
-                      dataKey="id"
-                      [options]="fiscalYears"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="roleField.errors"
-                 [touched]="roleField.touched"
-                 [dirty]="roleField.dirty">
-          </small>
-        </div>
-        }
-
+        
         <div class="field">
           <button pButton pRipple
                   label="Continuar"
