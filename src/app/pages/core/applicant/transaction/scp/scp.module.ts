@@ -28,6 +28,7 @@ import {ToolbarModule} from "primeng/toolbar";
 import {TreeModule} from "primeng/tree";
 import {ProgrammingFormComponent} from "./programming-form/programming-form.component";
 import {DialogModule} from "primeng/dialog";
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import {DialogModule} from "primeng/dialog";
     ToolbarModule,
     TreeModule,
     DialogModule,
+    TabViewModule
   ]
 })
 export class ScpModule { }

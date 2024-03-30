@@ -14,9 +14,9 @@ export interface TransactionDetailModel {
   deleteAt: Date;
 
   amount: number;
-  advance: number;
-  cur: string;
-  goal: number;
+  advance?: number;
+  cur?: string;
+  goal?: number;
   date: Date;
   isIva: boolean;
   enabled: boolean;

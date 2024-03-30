@@ -1,57 +1,175 @@
 @if (subactivity) {
-  <div class="p-fluid">
-    <div class="formgrid grid panel-messages-info">
-      <div class="field xl:col-2">
-        <h4>Proyecto</h4>
-        <small>{{ subactivity.activity.component.project.name }}</small>
-      </div>
-      <div class="field xl:col-2">
-        <h4>Componente</h4>
-        <small>{{ subactivity.activity.component.name }}</small>
-      </div>
-      <div class="field xl:col-3">
-        <h4>Actividad</h4>
-        <small>{{ subactivity.activity.name }}</small>
-      </div>
-      <div class="field xl:col-3">
-        <h4>Ítem</h4>
-        <small>{{ subactivity.budgetItem.name }}</small>
-      </div>
-      <div class="field xl:col-2">
-        <h4>Subactividad</h4>
-        <small>{{ subactivity.name }}</small>
-      </div>
-    </div>
-    <div class="formgrid grid panel-messages-warning">
-      <div class="field xl:col-3 text-center">
-        <h4>Codificado</h4>
-        3500.00
-      </div>
-      <div class="field xl:col-3 text-center">
-        <h4>Certificado</h4>
-        0.00
-      </div>
-      <div class="field xl:col-3 text-center">
-        <div class="formgrid grid">
-          <div class="field xl:col-12">
-            <h4>Solicitado</h4>
-          </div>
+<p-tabView>
+  <p-tabPanel header="Detalles">
+    <div class="p-fluid">
+      <div class="formgrid grid panel-messages-info">
+        <div class="field xl:col-2">
+          <h4>Proyecto</h4>
+          <small>{{ subactivity.activity.component.project.name }}</small>
         </div>
-        <div class="formgrid grid">
-          <div class="field xl:col-6">
-            <h4>Por C/F</h4>
-            1100.00
-          </div>
-          <div class="field xl:col-6">
-            <h4>Por Reformas</h4>
-            0.00
-          </div>
+        <div class="field xl:col-2">
+          <h4>Componente</h4>
+          <small>{{ subactivity.activity.component.name }}</small>
+        </div>
+        <div class="field xl:col-3">
+          <h4>Actividad</h4>
+          <small>{{ subactivity.activity.name }}</small>
+        </div>
+        <div class="field xl:col-3">
+          <h4>Ítem</h4>
+          <small>{{ subactivity.budgetItem.name }}</small>
+        </div>
+        <div class="field xl:col-2">
+          <h4>Subactividad</h4>
+          <small>{{ subactivity.name }}</small>
         </div>
       </div>
-      <div class="field xl:col-3 text-center">
-        <h4>Disponible</h4>
-        $2400
+      <div class="formgrid grid panel-messages-warning">
+        <div class="field xl:col-3 text-center">
+          <h4>Codificado</h4>
+          3500.00
+        </div>
+        <div class="field xl:col-3 text-center">
+          <h4>Certificado</h4>
+          0.00
+        </div>
+        <div class="field xl:col-3 text-center">
+          <div class="formgrid grid">
+            <div class="field xl:col-12">
+              <h4>Solicitado</h4>
+            </div>
+          </div>
+          <div class="formgrid grid">
+            <div class="field xl:col-6">
+              <h4>Por C/F</h4>
+              1100.00
+            </div>
+            <div class="field xl:col-6">
+              <h4>Por Reformas</h4>
+              0.00
+            </div>
+          </div>
+        </div>
+        <div class="field xl:col-3 text-center">
+          <h4>Disponible</h4>
+          $2400
+        </div>
       </div>
     </div>
-  </div>
+  </p-tabPanel>
+  <p-tabPanel header="Certificados">
+    <div class="formgrid grid">
+      <div class="field xl:col-10 lg:col-10 md:col-10 sm:col-12">
+        <p-table [value]="firstBimester">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th style="background-color: #f3f3f3;">Enero</th>
+              <th style="background-color: #f3f3f3;">Febrero</th>
+              <th style="background-color: #f3f3f3;">Marzo</th>
+              <th style="background-color: #f3f3f3;">Abril</th>
+              <th style="background-color: #f3f3f3;">Mayo</th>
+              <th style="background-color: #f3f3f3;">Junio</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-data>
+            <tr>
+              <td style="background-color: #f3f3f3;">Codificado</td>
+              <td>{{ data.codificado_enero }}</td>
+              <td>{{ data.codificado_febrero }}</td>
+              <td>{{ data.codificado_marzo }}</td>
+              <td>{{ data.codificado_abril }}</td>
+              <td>{{ data.codificado_mayo }}</td>
+              <td>{{ data.codificado_junio }}</td>
+            </tr>
+            <tr>
+              <td style="background-color: #f3f3f3;">Disponible para certificar</td>
+              <td>{{ data.certificate_enero }}</td>
+              <td>{{ data.certificate_febrero }}</td>
+              <td>{{ data.certificate_marzo }}</td>
+              <td>{{ data.certificate_abril }}</td>
+              <td>{{ data.certificate_mayo }}</td>
+              <td>{{ data.certificate_junio }}</td>
+            </tr>
+            <tr>
+              <td style="background-color: #f3f3f3;">Solicitado</td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <hr>
+        <p-table [value]="secondBimester">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th style="background-color: #f3f3f3;">Julio</th>
+              <th style="background-color: #f3f3f3;">Agosto</th>
+              <th style="background-color: #f3f3f3;">Septiembre</th>
+              <th style="background-color: #f3f3f3;">Octubre</th>
+              <th style="background-color: #f3f3f3;">Noviembre</th>
+              <th style="background-color: #f3f3f3;">Diciembre</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-data>
+            <tr>
+              <td style="background-color: #f3f3f3;">Codificado</td>
+              <td>{{ data.codificado_julio }}</td>
+              <td>{{ data.codificado_agosto }}</td>
+              <td>{{ data.codificado_septiembre }}</td>
+              <td>{{ data.codificado_octubre }}</td>
+              <td>{{ data.codificado_noviembre }}</td>
+              <td>{{ data.codificado_diciembre }}</td>
+            </tr>
+            <tr>
+              <td style="background-color: #f3f3f3;">Disponible para certificar</td>
+              <td>{{ data.certificate_julio }}</td>
+              <td>{{ data.certificate_agosto }}</td>
+              <td>{{ data.certificate_septiembre }}</td>
+              <td>{{ data.certificate_octubre }}</td>
+              <td>{{ data.certificate_noviembre }}</td>
+              <td>{{ data.certificate_diciembre }}</td>
+            </tr>
+            <tr>
+              <td style="background-color: #f3f3f3;">Solicitado</td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+              <td><input pInputText type="text"> </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        <!--<label>¿Incluye IVA?</label>
+          <p>
+            <p-inputSwitch id="isIva" formControlName="isIva"></p-inputSwitch>
+          </p>
+          <small appErrorMessage
+            [errors]="isIvaField.errors"
+            [touched]="isIvaField.touched"
+            [dirty]="isIvaField.dirty">
+          </small>-->
+        <br>
+        <br>
+        <label>Valor solicitado:</label><br>
+          3500.00
+        <br>
+        <br>
+        <br>
+        <button pButton
+          pRipple type="button"
+          [icon]="IconButtonActionEnum.SAVE"
+          [label]="LabelButtonActionEnum.SAVE"
+          [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
+      </div>
+    </div>
+  </p-tabPanel>
+</p-tabView>
 }

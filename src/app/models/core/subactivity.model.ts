@@ -7,7 +7,6 @@ import {
   IndicatorSubactivityModel,
   InstitutionalStrategicPlanModel,
   ParishModel,
-  PoaModel,
   ProvinceModel,
   StrategicAxisModel,
   StrategyModel,
@@ -36,7 +35,6 @@ export interface SubactivityModel {
   province: ProvinceModel;
   canton: CantonModel;
   parish: ParishModel;
-  poa: PoaModel;
   unit: UnitModel;
 }
 

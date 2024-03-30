@@ -130,7 +130,6 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
     ]);
 
     this.form = this.newForm;
-
     this.checkValueChanges();
   }
 
@@ -254,6 +253,7 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
   }
 
   onSubmit(): void {
+    console.log(this.form.value)
     if (this.validateFormErrors) {
       this.saving = false;
 
@@ -463,5 +463,9 @@ export class SubactivityFormComponent implements OnInit, OnExitInterface {
 
   get unitField(): AbstractControl {
     return this.form.controls['unit'];
+  }
+
+  get activityField(): AbstractControl {
+    return this.form.controls['activity'];
   }
 }

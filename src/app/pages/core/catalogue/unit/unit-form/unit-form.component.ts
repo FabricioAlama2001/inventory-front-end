@@ -85,6 +85,7 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
       name: [null, [Validators.required]],
       executor: [true, [Validators.required]],
       level: [null, [Validators.required]],
+      sort: [null, [Validators.required]],
       enabled: [true, [Validators.required]],
     });
   }
@@ -97,6 +98,7 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
     if (this.nameField.errors) this.formErrors.push(UnitsFormEnum.name);
     if (this.executorField.errors) this.formErrors.push(UnitsFormEnum.executor);
     if (this.levelField.errors) this.formErrors.push(UnitsFormEnum.level);
+    if (this.sortField.errors) this.formErrors.push(UnitsFormEnum.sort);
     if (this.enabledField.errors) this.formErrors.push(UnitsFormEnum.enabled);
 
     this.formErrors.sort();
@@ -167,6 +169,10 @@ export class UnitFormComponent implements OnInit, OnExitInterface{
 
   get levelField(): AbstractControl {
     return this.form.controls['level'];
+  }
+
+  get sortField(): AbstractControl {
+    return this.form.controls['sort'];
   }
 
   get parentField(): AbstractControl {

@@ -165,6 +165,7 @@ export enum UnitsFormEnum {
   name = 'Nombre',
   executor = '¿Es unidad ejecutora?',
   level = 'Nivel',
+  sort = 'Orden',
   enabled = 'Estado',
   parent = 'Padre',
   principal = 'Principal'
