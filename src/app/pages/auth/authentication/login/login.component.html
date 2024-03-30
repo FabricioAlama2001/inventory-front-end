@@ -1,7 +1,7 @@
 <div class="login-page">
   <div class="login-form">
-    <div class="p-fluid panel-auth">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="panel-auth">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-fluid">
         <div class="field text-center">
           <img src="assets/images/logo/logo-sm.png" alt="">
           <h2>{{ authService.system }}</h2>
@@ -32,6 +32,7 @@
             <app-progress-bar [message]="messageService.progressBarLogin"></app-progress-bar>
           </div>
         }
+
         <div class="field">
           <button pButton pRipple
                   label="Continuar"
