@@ -123,7 +123,7 @@ export class ScpFormComponent implements OnInit, OnExitInterface {
       code: [null, [Validators.required]],
       date: [null, [Validators.required]],
       subject: [null, [Validators.required]],
-      esigef: [null, [Validators.required]],
+      esigef: [null, []],
       value: [null, [Validators.required]],
       isIva: [true, [Validators.required]],
       description: [null, [Validators.required]],
