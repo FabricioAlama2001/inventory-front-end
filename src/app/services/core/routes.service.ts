@@ -97,6 +97,7 @@ export class RoutesService {
   programingFormApplicant(id: string): string {
     return this.core + `applicant/transactions/scp/programming/${id}`;
   }
+
   /** Applicant Routes **/
 
   /** Catalogue Role **/
@@ -269,8 +270,8 @@ export class RoutesService {
     this.router.navigateByUrl(`/auth/authentication/role-select`);
   }
 
-  profile() {
-    this.router.navigateByUrl(`/profile`);
+  get profile() {
+    return '/profile';
   }
 
   /** Dashboards **/

@@ -10,6 +10,7 @@ export class CoreService {
   private _isLoading: boolean = false;
   private _isProcessing: boolean = false;
   private _higherSort: number = 1;
+  private _sidebarVisible: boolean = false;
 
   constructor(private readonly cataloguesHttpService: CataloguesHttpService,
               private readonly locationsHttpService: LocationsHttpService
@@ -87,5 +88,13 @@ export class CoreService {
 
   set higherSort(value: number) {
     this._higherSort = value;
+  }
+
+  get sidebarVisible() {
+    return this._sidebarVisible;
+  }
+
+  set sidebarVisible(value: boolean) {
+    this._sidebarVisible = value;
   }
 }

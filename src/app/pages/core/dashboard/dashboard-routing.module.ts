@@ -15,6 +15,10 @@ const routes: Routes = [
     component: AdminComponent
   },
   {
+    path: 'catalogue',
+    component: PlannerComponent
+  },
+  {
     path: 'planner',
     component: PlannerComponent
   },

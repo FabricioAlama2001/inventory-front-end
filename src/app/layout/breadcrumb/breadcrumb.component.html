@@ -1,23 +1,6 @@
-<div class="p-fluid">
-  <div class="grid">
-    <div class="field xl:col-9 lg:col-9 md:col-12 sm:col-6">
-      @if (items.length) {
-        <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
-      }
-    </div>
-    @if (authService.auth) {
-      <div class="field xl:col-3 lg:col-3 md:col-12 sm:col-12 mt-1">
-        <button pButton pRipple type="button" (click)="op.toggle($event)"
-                [ngClass]="{'p-button-danger':coreService.version!=coreService.newVersion}"
-                [pTooltip]="coreService.version!=coreService.newVersion?'Tiene actualización pendiente':''"
-                class="p-button-outlined"
-                [icon]="coreService.version!=coreService.newVersion?PrimeIcons.INFO_CIRCLE:PrimeIcons.CHECK_CIRCLE"
-                [label]="nickname">
-        </button>
-      </div>
-    }
-  </div>
-</div>
+@if (items.length) {
+  <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
+}
 
 @if (coreService.isLoading) {
   <app-progress-bar></app-progress-bar>

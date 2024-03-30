@@ -36,6 +36,9 @@ import localEs from '@angular/common/locales/es';
 import {registerLocaleData} from '@angular/common';
 import { AboutComponent } from '@layout';
 import {InputTextModule} from "primeng/inputtext";
+import {SidebarModule} from "primeng/sidebar";
+import {BadgeModule} from "primeng/badge";
+import {PanelMenuModule} from "primeng/panelmenu";
 
 registerLocaleData(localEs, 'es');
 
@@ -72,6 +75,9 @@ registerLocaleData(localEs, 'es');
     AvatarModule,
     FileUploadModule,
     InputTextModule,
+    SidebarModule,
+    BadgeModule,
+    PanelMenuModule,
   ],
   providers: [
     // {

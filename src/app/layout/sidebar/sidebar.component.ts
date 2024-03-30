@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
-import {PrimeIcons} from 'primeng/api';
+import {Component, inject, OnInit} from '@angular/core';
+import {MenuItem, PrimeIcons} from 'primeng/api';
 import {AuthHttpService, AuthService, MenusHttpService} from "@services/auth";
 import {MenuModel} from "@models/auth";
 import {CoreService, MessageService, RoutesService} from "@services/core";
@@ -12,21 +11,20 @@ import {CoreService, MessageService, RoutesService} from "@services/core";
 })
 export class SidebarComponent implements OnInit {
   protected readonly PrimeIcons = PrimeIcons;
-  protected menus: MenuModel[] = [];
+  protected menus: MenuItem[] = [];
   protected showedMenu: boolean = false;
   protected closed: boolean = true;
   protected closedLock: boolean | null = null;
   protected isVisibleAbout: boolean = false;
 
-  constructor(
-    protected readonly coreService: CoreService,
-    private readonly menusHttpService: MenusHttpService,
-    private readonly authHttpService: AuthHttpService,
-    public readonly authService: AuthService,
-    public readonly messageService: MessageService,
-    public readonly routes: RoutesService,
-    private readonly router: Router) {
+  protected readonly coreService = inject(CoreService);
+  private readonly menusHttpService = inject(MenusHttpService);
+  private readonly authHttpService = inject(AuthHttpService);
+  protected readonly authService = inject(AuthService);
+  protected readonly messageService = inject(MessageService);
+  protected readonly routes = inject(RoutesService);
 
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -44,7 +42,23 @@ export class SidebarComponent implements OnInit {
     if (this.authService.role) {
       this.menusHttpService.getMenusByRole(this.authService.role.id!).subscribe(
         menus => {
-          this.menus = menus;
+          this.menus = menus.map(menu => {
+            const items = menu.children.map(item => {
+              return {
+                label: item.label,
+                icon: item.icon,
+                routerLink: [item.routerLink],
+                command: () => {
+                  this.coreService.sidebarVisible = false;
+                }
+              }
+            });
+
+            return {
+              label: menu.label,
+              items,
+            }
+          });
         }
       );
     } else {
