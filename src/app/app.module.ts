@@ -74,10 +74,10 @@ registerLocaleData(localEs, 'es');
     InputTextModule,
   ],
   providers: [
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy
-    },
+    // {
+    //   provide: LocationStrategy,
+    //   useClass: HashLocationStrategy
+    // },
     {provide: LOCALE_ID, useValue: 'es'},
     HttpInterceptorProviders,
     MessageService,
