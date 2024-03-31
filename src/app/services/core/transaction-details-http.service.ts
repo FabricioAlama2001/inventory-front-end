@@ -1,11 +1,11 @@
-import {Injectable, inject} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {environment} from '@env/environment';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {TransactionDetailModel} from '@models/core';
-import {ServerResponse} from '@models/http-response';
-import {MessageService} from "@services/core";
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '@env/environment';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ServerResponse } from '@models/http-response';
+import { MessageService } from "@services/core";
+import { TransactionDetailModel } from '@models/core/transaction-detail.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ import {MessageService} from "@services/core";
 export class TransactionDetailsHttpService {
   private readonly httpClient = inject(HttpClient);
   private API_URL = `${environment.API_URL}/core/transaction-details`;
-  private messageService = inject(MessageService) ;
+  private messageService = inject(MessageService);
 
   create(payload: TransactionDetailModel): Observable<TransactionDetailModel> {
     const url = `${this.API_URL}`;
@@ -44,7 +44,7 @@ export class TransactionDetailsHttpService {
       .append('page', page)
       .append('search', search);
 
-    return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
+    return this.httpClient.get<ServerResponse>(url, { headers, params }).pipe(
       map((response) => {
         return response;
       })

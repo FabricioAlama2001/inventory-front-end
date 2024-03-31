@@ -13,3 +13,5 @@ export * from './country.model';
 export * from './province.model';
 export * from './canton.model';
 export * from './parish.model';
+export * from './category.model';
+export * from './product.model';
