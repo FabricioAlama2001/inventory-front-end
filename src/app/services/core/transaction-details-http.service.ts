@@ -3,9 +3,9 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {CreateTransactionDetailDto, UpdateTransactionDetailDto, TransactionDetailModel} from '@models/core';
 import {ServerResponse} from '@models/http-response';
 import {MessageService} from "@services/core";
+import { CreateTransactionDetailDto, TransactionDetailModel } from '@models/core/transaction-detail.model';
 
 @Injectable({
   providedIn: 'root'

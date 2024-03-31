@@ -12,7 +12,8 @@ export * from './countries-http.service';
 export * from './provinces-http.service';
 export * from './cantons-http.service';
 export * from './parishes-http.service';
-export * from './categories.service';
+export * from './categories-http.service';
+export * from './products-http.service';
 
 
 
