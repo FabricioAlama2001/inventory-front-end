@@ -33,8 +33,7 @@ export class UsersHttpService {
     const headers = new HttpHeaders().append('pagination', 'true');
     const params = new HttpParams()
       .append('page', page)
-      .append('search', search)
-      .append('limit', '2');
+      .append('search', search);
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {

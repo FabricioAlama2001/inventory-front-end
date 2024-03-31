@@ -15,22 +15,10 @@ const routes: Routes = [
     canActivate: [TokenGuard]
   },
   {
-    path: 'planner',
-    loadChildren: () => import('./planner/planner.module').then(m => m.PlannerModule),
+    path: 'worker',
+    loadChildren: () => import('./worker/worker.module').then(m => m.WorkerModule),
     canActivate: [RoleGuard],
-    data: {roles: [RoleEnum.PLANNER]}
-  },
-  {
-    path: 'applicant',
-    loadChildren: () => import('./applicant/applicant.module').then(m => m.ApplicantModule),
-    canActivate: [RoleGuard],
-    data: {roles: [RoleEnum.APPLICANT]}
-  },
-  {
-    path: 'catalogue',
-    loadChildren: () => import('./catalogue/catalogue.module').then(m => m.CatalogueModule),
-    canActivate: [RoleGuard],
-    data: {roles: [RoleEnum.CATALOGUE, RoleEnum.PLANNER]}
+    data: {roles: [RoleEnum.WORKER]}
   },
 ];
 

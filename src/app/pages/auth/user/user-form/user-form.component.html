@@ -1,181 +1,239 @@
 @if (coreService.isLoading) {
-  <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
-}
+<app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
+} @if (!coreService.isLoading) {
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+    <app-header-form [id]="id"></app-header-form>
+  </div>
+  <div class="p-toolbar-group-right">
+    <button
+      pButton
+      pRipple
+      type="button"
+      (click)="back()"
+      [icon]="IconButtonActionEnum.CANCEL"
+      [label]="LabelButtonActionEnum.CANCEL"
+      [loading]="coreService.isLoading"
+      [ngClass]="[ClassButtonActionEnum.CANCEL]"
+    ></button>
+    <p-divider layout="vertical"></p-divider>
+    <button
+      pButton
+      pRipple
+      type="button"
+      (click)="onSubmit()"
+      [icon]="IconButtonActionEnum.SAVE"
+      [label]="LabelButtonActionEnum.SAVE"
+      [loading]="coreService.isLoading"
+      [ngClass]="[ClassButtonActionEnum.SAVE]"
+    ></button>
+  </div>
+</p-toolbar>
 
-@if (!coreService.isLoading) {
-  <p-toolbar>
-    <div class="p-toolbar-group-left">
-      <app-header-form [id]="id"></app-header-form>
+<p-panel class="p-fluid">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label
+        appLabel
+        for="roles"
+        [label]="UsersFormEnum.roles"
+        [required]="rolesField"
+      ></label>
+      <p-multiSelect
+        id="roles"
+        formControlName="roles"
+        dataKey="id"
+        [options]="roles"
+        display="chip"
+        optionLabel="name"
+        placeholder="Seleccione..."
+      >
+      </p-multiSelect>
+      <small
+        appErrorMessage
+        [errors]="rolesField.errors"
+        [touched]="rolesField.touched"
+        [dirty]="rolesField.dirty">
+      </small>
     </div>
-    <div class="p-toolbar-group-right">
-      <button pButton pRipple type="button"
-              (click)="back()"
-              [icon]="IconButtonActionEnum.CANCEL"
-              [label]="LabelButtonActionEnum.CANCEL"
-              [loading]="coreService.isLoading"
-              [ngClass]="[ClassButtonActionEnum.CANCEL]"></button>
-      <p-divider layout="vertical"></p-divider>
-      <button pButton pRipple type="button"
-              (click)="onSubmit()"
-              [icon]="IconButtonActionEnum.SAVE"
-              [label]="LabelButtonActionEnum.SAVE"
-              [loading]="coreService.isLoading"
-              [ngClass]="[ClassButtonActionEnum.SAVE]"></button>
-    </div>
-  </p-toolbar>
 
-  <p-panel class="p-fluid">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="formgrid grid">
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="roles" [label]="UsersFormEnum.roles" [required]="rolesField"></label>
-        <p-multiSelect id="roles"
-                       formControlName="roles"
-                       dataKey="id"
-                       [options]="roles"
-                       display="chip"
-                       optionLabel="name"
-                       placeholder="Seleccione...">
-        </p-multiSelect>
-        <small appErrorMessage
-               [errors]="rolesField.errors"
-               [touched]="rolesField.touched"
-               [dirty]="rolesField.dirty">
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label
+          appLabel
+          for="identificationType"
+          [label]="UsersFormEnum.identificationType"
+          [required]="identificationTypeField"
+        ></label>
+        <p-dropdown
+          id="identificationType"
+          dataKey="id"
+          formControlName="identificationType"
+          [options]="identificationTypes"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Seleccione..."
+        >
+          <ng-template pTemplate="selectedItem">
+            @if (identificationTypeField.value) {
+            <div>{{ identificationTypeField.value.name }}</div>
+            }
+          </ng-template>
+          <ng-template let-item pTemplate="item">
+            <div>{{ item.name }}</div>
+          </ng-template>
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="identificationTypeField.errors"
+          [touched]="identificationTypeField.touched"
+          [dirty]="identificationTypeField.dirty"
+        >
         </small>
       </div>
       <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="units" [label]="UsersFormEnum.unitManagers"
-               [required]="unitsField"></label>
-        <p-multiSelect id="units"
-                       formControlName="units"
-                       dataKey="id"
-                       [options]="units"
-                       display="chip"
-                       optionLabel="name"
-                       placeholder="Seleccione...">
-        </p-multiSelect>
-        <small appErrorMessage
-               [errors]="unitsField.errors"
-               [touched]="unitsField.touched"
-               [dirty]="unitsField.dirty">
+        <label
+          appLabel
+          for="identification"
+          [label]="UsersFormEnum.identification"
+          [required]="identificationField"
+        ></label>
+
+        <app-help-field
+          (mouseenter)="opIdentification.toggle($event)"
+          (mouseleave)="opIdentification.hide()"
+        ></app-help-field>
+
+        <input
+          pInputText
+          type="text"
+          id="identification"
+          formControlName="identification"
+        />
+        <small
+          appErrorMessage
+          [errors]="identificationField.errors"
+          [touched]="identificationField.touched"
+          [dirty]="identificationField.dirty"
+        >
         </small>
       </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label
+          appLabel
+          for="lastname"
+          [label]="UsersFormEnum.lastname"
+          [required]="lastnameField"
+        ></label>
+        <input
+          pInputText
+          type="text"
+          id="lastname"
+          formControlName="lastname"
+        />
+        <small
+          appErrorMessage
+          [errors]="lastnameField.errors"
+          [touched]="lastnameField.touched"
+          [dirty]="lastnameField.dirty"
+        >
+        </small>
       </div>
-      <div class="formgrid grid">
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-          <label appLabel for="identificationType" [label]="UsersFormEnum.identificationType"
-                 [required]="identificationTypeField"></label>
-          <p-dropdown id="identificationType"
-                      dataKey="id"
-                      formControlName="identificationType"
-                      [options]="identificationTypes"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (identificationTypeField.value) {
-                <div>{{ identificationTypeField.value.name }}</div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.name }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small appErrorMessage
-                 [errors]="identificationTypeField.errors"
-                 [touched]="identificationTypeField.touched"
-                 [dirty]="identificationTypeField.dirty">
-          </small>
-        </div>
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-          <label appLabel for="identification" [label]="UsersFormEnum.identification"
-                 [required]="identificationField"></label>
-
-          <app-help-field (mouseenter)="opIdentification.toggle($event)"
-                          (mouseleave)="opIdentification.hide()"></app-help-field>
-
-          <input pInputText type="text" id="identification" formControlName="identification"/>
-          <small appErrorMessage
-                 [errors]="identificationField.errors"
-                 [touched]="identificationField.touched"
-                 [dirty]="identificationField.dirty">
-          </small>
-        </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label
+          appLabel
+          for="name"
+          [label]="UsersFormEnum.name"
+          [required]="nameField"
+        ></label>
+        <input pInputText type="text" id="name" formControlName="name" />
+        <small
+          appErrorMessage
+          [errors]="nameField.errors"
+          [touched]="nameField.touched"
+          [dirty]="nameField.dirty"
+        >
+        </small>
       </div>
-      <div class="formgrid grid">
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-          <label appLabel for="lastname" [label]="UsersFormEnum.lastname" [required]="lastnameField"></label>
-          <input pInputText type="text" id="lastname" formControlName="lastname"/>
-          <small appErrorMessage
-                 [errors]="lastnameField.errors"
-                 [touched]="lastnameField.touched"
-                 [dirty]="lastnameField.dirty">
-          </small>
-        </div>
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-          <label appLabel for="name" [label]="UsersFormEnum.name" [required]="nameField"></label>
-          <input pInputText type="text" id="name" formControlName="name"/>
-          <small appErrorMessage
-                 [errors]="nameField.errors"
-                 [touched]="nameField.touched"
-                 [dirty]="nameField.dirty">
-          </small>
-        </div>
-      </div>
-      <div class="formgrid grid">
-        @if (!id || isChangePassword.value) {
-          <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-            <label appLabel for="password" [label]="UsersFormEnum.password" [required]="passwordField"></label>
-            <input pPassword type="password" id="password" formControlName="password" [feedback]="false"/>
-            <small appErrorMessage
-                   [errors]="passwordField.errors"
-                   [touched]="passwordField.touched"
-                   [dirty]="passwordField.dirty">
-            </small>
-          </div>
-        }
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-          <label appLabel for="email" [label]="UsersFormEnum.email" [required]="emailField"></label>
-          <app-help-field (mouseenter)="opEmail.toggle($event)"
-                          (mouseleave)="opEmail.hide()"></app-help-field>
-          <input pInputText type="email" id="email" formControlName="email"/>
-          <small appErrorMessage
-                 [errors]="emailField.errors"
-                 [touched]="emailField.touched"
-                 [dirty]="emailField.dirty">
-          </small>
-        </div>
-      </div>
-
-      @if (id) {
-        <div class="field">
-          <label for="isChangePassword" class="mr-4">Cambiar Contraseña:</label>
-          <p-inputSwitch id="isChangePassword" [formControl]="isChangePassword"
-                         (onChange)="handleChangePassword($event)"></p-inputSwitch>
-        </div>
-      }
-
+    </div>
+    <div class="formgrid grid">
       @if (!id || isChangePassword.value) {
-        <div class="field">
-          <p-checkbox id="passwordChanged" formControlName="passwordChanged"
-                      class="mt-2"
-                      [binary]="true"
-                      label="Solicitar al usuario que cambie su contraseña cuando inicie sesión"></p-checkbox>
-        </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label
+          appLabel
+          for="password"
+          [label]="UsersFormEnum.password"
+          [required]="passwordField"
+        ></label>
+        <input
+          pPassword
+          type="password"
+          id="password"
+          formControlName="password"
+          [feedback]="false"
+        />
+        <small
+          appErrorMessage
+          [errors]="passwordField.errors"
+          [touched]="passwordField.touched"
+          [dirty]="passwordField.dirty"
+        >
+        </small>
+      </div>
       }
-    </form>
-  </p-panel>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label
+          appLabel
+          for="email"
+          [label]="UsersFormEnum.email"
+          [required]="emailField"
+        ></label>
+        <app-help-field
+          (mouseenter)="opEmail.toggle($event)"
+          (mouseleave)="opEmail.hide()"
+        ></app-help-field>
+        <input pInputText type="email" id="email" formControlName="email" />
+        <small
+          appErrorMessage
+          [errors]="emailField.errors"
+          [touched]="emailField.touched"
+          [dirty]="emailField.dirty"
+        >
+        </small>
+      </div>
+    </div>
+
+    @if (id) {
+    <div class="field">
+      <label for="isChangePassword" class="mr-4">Cambiar Contraseña:</label>
+      <p-inputSwitch
+        id="isChangePassword"
+        [formControl]="isChangePassword"
+        (onChange)="handleChangePassword($event)"
+      ></p-inputSwitch>
+    </div>
+    } @if (!id || isChangePassword.value) {
+    <div class="field">
+      <p-checkbox
+        id="passwordChanged"
+        formControlName="passwordChanged"
+        class="mt-2"
+        [binary]="true"
+        label="Solicitar al usuario que cambie su contraseña cuando inicie sesión"
+      ></p-checkbox>
+    </div>
+    }
+  </form>
+</p-panel>
 }
 
 <p-overlayPanel #opIdentification>
-  <ng-template pTemplate="content">
-    Ingrese su numero cedula
-  </ng-template>
+  <ng-template pTemplate="content"> Ingrese su numero cedula </ng-template>
 </p-overlayPanel>
 
 <p-overlayPanel #opEmail>
-  <ng-template pTemplate="content">
-    Ingrese su correo
-  </ng-template>
+  <ng-template pTemplate="content"> Ingrese su correo </ng-template>
 </p-overlayPanel>

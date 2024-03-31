@@ -1,16 +1,16 @@
-import {Component, inject, ViewEncapsulation} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {MenuItem, PrimeIcons} from 'primeng/api';
-import {BreadcrumbService, CoreService, RoutesService} from '@services/core';
-import {AuthHttpService, AuthService} from "@services/auth";
-import {environment} from "@env/environment";
-import {Router} from "@angular/router";
+import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { MenuItem, PrimeIcons } from 'primeng/api';
+import { BreadcrumbService, CoreService, RoutesService } from '@services/core';
+import { AuthHttpService, AuthService } from '@services/auth';
+import { environment } from '@env/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class BreadcrumbComponent {
   protected readonly PrimeIcons = PrimeIcons;
@@ -28,19 +28,19 @@ export class BreadcrumbComponent {
   private readonly router = inject(Router);
 
   constructor() {
-    if (this.authService.fiscalYear) {
-      this.nickname = `${this.authService.auth.identification} - ${this.authService.role.name} - ${this.authService.fiscalYear.year}`;
-    } else {
-      this.nickname = `${this.authService.auth.identification} - ${this.authService.role.name}`;
-    }
+    this.nickname = `${this.authService.auth.identification} - ${this.authService.role.name}`;
 
-    this.subscription = this.breadcrumbService.itemsHandler.subscribe(response => {
-      this.items = response as MenuItem[];
-    });
+    this.subscription = this.breadcrumbService.itemsHandler.subscribe(
+      (response) => {
+        this.items = response as MenuItem[];
+      }
+    );
 
-    this.home = {icon: PrimeIcons.HOME, routerLink: `/core/dashboards/${this.authService.role?.code}`};
+    this.home = {
+      icon: PrimeIcons.HOME,
+      routerLink: `/core/dashboards/${this.authService.role?.code}`,
+    };
   }
-
 
   redirectProfile() {
     this.router.navigate([this.routesService.profile]);

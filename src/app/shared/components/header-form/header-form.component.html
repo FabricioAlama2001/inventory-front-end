@@ -1,9 +1,13 @@
 <div class="grid ml-2">
-  <i *ngIf="!id" [ngClass]="PrimeIcons.PLUS"></i>
-  <h2 *ngIf="!id" class="panel-header ml-2">Crear</h2>
-
-  <i *ngIf="id" [ngClass]="PrimeIcons.PENCIL" class="mr-2"></i>
-  <h2 *ngIf="id" class="panel-header">Editar</h2>
-
-  <small class="ml-3 mt-2" [innerHTML]="this.messageService.requiredFields"></small>
+  @if(id==='new'){
+  <i [ngClass]="PrimeIcons.PLUS"></i>
+  <h2 class="panel-header ml-2">Crear</h2>
+  } @else{
+  <i [ngClass]="PrimeIcons.PENCIL" class="mr-2"></i>
+  <h2 class="panel-header">Editar</h2>
+  }
+  <small
+    class="ml-3 mt-2"
+    [innerHTML]="this.messageService.requiredFields"
+  ></small>
 </div>

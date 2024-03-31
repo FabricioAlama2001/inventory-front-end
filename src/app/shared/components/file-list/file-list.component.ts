@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {ConfirmationService, MenuItem, PrimeIcons} from "primeng/api";
-import {CatalogueModel, ColumnModel, EventModel, FileModel, ModelI, PaginatorModel, SelectEventDto} from "@models/core";
+import {CatalogueModel, ColumnModel, FileModel, ModelI, PaginatorModel} from "@models/core";
 import {CoreService, FilesHttpService, MessageService, OverlaysService} from "@services/core";
 
 @Component({
@@ -28,9 +28,9 @@ export class FileListComponent implements OnInit {
   protected paginator: PaginatorModel;
   protected search: FormControl = new FormControl('');
   protected type: FormControl = new FormControl();
-  protected selectedItem: SelectEventDto = {};
-  protected selectedItems: EventModel[] = [];
-  protected items: EventModel[] = [];
+  protected selectedItem: FileModel = {};
+  protected selectedItems: FileModel[] = [];
+  protected items: FileModel[] = [];
   @Input() isDialog = true;
 
   constructor(
@@ -76,7 +76,7 @@ export class FileListComponent implements OnInit {
     ];
   }
 
-  selectItem(item: EventModel) {
+  selectItem(item: FileModel) {
     this.selectedItem = item;
     this.buildButtonActions();
     this.isButtonActions = true;

@@ -4,7 +4,7 @@ import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {MessageService as MessageServicePn} from 'primeng/api';
-import {EventModel, FileModel} from "@models/core";
+import { FileModel} from "@models/core";
 import {ServerResponse} from '@models/http-response';
 import {CoreService, MessageService} from '@services/core';
 import {CoreMessageEnum} from "@shared/enums";
@@ -37,7 +37,7 @@ export class FilesHttpService {
     );
   }
 
-  findOne(id: string): Observable<EventModel> {
+  findOne(id: string): Observable<FileModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -47,7 +47,7 @@ export class FilesHttpService {
     );
   }
 
-  uploadFile(modelId: string, typeId: string, payload: FormData): Observable<EventModel> {
+  uploadFile(modelId: string, typeId: string, payload: FormData): Observable<FileModel> {
     const url = `${this.API_URL}/${modelId}/upload?typeId=${typeId}`;
 
     this.coreService.isProcessing = true;
@@ -66,7 +66,7 @@ export class FilesHttpService {
     );
   }
 
-  uploadImage(modelId: string, payload: FormData): Observable<EventModel> {
+  uploadImage(modelId: string, payload: FormData): Observable<FileModel> {
     const url = `${this.API_URL}/${modelId}/upload-image`;
 
     this.coreService.isProcessing = true;
@@ -85,7 +85,7 @@ export class FilesHttpService {
     );
   }
 
-  uploadFiles(modelId: string, payload: FormData): Observable<EventModel> {
+  uploadFiles(modelId: string, payload: FormData): Observable<FileModel> {
     const url = `${this.API_URL}/${modelId}/uploads`;
 
     this.coreService.isProcessing = true;
@@ -98,7 +98,7 @@ export class FilesHttpService {
     );
   }
 
-  reactivate(id: string): Observable<EventModel> {
+  reactivate(id: string): Observable<FileModel> {
     const url = `${this.API_URL}/${id}/reactivate`;
 
     return this.httpClient.patch<ServerResponse>(url, null).pipe(
@@ -130,7 +130,7 @@ export class FilesHttpService {
     );
   }
 
-  removeAll(payload: EventModel[]): Observable<EventModel[]> {
+  removeAll(payload: FileModel[]): Observable<FileModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
     return this.httpClient.patch<ServerResponse>(url, payload).pipe(
@@ -141,7 +141,7 @@ export class FilesHttpService {
     );
   }
 
-  hide(id: string): Observable<EventModel> {
+  hide(id: string): Observable<FileModel> {
     const url = `${this.API_URL}/${id}/hide`;
 
     return this.httpClient.patch<ServerResponse>(url, null).pipe(

@@ -3,7 +3,6 @@ import {PermissionModel, RoleModel, UserModel} from '@models/auth';
 import {environment} from "@env/environment";
 import {RoleEnum} from "@shared/enums";
 import {MessageService, RoutesService} from "@services/core";
-import {FiscalYearModel, UnitModel} from "@models/core";
 
 @Injectable({
   providedIn: 'root'
@@ -92,21 +91,6 @@ export class AuthService {
     return environment.APP_SHORT_NAME;
   }
 
-  get fiscalYear(): FiscalYearModel {
-    return JSON.parse(String(sessionStorage.getItem('fiscalYear')));
-  }
-
-  set fiscalYear(fiscalYear: FiscalYearModel) {
-    sessionStorage.setItem('fiscalYear', JSON.stringify(fiscalYear));
-  }
-
-  get unit(): UnitModel {
-    return JSON.parse(String(sessionStorage.getItem('unit')));
-  }
-
-  set unit(unit: UnitModel) {
-    sessionStorage.setItem('unit', JSON.stringify(unit));
-  }
 
   removeLogin() {
     sessionStorage.clear();

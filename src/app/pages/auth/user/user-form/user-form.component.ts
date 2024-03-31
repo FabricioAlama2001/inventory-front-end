@@ -1,34 +1,48 @@
-import {Component, inject, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {PrimeIcons} from "primeng/api";
-import {CreateUserDto, RoleModel, UpdateUserDto} from '@models/auth';
-import {CatalogueModel, UnitModel} from "@models/core";
-import {RolesHttpService, UsersHttpService} from '@services/auth';
+import {
+  Component,
+  inject,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PrimeIcons } from 'primeng/api';
+import { CreateUserDto, RoleModel, UpdateUserDto } from '@models/auth';
+import { CatalogueModel } from '@models/core';
+import { RolesHttpService, UsersHttpService } from '@services/auth';
 import {
   BreadcrumbService,
   CataloguesHttpService,
   CoreService,
   MessageService,
   RoutesService,
-  UnitsHttpService
 } from '@services/core';
-import {OnExitInterface} from '@shared/interfaces';
+import { OnExitInterface } from '@shared/interfaces';
 import {
   BreadcrumbEnum,
   CatalogueTypeEnum,
   ClassButtonActionEnum,
   IconButtonActionEnum,
   LabelButtonActionEnum,
-  SkeletonEnum, UsersFormEnum,
-  UsersIdentificationTypeStateEnum
-} from "@shared/enums";
+  RoutesEnum,
+  SkeletonEnum,
+  UsersFormEnum,
+  UsersIdentificationTypeStateEnum,
+} from '@shared/enums';
 
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class UserFormComponent implements OnInit, OnExitInterface {
   protected readonly PrimeIcons = PrimeIcons;
@@ -39,18 +53,15 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   protected readonly SkeletonEnum = SkeletonEnum;
   protected helpText: string = '';
 
-  @Input() id: string = '';
+  @Input() id!: string;
   protected form: FormGroup;
   protected formErrors: string[] = [];
 
   protected roles: RoleModel[] = [];
   protected identificationTypes: CatalogueModel[] = [];
-  protected units: UnitModel[] = [];
 
   protected isChangePassword: FormControl = new FormControl(false);
   private saving: boolean = true;
-
-  private readonly unitsHttpService = inject(UnitsHttpService);
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -61,11 +72,11 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     private readonly routesService: RoutesService,
     private readonly rolesHttpService: RolesHttpService,
     private readonly cataloguesHttpService: CataloguesHttpService,
-    private readonly usersHttpService: UsersHttpService,
+    private readonly usersHttpService: UsersHttpService
   ) {
     this.breadcrumbService.setItems([
-      {label: BreadcrumbEnum.USERS, routerLink: [this.routesService.users]},
-      {label: BreadcrumbEnum.FORM},
+      { label: BreadcrumbEnum.USERS, routerLink: [this.routesService.users] },
+      { label: BreadcrumbEnum.FORM },
     ]);
 
     this.form = this.newForm;
@@ -74,7 +85,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   }
 
   validateFormFields() {
-    this.identificationTypeField.valueChanges.subscribe(value => {
+    this.identificationTypeField.valueChanges.subscribe((value) => {
       if (value) {
         this.identificationField.enable();
       } else {
@@ -82,7 +93,11 @@ export class UserFormComponent implements OnInit, OnExitInterface {
       }
 
       if (value.code === UsersIdentificationTypeStateEnum.IDENTIFICATION) {
-        this.identificationField.setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
+        this.identificationField.setValidators([
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+        ]);
       } else {
         this.identificationField.setValidators([Validators.required]);
       }
@@ -93,7 +108,9 @@ export class UserFormComponent implements OnInit, OnExitInterface {
 
   async onExit(): Promise<boolean> {
     if ((this.form.touched || this.form.dirty) && this.saving) {
-      return await this.messageService.questionOnExit().then(result => result.isConfirmed);
+      return await this.messageService
+        .questionOnExit()
+        .then((result) => result.isConfirmed);
     }
     return true;
   }
@@ -101,7 +118,6 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   ngOnInit(): void {
     this.loadRoles();
     this.loadIdentificationTypes();
-    this.loadUnits();
 
     if (this.id != 'new') {
       this.get();
@@ -116,18 +132,27 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   get newForm(): FormGroup {
     return this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
-      identification: [{
-        value: null,
-        disabled: true
-      }, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      identification: [
+        {
+          value: null,
+          disabled: true,
+        },
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+        ],
+      ],
       identificationType: [null, [Validators.required]],
       lastname: [null, [Validators.required]],
       name: [null, [Validators.required]],
-      password: [{value: null, disabled: true}, [Validators.required, Validators.minLength(8)]],
-      passwordChanged: [{value: true, disabled: true}],
+      password: [
+        { value: null, disabled: true },
+        [Validators.required, Validators.minLength(8)],
+      ],
+      passwordChanged: [{ value: true, disabled: true }],
       roles: [null, [Validators.required]],
       username: [null, [Validators.required]],
-      units: [null, [Validators.required]],
     });
   }
 
@@ -135,12 +160,15 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     this.formErrors = [];
 
     if (this.emailField.errors) this.formErrors.push(UsersFormEnum.email);
-    if (this.identificationField.errors) this.formErrors.push(UsersFormEnum.identification);
-    if (this.identificationTypeField.errors) this.formErrors.push(UsersFormEnum.identificationType);
+    if (this.identificationField.errors)
+      this.formErrors.push(UsersFormEnum.identification);
+    if (this.identificationTypeField.errors)
+      this.formErrors.push(UsersFormEnum.identificationType);
     if (this.lastnameField.errors) this.formErrors.push(UsersFormEnum.lastname);
     if (this.nameField.errors) this.formErrors.push(UsersFormEnum.name);
     if (this.passwordField.errors) this.formErrors.push(UsersFormEnum.password);
-    if (this.passwordChangedField.errors) this.formErrors.push(UsersFormEnum.passwordChanged);
+    if (this.passwordChangedField.errors)
+      this.formErrors.push(UsersFormEnum.passwordChanged);
     if (this.rolesField.errors) this.formErrors.push(UsersFormEnum.roles);
 
     this.formErrors.sort();
@@ -158,7 +186,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     this.usernameField.setValue(this.identificationField.value);
 
     if (this.validateFormErrors) {
-      if (this.id) {
+      if (this.id != RoutesEnum.NEW) {
         this.update(this.form.value);
       } else {
         this.create(this.form.value);
@@ -176,7 +204,7 @@ export class UserFormComponent implements OnInit, OnExitInterface {
   create(user: CreateUserDto): void {
     user.passwordChanged = !user.passwordChanged;
 
-    this.usersHttpService.create(user).subscribe(user => {
+    this.usersHttpService.create(user).subscribe((user) => {
       //this.form.reset(user);
       this.saving = false;
       this.back();
@@ -189,22 +217,18 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     this.usersHttpService.update(this.id!, user).subscribe((user) => {
       //this.form.reset(user);
       this.saving = false;
-      this.back()
+      this.back();
     });
   }
 
   loadRoles(): void {
-    this.rolesHttpService.findAll().subscribe((roles) => this.roles = roles);
+    this.rolesHttpService.findAll().subscribe((roles) => (this.roles = roles));
   }
 
   loadIdentificationTypes(): void {
-    this.identificationTypes = this.cataloguesHttpService.findByType(CatalogueTypeEnum.IDENTIFICATION_TYPE);
-  }
-
-  loadUnits(): void {
-    this.unitsHttpService.findCatalogues().subscribe(units => {
-      this.units = units;
-    });
+    this.identificationTypes = this.cataloguesHttpService.findByType(
+      CatalogueTypeEnum.IDENTIFICATION_TYPE
+    );
   }
 
   handleChangePassword(event: any) {
@@ -212,7 +236,10 @@ export class UserFormComponent implements OnInit, OnExitInterface {
     if (this.isChangePassword.value) {
       this.passwordChangedField.enable();
       this.passwordField.enable();
-      this.passwordField.setValidators([Validators.required, Validators.minLength(8)]);
+      this.passwordField.setValidators([
+        Validators.required,
+        Validators.minLength(8),
+      ]);
     } else {
       this.passwordChangedField.setValue(false);
       this.passwordChangedField.disable();
@@ -257,9 +284,5 @@ export class UserFormComponent implements OnInit, OnExitInterface {
 
   get usernameField(): AbstractControl {
     return this.form.controls['username'];
-  }
-
-  get unitsField(): AbstractControl {
-    return this.form.controls['units'];
   }
 }

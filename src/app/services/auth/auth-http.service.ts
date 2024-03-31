@@ -16,7 +16,6 @@ import {
 // import {AuthRoutesEnum, RoutesEnum} from "@shared/enums";
 import {RoutesService} from "@services/core/routes.service";
 import {RolePipe} from "@shared/pipes";
-import {EventModel} from "@models/core";
 
 @Injectable({
   providedIn: 'root'

@@ -3,8 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PrimeIcons} from "primeng/api";
 import {RoleModel} from "@models/auth";
 import {AuthService} from '@services/auth';
-import {CoreService, FiscalYearsHttpService, MessageService, RoutesService, UnitsHttpService} from '@services/core';
-import {FiscalYearModel, UnitModel} from "@models/core";
+import {CoreService,  MessageService, RoutesService} from '@services/core';
 
 @Component({
   selector: 'app-role-select',
@@ -15,8 +14,6 @@ export class RoleSelectComponent implements OnInit {
   protected readonly PrimeIcons = PrimeIcons;
   protected form: FormGroup;
   protected roles: RoleModel[] = [];
-  protected fiscalYears: FiscalYearModel[] = [];
-  protected units: UnitModel[] = [];
 
   constructor(
     protected coreService: CoreService,
@@ -24,8 +21,6 @@ export class RoleSelectComponent implements OnInit {
     public messageService: MessageService,
     protected authService: AuthService,
     protected routesService: RoutesService,
-    private fiscalYearsHttpService: FiscalYearsHttpService,
-    private unitsHttpService: UnitsHttpService,
   ) {
     this.form = this.newForm();
   }
@@ -37,7 +32,7 @@ export class RoleSelectComponent implements OnInit {
   newForm(): FormGroup {
     return this.formBuilder.group({
         role: [null, [Validators.required]],
-       
+
       }
     );
   }
@@ -53,7 +48,7 @@ export class RoleSelectComponent implements OnInit {
 
   selectRole() {
     this.authService.role = this.roleField.value;
-   
+
     this.authService.selectDashboard();
   }
 
@@ -61,6 +56,6 @@ export class RoleSelectComponent implements OnInit {
     return this.form.controls['role'];
   }
 
- 
+
   protected readonly Validators = Validators;
 }

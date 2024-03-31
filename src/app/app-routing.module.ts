@@ -8,11 +8,6 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       {
-        path: '',
-        title: 'Core',
-        loadChildren: () => import('./pages/core/core.module').then(m => m.CoreModule),
-      },
-      {
         path: 'admin',
         title: 'Admin',
         loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
