@@ -1,10 +1,10 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { MenuItem, MenuItemCommandEvent, PrimeIcons } from 'primeng/api';
-import { BreadcrumbService, CoreService, RoutesService } from '@services/core';
-import { AuthHttpService, AuthService, MenusHttpService } from '@services/auth';
-import { environment } from '@env/environment';
-import { MenuModel } from '@models/auth';
+import {Component, inject, ViewEncapsulation} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {MenuItem, MenuItemCommandEvent, PrimeIcons} from 'primeng/api';
+import {BreadcrumbService, CoreService, RoutesService} from '@services/core';
+import {AuthHttpService, AuthService, MenusHttpService} from '@services/auth';
+import {environment} from '@env/environment';
+import {MenuModel} from '@models/auth';
 
 @Component({
   selector: 'app-topbar',
@@ -17,7 +17,7 @@ export class TopbarComponent {
   protected items: MenuItem[] = [];
   protected home!: MenuItem;
   protected menu!: MenuItem;
-  protected nickname: string;
+  protected nickname!: string;
 
   protected readonly breadcrumbService = inject(BreadcrumbService);
   protected readonly coreService = inject(CoreService);
@@ -26,8 +26,9 @@ export class TopbarComponent {
   private readonly routesService = inject(RoutesService);
 
   constructor() {
-    this.nickname = `${this.authService.auth.name} ${this.authService.auth.lastname} - ${this.authService.role.name}`;
-
+    if (this.authService.auth) {
+      this.nickname = `${this.authService.auth.name} ${this.authService.auth.lastname} - ${this.authService.role.name}`;
+    }
     // this.home = {label: 'Home', icon: PrimeIcons.HOME, routerLink: `/core/dashboards/${this.authService.role?.code}`};
 
     this.menu = {

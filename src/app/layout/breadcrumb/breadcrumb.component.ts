@@ -1,10 +1,10 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { MenuItem, PrimeIcons } from 'primeng/api';
-import { BreadcrumbService, CoreService, RoutesService } from '@services/core';
-import { AuthHttpService, AuthService } from '@services/auth';
-import { environment } from '@env/environment';
-import { Router } from '@angular/router';
+import {Component, inject, ViewEncapsulation} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {MenuItem, PrimeIcons} from 'primeng/api';
+import {BreadcrumbService, CoreService, RoutesService} from '@services/core';
+import {AuthHttpService, AuthService} from '@services/auth';
+import {environment} from '@env/environment';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -18,7 +18,7 @@ export class BreadcrumbComponent {
   protected subscription: Subscription;
   protected items: MenuItem[] = [];
   protected home: MenuItem;
-  protected nickname: string;
+  protected nickname!: string;
 
   protected readonly breadcrumbService = inject(BreadcrumbService);
   protected readonly coreService = inject(CoreService);
@@ -28,7 +28,9 @@ export class BreadcrumbComponent {
   private readonly router = inject(Router);
 
   constructor() {
-    this.nickname = `${this.authService.auth.identification} - ${this.authService.role.name}`;
+    if (this.authService.auth) {
+      this.nickname = `${this.authService.auth.identification} - ${this.authService.role.name}`;
+    }
 
     this.subscription = this.breadcrumbService.itemsHandler.subscribe(
       (response) => {

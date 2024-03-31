@@ -105,7 +105,7 @@ export class AuthService {
         this.routesService.dashboardAdmin();
         break;
       }
-      case RoleEnum.PLANNER: {
+      case RoleEnum.WORKER: {
         this.routesService.dashboardPlanner();
         break;
       }

@@ -13,6 +13,7 @@ export class MessageService {
   }
 
   error(error: ServerResponse) {
+    console.log(error);
     if (error.statusCode === 422) {
       // const fields = Object.values(error.message).toString().split('.,');
       const fields = error.message;

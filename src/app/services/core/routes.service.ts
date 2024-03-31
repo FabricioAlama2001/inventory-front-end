@@ -101,12 +101,20 @@ export class RoutesService {
   /** Applicant Routes **/
 
   /** Catalogue Role **/
-  get budgetItemsList(): string {
-    return this.core + 'catalogue/budget-items';
+  get categoriesList(): string {
+    return this.core + 'worker/categories';
   }
 
-  budgetItemsForm(id: string): string {
-    return this.core + `catalogue/budget-items/${id}`;
+  categoriesForm(id: string): string {
+    return this.core + `worker/categories/${id}`;
+  }
+
+  get productsList(): string {
+    return this.core + 'worker/products';
+  }
+
+  productsForm(id: string): string {
+    return this.core + `worker/products/${id}`;
   }
 
   get expenseGroupsList(): string {

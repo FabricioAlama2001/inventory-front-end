@@ -55,7 +55,7 @@ export class CategoriesHttpService {
     );
   }
 
-  remove(id: string): Observable<boolean> {
+  remove(id: string): Observable<CategoryModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.delete<ServerResponse>(url).pipe(
@@ -66,4 +66,25 @@ export class CategoriesHttpService {
     );
   }
 
+  enable(id: string): Observable<CategoryModel> {
+    const url = `${this.API_URL}/${id}/enable`;
+
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
+      map((response) => {
+        this.messageService.success(response);
+        return response.data;
+      })
+    );
+  }
+
+  disable(id: string): Observable<CategoryModel> {
+    const url = `${this.API_URL}/${id}/disable`;
+
+    return this.httpClient.patch<ServerResponse>(url, null).pipe(
+      map((response) => {
+        this.messageService.success(response);
+        return response.data;
+      })
+    );
+  }
 }
