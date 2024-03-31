@@ -47,5 +47,6 @@ export enum BreadcrumbEnum {
   TRANSACTION_SCP = 'Solicitud Certificación Presupuestaria',
   UNIT_MANAGERS ='Responsables de unidad',
   TRANSACTION_DETAILS ='Detalles de la transacción',
+  PRODUCTS ='Productos',
 
 }

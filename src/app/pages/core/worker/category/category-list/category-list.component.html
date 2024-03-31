@@ -20,6 +20,9 @@
   styleClass="p-datatable-striped"
   [value]="items"
   [columns]="columns"
+  [paginator]="true"
+  [rows]="1"
+  paginatorPosition="top"
   [globalFilterFields]="globalFilterFields"
   [loading]="coreService.isLoading"
   [(selection)]="selectedItems"
@@ -29,9 +32,14 @@
       <h1>{{ BreadcrumbEnum.APPLICATION_STATUS }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
-        <input #search pInputText type="text"
-               [placeholder]="TableEnum.SEARCH"
-               (input)="dt.filterGlobal(search.value, 'contains')"/>
+        <div class="p-input-icon-right ml-auto">
+          <p-inputGroup>
+            <button type="button" pButton [icon]="PrimeIcons.SEARCH"></button>
+            <input #search pInputText type="text"
+                   [placeholder]="TableEnum.SEARCH"
+                   (input)="dt.filterGlobal(search.value, 'contains')"/>
+          </p-inputGroup>
+        </div>
       </div>
     </div>
   </ng-template>

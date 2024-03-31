@@ -7,6 +7,8 @@ import {ButtonModule} from "primeng/button";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {SharedModule} from "@shared/shared.module";
+import {InputGroupModule} from "primeng/inputgroup";
+import {InputTextModule} from "primeng/inputtext";
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import {SharedModule} from "@shared/shared.module";
     ButtonModule,
     TableModule,
     TagModule,
-    SharedModule
+    SharedModule,
+    InputGroupModule,
+    InputTextModule
   ]
 })
 export class CategoryModule { }
