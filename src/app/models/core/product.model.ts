@@ -14,4 +14,5 @@ export interface ProductModel {
   categoryId: string;
   minimumAmount: number;
   sellingPrice: number;
+  stock: number;
 }

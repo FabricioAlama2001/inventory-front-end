@@ -90,7 +90,8 @@ export class ProductListComponent implements OnInit {
     return [
       {field: 'category', header: 'Categoría'},
       {field: 'name', header: 'Producto'},
-      {field: 'enabled', header: 'Estado'}
+      {field: 'enabled', header: 'Estado'},
+      {field: 'stock', header: 'Stock'}
     ];
   }
 
