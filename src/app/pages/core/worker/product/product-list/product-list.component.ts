@@ -146,11 +146,11 @@ export class ProductListComponent implements OnInit {
 
   // Solo cambiar la ruta del servicio
   redirectCreateForm() {
-    this.router.navigate([this.routesService.categoriesForm(RoutesEnum.NEW)]);
+    this.router.navigate([this.routesService.productsForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.categoriesForm(id)]);
+    this.router.navigate([this.routesService.productsForm(id)]);
   }
 
   /** Actions **/

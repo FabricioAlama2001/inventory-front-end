@@ -11,9 +11,10 @@ import {InputGroupModule} from "primeng/inputgroup";
 import {ReactiveFormsModule} from "@angular/forms";
 import {PaginatorModule} from "primeng/paginator";
 import {InputTextModule} from "primeng/inputtext";
+import { ProductFormComponent } from './product-form/product-form.component';
 
 @NgModule({
-  declarations: [ProductListComponent],
+  declarations: [ProductListComponent, ProductFormComponent],
   imports: [
     CommonModule,
     ProductRoutingModule,
