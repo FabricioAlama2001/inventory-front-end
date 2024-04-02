@@ -48,5 +48,6 @@ export enum BreadcrumbEnum {
   UNIT_MANAGERS ='Responsables de unidad',
   TRANSACTION_DETAILS ='Detalles de la transacción',
   PRODUCTS ='Productos',
+  CATEGORIES ='Categorias',
 
 }
