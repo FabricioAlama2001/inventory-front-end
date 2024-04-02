@@ -9,10 +9,11 @@ import {TagModule} from "primeng/tag";
 import {SharedModule} from "@shared/shared.module";
 import {InputGroupModule} from "primeng/inputgroup";
 import {InputTextModule} from "primeng/inputtext";
+import { CategoryFormComponent } from './category-form/category-form.component';
 
 
 @NgModule({
-  declarations: [CategoryListComponent],
+  declarations: [CategoryListComponent, CategoryFormComponent],
   imports: [
     CommonModule,
     CategoryRoutingModule,
