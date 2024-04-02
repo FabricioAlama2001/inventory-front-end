@@ -72,6 +72,49 @@
         >
         </small>
       </div>
+       <!-- Date -->
+       <div class="field xl:col-5 lg:col-5 md:col-12 sm:col-12">
+        <label
+          appLabel
+          for="date"
+          label="Fecha"
+          [required]="dateField"
+        ></label>
+        <app-help-field
+        (mouseenter)="opDate.toggle($event)"
+        (mouseleave)="opDate.hide()"
+      ></app-help-field>
+        <input pInputText type="date" id="date" datelName="date" />
+        <small
+          appErrorMessage
+          [errors]="dateField.errors"
+          [touched]="dateField.touched"
+          [dirty]="dateField.dirty"
+        >
+        </small>
+      </div>
+    <!-- type -->
+    <div class="field xl:col-5 lg:col-5 md:col-12 sm:col-12">
+      <label
+        appLabel
+        for="type"
+        label="Tipo"
+        [required]="typeField"
+      ></label>
+      <app-help-field
+      (mouseenter)="opType.toggle($event)"
+      (mouseleave)="opType.hide()"
+    ></app-help-field>
+      <input pInputText type="bolean" id="type" typeName="date" />
+      <small
+        appErrorMessage
+        [errors]="typeField.errors"
+        [touched]="typeField.touched"
+        [dirty]="typeField.dirty"
+      >
+      </small>
+    </div>
+
     <!-- Descripcion -->
     <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
       <label
@@ -90,57 +133,20 @@
       </small>
     </div>
 
-     <!-- Date -->
-     <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
-        <label
-          appLabel
-          for="date"
-          label="Descripción"
-          [required]="dateField"
-        ></label>
-        <input pInputText type="date" id="date" datelName="date" />
-        <small
-          appErrorMessage
-          [errors]="dateField.errors"
-          [touched]="dateField.touched"
-          [dirty]="dateField.dirty"
-        >
-        </small>
-      </div>
+
       </div>
     </form>
   </p-panel>
   }
 
-
-
-
-    </div>
-  </form>
-</p-panel>
-}
-
-<p-overlayPanel #opName>
+<p-overlayPanel #opDate>
   <ng-template pTemplate="content">
-    Ingrese el nombre del estado de la solicitud
+    Ingrese la fecha de ingreso
   </ng-template>
 </p-overlayPanel>
 
-<p-overlayPanel #opCostPrice>
+<p-overlayPanel #opType>
   <ng-template pTemplate="content">
-    Ingrese el costo del producto
+    Elija el tipo de ingreso
   </ng-template>
-</p-overlayPanel>
-
-<p-overlayPanel #opMinimumAmount>
-  <ng-template pTemplate="content">
-    Ingrese la cantidad mínima del producto
-  </ng-template>
-</p-overlayPanel>
-
-<p-overlayPanel #opSellingPrice>
-  <ng-template pTemplate="content">
-    Ingrese el precio de venta
-  </ng-template>
-</p-overlayPanel>
 
