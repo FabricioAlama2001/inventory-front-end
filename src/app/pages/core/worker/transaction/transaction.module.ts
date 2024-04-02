@@ -15,11 +15,10 @@ import { TransactionFormComponent } from './transaction-form/transaction-form.co
 import { DividerModule } from 'primeng/divider';
 import { PanelModule } from 'primeng/panel';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { CategoryFormComponent } from './category-form/category-form.component';
 
 
 @NgModule({
-  declarations: [TransactionListComponent, TransactionFormComponent, CategoryFormComponent],
+  declarations: [TransactionListComponent, TransactionFormComponent],
   imports: [
     CommonModule,
     TransactionRoutingModule,
