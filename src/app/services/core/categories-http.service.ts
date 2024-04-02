@@ -15,6 +15,16 @@ export class CategoriesHttpService {
   private readonly httpClient = inject(HttpClient);
   private readonly messageService = inject (MessageService);
 
+  findCatalogues(): Observable<CategoryModel[]> {
+    const url = `${this.API_URL}/catalogues`;
+
+    return this.httpClient.get<ServerResponse>(url).pipe(
+      map(reponse =>{
+        return reponse.data;
+      })
+    );
+  }
+
   findAll(): Observable<CategoryModel[]> {
     const url = this.API_URL;
 

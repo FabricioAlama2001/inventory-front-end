@@ -12,6 +12,19 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {PaginatorModule} from "primeng/paginator";
 import {InputTextModule} from "primeng/inputtext";
 import { ProductFormComponent } from './product-form/product-form.component';
+import {DividerModule} from "primeng/divider";
+import {InputSwitchModule} from "primeng/inputswitch";
+import {KeyFilterModule} from "primeng/keyfilter";
+import {MessageModule} from "primeng/message";
+import {MultiSelectModule} from "primeng/multiselect";
+import {OverlayPanelModule} from "primeng/overlaypanel";
+import {PanelMenuModule} from "primeng/panelmenu";
+import {PanelModule} from "primeng/panel";
+import {RippleModule} from "primeng/ripple";
+import {SidebarModule} from "primeng/sidebar";
+import {SplitButtonModule} from "primeng/splitbutton";
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [ProductListComponent, ProductFormComponent],
@@ -19,19 +32,28 @@ import { ProductFormComponent } from './product-form/product-form.component';
     CommonModule,
     ProductRoutingModule,
     ReactiveFormsModule,
+    SharedModule,
     ButtonModule,
-    SharedModule,
-    SharedModule,
+    CalendarModule,
+    CheckboxModule,
+    DividerModule,
+    InputSwitchModule,
+    InputTextModule,
+    KeyFilterModule,
+    MessageModule,
+    MultiSelectModule,
+    OverlayPanelModule,
+    PaginatorModule,
+    PanelMenuModule,
+    PanelModule,
+    RippleModule,
+    SidebarModule,
+    SplitButtonModule,
     TableModule,
     TagModule,
     ToolbarModule,
-    SharedModule,
-    SharedModule,
-    SharedModule,
-    SharedModule,
-    InputGroupModule,
-    PaginatorModule,
-    InputTextModule
+    InputGroupModule
+
   ]
 })
 
