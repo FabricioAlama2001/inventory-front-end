@@ -11,10 +11,14 @@ import {SharedModule} from "@shared/shared.module";
 import {InputGroupModule} from "primeng/inputgroup";
 import {PaginatorModule} from "primeng/paginator";
 import {InputTextModule} from "primeng/inputtext";
+import { TransactionFormComponent } from './transaction-form/transaction-form.component';
+import { DividerModule } from 'primeng/divider';
+import { PanelModule } from 'primeng/panel';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 @NgModule({
-  declarations: [TransactionListComponent],
+  declarations: [TransactionListComponent, TransactionFormComponent],
   imports: [
     CommonModule,
     TransactionRoutingModule,
@@ -31,9 +35,10 @@ import {InputTextModule} from "primeng/inputtext";
     SharedModule,
     InputGroupModule,
     PaginatorModule,
-    InputTextModule
-    //--------------
-
+    InputTextModule,
+    DividerModule,
+    PanelModule,
+    OverlayPanelModule,
   ]
 })
 export class TransactionModule { }

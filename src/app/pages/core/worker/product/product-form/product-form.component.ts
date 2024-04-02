@@ -1,5 +1,3 @@
-import { PaginatorDto } from './../../../../../models/core/paginator.model';
-import { ProductComponent } from './../product.component';
 import { Component, Input, inject } from '@angular/core';
 import {
   AbstractControl,
@@ -62,26 +60,26 @@ export class ProductFormComponent {
 
   constructor() {
     this.breadcrumbService.setItems([
-      {
-        label: BreadcrumbEnum.PRODUCTS,
-        routerLink: [this.routesService.productsList],
-      },
-      {
-        label: BreadcrumbEnum.FORM,
-      },
-    ]);
+        {
+          label: BreadcrumbEnum.PRODUCTS,
+          routerLink: [this.routesService.productsList],
+        },
+        {
+          label: BreadcrumbEnum.FORM,
+        },
+      ]);
 
-    this.form = this.buildForm;
-    this.checkValueChanges();
-  }
-
-  ngOnInit(): void {
-    this.loadCategories();
-
-    if (this.id != RoutesEnum.NEW) {
-      this.findProdcut();
+      this.form = this.buildForm;
+      this.checkValueChanges();
     }
-  }
+
+    ngOnInit(): void {
+      this.loadCategories();
+
+      if (this.id != RoutesEnum.NEW) {
+        this.findProdcut();
+      }
+    }
 
   //Este metodo Construir el formulario reactivo
   get buildForm() {
