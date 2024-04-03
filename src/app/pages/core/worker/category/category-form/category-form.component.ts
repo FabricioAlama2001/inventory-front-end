@@ -81,7 +81,7 @@ export class CategoryFormComponent {
     this.loadCategories();
 
     if (this.id != RoutesEnum.NEW) {
-      this.findProdcut();
+      this.findCategory();
     }
   }
 
@@ -98,11 +98,11 @@ export class CategoryFormComponent {
 
   checkValueChanges() {}
 
-  findProdcut(): void {
+  findCategory(): void {
     this.categoriesHttpService
       .findOne(this.id!)
-      .subscribe((applicationStatus) => {
-        this.form.patchValue(applicationStatus);
+      .subscribe((data) => {
+        this.form.patchValue(data);
       });
   }
 

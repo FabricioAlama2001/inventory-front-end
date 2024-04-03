@@ -32,7 +32,7 @@ import {
   RequiredPipe, RequiredSeverityPipe,
   RolePipe,
   SelecetedPipe,
-  StatePipe, YesNoPipe
+  StatePipe, TransactionTypePipe, TransactionTypeSeverityPipe, YesNoPipe
 } from '@shared/pipes';
 import {UserStatePipe} from "@shared/pipes/auth/userState.pipe";
 import {LocationComponent} from './components/location/location.component';
@@ -89,6 +89,9 @@ import { MenuModule } from 'primeng/menu';
     EnabledPipe,
     EnabledSeverityPipe,
     YesNoPipe,
+    TransactionTypePipe,
+    TransactionTypeSeverityPipe,
+
   ],
   exports: [
     SkeletonComponent,
@@ -121,7 +124,10 @@ import { MenuModule } from 'primeng/menu';
     EnabledPipe,
     EnabledSeverityPipe,
     YesNoPipe,
-    MenuModule
+    MenuModule,
+    TransactionTypePipe,
+    TransactionTypeSeverityPipe,
+
   ],
   imports: [
     CommonModule,

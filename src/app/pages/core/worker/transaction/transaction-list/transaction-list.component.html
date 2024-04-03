@@ -60,6 +60,13 @@
     <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
       @for (col of columns; track col) {
         <!--Objects-->
+        @if (rowData[col.field]?.id) {
+          @switch (col.field) {
+            @case ('category') {
+              {{ rowData[col.field].code }} {{ rowData[col.field].name }}
+            }
+          }
+        }
 
           <!--Fields-->
         @if (!rowData[col.field]?.id) {
@@ -68,8 +75,12 @@
               @default {
                 {{ rowData[col.field] }}
               }
-              @case ('enabled') {
-                <p-tag [value]="rowData[col.field]|enabled" [severity]="rowData[col.field]|enabledSeverity"></p-tag>
+              @case ('type') {
+                <p-tag [value]="rowData[col.field]|transactionType"
+                [severity]="rowData[col.field]|transactionTypeSeverity"></p-tag>
+              }
+              @case ('date') {
+                {{rowData.date | date:'mediumDate'}}
               }
             }
           </td>

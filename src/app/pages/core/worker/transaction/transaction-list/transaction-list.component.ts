@@ -87,8 +87,9 @@ export class TransactionListComponent implements OnInit {
   get buildColumns(): ColumnModel[] {
     return [
       {field: 'code', header: 'Codigo'},
-      {field: 'name', header: 'Name'},
-      {field: 'enabled', header: 'Enable'}
+      {field: 'description', header: 'Detalle'},
+      {field: 'date', header: 'Fecha'},
+      {field: 'type', header: 'Tipo'}
     ];
   }
 

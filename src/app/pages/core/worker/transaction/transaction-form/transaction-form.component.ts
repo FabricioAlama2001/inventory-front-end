@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CategoryModel } from '@models/core';
@@ -13,7 +13,7 @@ import { PrimeIcons } from 'primeng/api';
   templateUrl: './transaction-form.component.html',
   styleUrl: './transaction-form.component.scss'
 })
-export class TransactionFormComponent {
+export class TransactionFormComponent implements OnInit {
   private readonly transactionsHttpService= inject(TransactionsHttpService);
   private readonly productsHttpService = inject(ProductsHttpService);
   private readonly categoriesHttpService = inject(CategoriesHttpService);
@@ -27,6 +27,7 @@ export class TransactionFormComponent {
   @Input() id!: string;
   protected form!: FormGroup;
   protected formErrors!: string[];
+  protected types!: any[];
 
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -54,6 +55,20 @@ export class TransactionFormComponent {
       this.checkValueChanges();
     }
 
+    ngOnInit(): void {
+      this.loadTypes();
+
+      if (this.id != RoutesEnum.NEW) {
+        this.findTransaction();
+      }
+    }
+
+    //metodo validación de emulación de foringkey
+    loadTypes(){
+      this.types = [{name:'Ingresos',type:true},{name:'Egresos', type:false}];
+    }
+
+
     //Este metodo Construir el formulario reactivo
     get buildForm() {
       return this.formBuilder.group({
@@ -64,6 +79,15 @@ export class TransactionFormComponent {
       });
   }
   checkValueChanges() {}
+
+  findTransaction(): void {
+    this.transactionsHttpService
+      .findOne(this.id!)
+      .subscribe((data) => {
+        this.form.patchValue(data);
+      });
+  }
+
 
   get validateFormErrors() {
     this.formErrors = [];
@@ -78,6 +102,8 @@ export class TransactionFormComponent {
   back(): void {
     this.router.navigate([this.routesService.transactionsList]);
   }
+
+
 
   create(payload: TransactionModel): void {
     this.transactionsHttpService.create(payload).subscribe((applicationStatus) => {
@@ -97,6 +123,7 @@ export class TransactionFormComponent {
 
   onSubmit() {
     if (this.validateFormErrors) {
+      this.typeField.patchValue(this.typeField.value.type);
       if (this.id === RoutesEnum.NEW) {
         this.create(this.form.value);
       } else {

@@ -55,8 +55,27 @@
     </div> -->
 
     <div class="formgrid grid">
+      <div class="field">
+        <label appLabel for="type" label="Tipo" [required]="typeField"></label>
+
+        <p-dropdown
+          id="type"
+          formControlName="type"
+          [options]="types"
+          optionLabel="name"
+          placeholder="Seleccione...">
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="typeField.errors"
+          [touched]="typeField.touched"
+          [dirty]="typeField.dirty"
+        >
+        </small>
+      </div>
+
       <!-- Codigo -->
-      <div class="field xl:col-5 lg:col-5 md:col-12 sm:col-12">
+      <div class="field xl:col-3 lg:col-3 md:col-12 sm:col-12">
         <label
           appLabel
           for="code"
@@ -73,78 +92,65 @@
         </small>
       </div>
       <!--Date -->
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <label appLabel for="date" label="Fecha de transaccion: (yyyy-mm-dd)" [required]="dateField"></label>
-        <p-calendar id="birthdate"
-                    formControlName="birthdate"
-                    dateFormat="yy-mm-dd"
-                    [firstDayOfWeek]="1"
-                    [showIcon]="true"></p-calendar>
-        <small appErrorMessage
-               [errors]="dateField.errors"
-               [touched]="dateField.touched"
-               [dirty]="dateField.dirty">
-        </small>
-      </div>
-      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+      <div class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
         <label
           appLabel
-          for="type"
-          label="Tipo"
-          [required]="typeField"
+          for="date"
+          label="Fecha de transaccion: (yyyy-mm-dd)"
+          [required]="dateField"
         ></label>
-        <p>
-          <p-inputSwitch id="type" typeName="type"></p-inputSwitch>
-        </p>
+        <p-calendar
+          id="date"
+          formControlName="date"
+          dateFormat="yy-mm-dd"
+          [firstDayOfWeek]="1"
+          [showIcon]="true"
+        ></p-calendar>
         <small
           appErrorMessage
-          [errors]="typeField.errors"
-          [touched]="typeField.touched"
-          [dirty]="typeField.dirty"
+          [errors]="dateField.errors"
+          [touched]="dateField.touched"
+          [dirty]="dateField.dirty"
         >
         </small>
       </div>
-    <!-- Descripcion -->
-    <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
-      <label
-        appLabel
-        for="description"
-        label="Descripción"
-        [required]="descriptionField"
-      ></label>
-      <input pInputText type="text" id="description" formControlName="description" />
-      <small
-        appErrorMessage
-        [errors]="descriptionField.errors"
-        [touched]="descriptionField.touched"
-        [dirty]="descriptionField.dirty"
-      >
-      </small>
     </div>
-
-
+    <div class="formgrid grid">
+      <!-- Descripcion -->
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label
+          appLabel
+          for="description"
+          label="Descripción"
+          [required]="descriptionField"
+        ></label>
+        <textarea
+          pInputTextarea
+          id="description"
+          formControlName="description"
+        ></textarea>
+        <small
+          appErrorMessage
+          [errors]="descriptionField.errors"
+          [touched]="descriptionField.touched"
+          [dirty]="descriptionField.dirty"
+        >
+        </small>
       </div>
-    </form>
-  </p-panel>
-  }
+    </div>
+  </form>
+</p-panel>
+}
 
-
-  <!-- Hola mundo -->
+<!-- Hola mundo -->
 <p-overlayPanel #opDate>
-  <ng-template pTemplate="content">
-    Ingrese la fecha de ingreso
-  </ng-template>
+  <ng-template pTemplate="content"> Ingrese la fecha de ingreso </ng-template>
 </p-overlayPanel>
 
 <p-overlayPanel #opDate>
-  <ng-template pTemplate="content">
-    Ingrese la fecha de ingreso
-  </ng-template>
+  <ng-template pTemplate="content"> Ingrese la fecha de ingreso </ng-template>
 </p-overlayPanel>
-
 
 <p-overlayPanel #opType>
-  <ng-template pTemplate="content">
-    Elija el tipo de ingreso
-  </ng-template>
-
+  <ng-template pTemplate="content"> Elija el tipo de ingreso </ng-template>
+</p-overlayPanel>

@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -31,7 +31,7 @@ import { CatalogueModel, CategoryModel, ProductModel } from '@models/core';
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnInit {
   private readonly productsHttpService = inject(ProductsHttpService);
   private readonly categoriesHttpService = inject(CategoriesHttpService);
   private readonly breadcrumbService = inject(BreadcrumbService); //
@@ -102,8 +102,8 @@ export class ProductFormComponent {
   findProdcut(): void {
     this.productsHttpService
       .findOne(this.id!)
-      .subscribe((applicationStatus) => {
-        this.form.patchValue(applicationStatus);
+      .subscribe((data) => {
+        this.form.patchValue(data);
       });
   }
 
