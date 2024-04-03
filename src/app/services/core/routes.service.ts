@@ -246,11 +246,11 @@ export class RoutesService {
   }
 
   get transactionsList(): string {
-    return this.core + '/applicant/transactions';
+    return this.core + '/worker/transactions';
   }
 
   transactionsForm(id: string): string {
-    return this.core + `applicant/transactions/${id}`;
+    return this.core + `worker/transactions/${id}`;
   }
 
   get common(): string {

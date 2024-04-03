@@ -33,8 +33,8 @@ export class TransactionFormComponent {
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly SkeletonEnum = SkeletonEnum;
-  
-  
+
+
   protected helpText!: string;
   private saving: boolean = true;
 
@@ -76,7 +76,7 @@ export class TransactionFormComponent {
     return this.formErrors.length === 0 && this.form.valid;
   }
   back(): void {
-    this.router.navigate([this.routesService.productsList]);
+    this.router.navigate([this.routesService.transactionsList]);
   }
 
   create(payload: TransactionModel): void {
@@ -94,7 +94,7 @@ export class TransactionFormComponent {
         this.back();
       });
     }
-    
+
   onSubmit() {
     if (this.validateFormErrors) {
       if (this.id === RoutesEnum.NEW) {
@@ -116,12 +116,12 @@ export class TransactionFormComponent {
     get dateField(): AbstractControl {
       return this.form.controls['date'];
     }
-    
+
     get typeField(): AbstractControl {
       return this.form.controls['type'];
     }
-    
-  
-    
+
+
+
 
 }

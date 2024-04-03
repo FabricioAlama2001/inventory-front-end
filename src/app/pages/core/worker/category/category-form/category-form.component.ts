@@ -66,7 +66,7 @@ export class CategoryFormComponent {
     this.breadcrumbService.setItems([
       {
         label: BreadcrumbEnum.CATEGORIES,
-        routerLink: [this.routesService.productsList],
+        routerLink: [this.routesService.categoriesList],
       },
       {
         label: BreadcrumbEnum.FORM,
@@ -92,7 +92,7 @@ export class CategoryFormComponent {
       enabled: true,
       name: ['', Validators.required],
       description: ['', Validators.required],
-      
+
     });
   }
 
@@ -144,7 +144,7 @@ export class CategoryFormComponent {
   }
 
   back(): void {
-    this.router.navigate([this.routesService.productsList]);
+    this.router.navigate([this.routesService.categoriesList]);
   }
 
   create(payload: CategoryModel): void {

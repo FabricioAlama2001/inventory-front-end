@@ -12,7 +12,7 @@ import { TransactionModel } from '@models/core/transaction.model';
 })
 export class TransactionsHttpService {
   private readonly httpClient = inject(HttpClient);
-  private readonly API_URL = `${environment.API_URL}/core/transactions`;
+  private readonly API_URL = `${environment.API_URL}/transactions`;
   private readonly messageService = inject(MessageService) ;
 
   create(payload: TransactionModel): Observable<TransactionModel> {
