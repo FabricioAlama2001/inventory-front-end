@@ -15,6 +15,8 @@ import { TransactionFormComponent } from './transaction-form/transaction-form.co
 import { DividerModule } from 'primeng/divider';
 import { PanelModule } from 'primeng/panel';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { CalendarModule } from 'primeng/calendar';
 
 
 @NgModule({
@@ -39,6 +41,9 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     DividerModule,
     PanelModule,
     OverlayPanelModule,
+    InputSwitchModule,
+    CalendarModule,
+    
   ]
 })
 export class TransactionModule { }
