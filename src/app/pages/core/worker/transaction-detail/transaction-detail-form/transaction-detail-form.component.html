@@ -1,0 +1,109 @@
+@if (coreService.isLoading) {
+    <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
+    } @if (!coreService.isLoading) {
+    <p-toolbar>
+      <div class="p-toolbar-group-left">
+        <app-header-form [id]="id"></app-header-form>
+      </div>
+      <div class="p-toolbar-group-right">
+        <button
+          pButton
+          pRipple
+          type="button"
+          (click)="back()"
+          [icon]="IconButtonActionEnum.CANCEL"
+          [label]="LabelButtonActionEnum.CANCEL"
+          [loading]="coreService.isLoading"
+          [ngClass]="[ClassButtonActionEnum.CANCEL]"
+        ></button>
+    
+        <p-divider layout="vertical"></p-divider>
+    
+        <button
+          pButton
+          pRipple
+          type="button"
+          [icon]="IconButtonActionEnum.SAVE"
+          [label]="LabelButtonActionEnum.SAVE"
+          [loading]="coreService.isLoading"
+          [ngClass]="[ClassButtonActionEnum.SAVE]"
+        ></button>
+      </div>
+    </p-toolbar>
+    
+    <p-panel class="p-fluid">
+      <form [formGroup]="form" >
+        <div class="formgrid grid">
+          <!-- <div class="field">
+            <label appLabel for="type" label="Tipo" [required]="typeField"></label>
+    
+            <p-dropdown
+              id="type"
+              formControlName="type"
+              [options]="types"
+              optionLabel="name"
+              placeholder="Seleccione...">
+            </p-dropdown>
+            <small
+              appErrorMessage
+              [errors]="typeField.errors"
+              [touched]="typeField.touched"
+              [dirty]="typeField.dirty"
+            >
+            </small>
+          </div> -->
+    
+          <!-- Quantity -->
+          <div class="field xl:col-3 lg:col-3 md:col-12 sm:col-12">
+            <label
+              appLabel
+              for="quantity"
+              label="Cantidad"
+              [required]="quantityField"
+            ></label>
+            <input pInputText type="number" id="quantity" formControlName="quantity" />
+            <small
+              appErrorMessage
+              [errors]="quantityField.errors"
+              [touched]="quantityField.touched"
+              [dirty]="quantityField.dirty"
+            >
+            </small>
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <!-- Observation -->
+          <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+            <label
+              appLabel
+              for="observation"
+              label="Observacion"
+              [required]="observationField"
+            ></label>
+            <textarea
+              pInputTextarea
+              id="description"
+              formControlName="description"
+            ></textarea>
+            <small
+              appErrorMessage
+              [errors]="observationField.errors"
+              [touched]="observationField.touched"
+              [dirty]="observationField.dirty"
+            >
+            </small>
+          </div>
+        </div>
+      </form>
+    </p-panel>
+    }
+    
+    <p-overlayPanel #opQuantity>
+      <ng-template pTemplate="content">Ingrese Cantidad</ng-template>
+    </p-overlayPanel>
+
+    
+    <p-overlayPanel #opObservation>
+      <ng-template pTemplate="content"> Ingrese Observaciones </ng-template>
+    </p-overlayPanel>
+    

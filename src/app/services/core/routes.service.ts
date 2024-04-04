@@ -99,8 +99,7 @@ export class RoutesService {
   }
 
   /** Applicant Routes **/
-
-  /** Catalogue Role **/
+  /** Worker Role **/
   get categoriesList(): string {
     return this.core + 'worker/categories';
   }
@@ -116,7 +115,24 @@ export class RoutesService {
   productsForm(id: string): string {
     return this.core + `worker/products/${id}`;
   }
+  get transactionsList(): string {
+    return this.core + '/worker/transactions';
+  }
 
+  transactionsForm(id: string): string {
+    return this.core + `worker/transactions/${id}`;
+  }
+  get transactionsetailsList(): string {
+    return this.core + '/worker/transaction-detail-list';
+  }
+
+  transactionsetailsForm(id: string): string {
+    return this.core + `worker/transaction-detail-form/${id}`;
+  }
+
+
+  /** Catalogue Role **/
+  
   get expenseGroupsList(): string {
     return this.core + '/catalogue/expense-groups';
   }
@@ -243,14 +259,6 @@ export class RoutesService {
 
   applicationStatusForm(id: string): string {
     return this.core + `catalogue/application-status/${id}`;
-  }
-
-  get transactionsList(): string {
-    return this.core + '/worker/transactions';
-  }
-
-  transactionsForm(id: string): string {
-    return this.core + `worker/transactions/${id}`;
   }
 
   get common(): string {

@@ -1,12 +1,9 @@
-
-import { TransactionComponent } from './../transaction.component';
 import { Component, OnInit, inject } from '@angular/core';
 import {Router} from "@angular/router";
 import {
   BreadcrumbService,
   CoreService,
   MessageService,
-  ProductsHttpService,
   RoutesService
 } from '@services/core';
 
@@ -19,8 +16,6 @@ import {
   LabelButtonActionEnum, RoutesEnum, TableEnum
 } from "@shared/enums";
 import {ColumnModel} from "@models/core";
-import {FormControl} from "@angular/forms";
-import {debounceTime} from "rxjs";
 import { TransactionModel } from '@models/core/transaction.model';
 import { TransactionsHttpService } from '@services/core/transactions-http.service';
 
@@ -45,7 +40,7 @@ export class TransactionListComponent implements OnInit {
   protected readonly IdButtonActionEnum = IdButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly PrimeIcons = PrimeIcons;
-  protected readonly TableEnum = TableEnum;
+  protected readonly TableEnum = TableEnum; 
 
   /** Buttons Actions **/
   protected buttonActions: MenuItem[] = this.buildButtonActions;
