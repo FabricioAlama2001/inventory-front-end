@@ -55,7 +55,8 @@
     </div> -->
 
     <div class="formgrid grid">
-      <div class="field">
+      <!-- Drop de tipos (Ingresos e ingresos) -->
+      <div class="field xl:col-4 lg:col-3 md:col-12 sm:col-12">
         <label appLabel for="type" label="Tipo" [required]="typeField"></label>
 
         <p-dropdown
@@ -63,7 +64,8 @@
           formControlName="type"
           [options]="types"
           optionLabel="name"
-          placeholder="Seleccione...">
+          placeholder="Seleccione..."
+        >
         </p-dropdown>
         <small
           appErrorMessage
@@ -74,8 +76,63 @@
         </small>
       </div>
 
+      <!-- Drop de Authorizer -->
+      <div class="field xl:col-4 lg:col-3 md:col-12 sm:col-12">
+        <label
+          appLabel
+          for="user"
+          label="Autorizador"
+          [required]="userField"
+        ></label>
+        <p-dropdown
+          id="user"
+          dataKey="id"
+          formControlName="user"
+          [filter]="true"
+          [options]="users"
+          optionLabel="name"
+          placeholder="Seleccione..."
+        >
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="userField.errors"
+          [touched]="userField.touched"
+          [dirty]="userField.dirty"
+        >
+        </small>
+      </div>
+
+      <!-- Drop de proveedor -->
+      @if(typeField.valid){
+      <div class="field xl:col-4 lg:col-3 md:col-12 sm:col-12">
+        <label
+          appLabel
+          for="user"
+          [label]="client"
+          [required]="userField"
+        ></label>
+        <p-dropdown
+          id="user"
+          dataKey="id"
+          formControlName="client"
+          [filter]="true"
+          [options]="clients"
+          optionLabel="name"
+          placeholder="Seleccione..."
+        >
+        </p-dropdown>
+        <small
+          appErrorMessage
+          [errors]="userField.errors"
+          [touched]="userField.touched"
+          [dirty]="userField.dirty"
+        >
+        </small>
+      </div>
+      }
       <!-- Codigo -->
-      <div class="field xl:col-3 lg:col-3 md:col-12 sm:col-12">
+      <div class="field xl:col-6 lg:col-3 md:col-12 sm:col-12">
         <label
           appLabel
           for="code"
@@ -92,7 +149,7 @@
         </small>
       </div>
       <!--Date -->
-      <div class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+      <div class="field xl:col-6 lg:col-3 md:col-6 sm:col-12">
         <label
           appLabel
           for="date"

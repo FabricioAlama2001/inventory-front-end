@@ -1,3 +1,4 @@
+import { ProductModel } from './../../models/core/product.model';
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
@@ -7,12 +8,13 @@ import { ServerResponse } from '@models/http-response';
 import { MessageService } from "@services/core";
 import { TransactionDetailModel } from '@models/core/transaction-detail.model';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionDetailsHttpService {
   private readonly httpClient = inject(HttpClient);
-  private API_URL = `${environment.API_URL}/core/transaction-details`;
+  private API_URL = `${environment.API_URL}/transaction-details`;
   private messageService = inject(MessageService);
 
   create(payload: TransactionDetailModel): Observable<TransactionDetailModel> {
@@ -94,4 +96,5 @@ export class TransactionDetailsHttpService {
     );
   }
 
+  
 }

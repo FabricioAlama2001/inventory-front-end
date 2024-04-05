@@ -1,16 +1,17 @@
-import {Injectable} from '@angular/core';
-import {PermissionModel, RoleModel, UserModel} from '@models/auth';
-import {environment} from "@env/environment";
-import {RoleEnum} from "@shared/enums";
-import {MessageService, RoutesService} from "@services/core";
+import { Injectable } from '@angular/core';
+import { PermissionModel, RoleModel, UserModel } from '@models/auth';
+import { environment } from '@env/environment';
+import { RoleEnum } from '@shared/enums';
+import { MessageService, RoutesService } from '@services/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  constructor(private routesService: RoutesService, private messageService: MessageService) {
-  }
+  constructor(
+    private routesService: RoutesService,
+    private messageService: MessageService
+  ) {}
 
   changeTheme(theme: string) {
     // const themePath = themes.find(element => element.name == theme)?.path;
@@ -91,7 +92,6 @@ export class AuthService {
     return environment.APP_SHORT_NAME;
   }
 
-
   removeLogin() {
     sessionStorage.clear();
     sessionStorage.clear();
@@ -109,24 +109,16 @@ export class AuthService {
         this.routesService.dashboardPlanner();
         break;
       }
-      case RoleEnum.CATALOGUE: {
+      case RoleEnum.APPROVER: {
         this.routesService.dashboardPlanner();
         break;
       }
-      case RoleEnum.FOLLOWER: {
+      case RoleEnum.PROVIDER: {
         this.routesService.dashboardFollower();
         break;
       }
-      case RoleEnum.APPLICANT: {
+      case RoleEnum.CUSTOMER: {
         this.routesService.dashboardApplicant();
-        break;
-      }
-      case RoleEnum.APPROVER: {
-        this.routesService.dashboardApprover();
-        break;
-      }
-      case RoleEnum.PLANNER_APPROVER: {
-        this.routesService.dashboardPlannerApprover();
         break;
       }
     }

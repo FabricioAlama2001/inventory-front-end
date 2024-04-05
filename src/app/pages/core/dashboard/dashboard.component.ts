@@ -30,7 +30,7 @@ export class DashboardComponent {
       case RoleEnum.WORKER:
         this.routesService.dashboardPlanner();
         break;
-      case RoleEnum.APPLICANT:
+      case RoleEnum.APPROVER:
         this.routesService.dashboardApplicant();
         break;
     }

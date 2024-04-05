@@ -1,20 +1,43 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserModel } from '@models/auth';
 import { CategoryModel } from '@models/core';
 import { TransactionModel } from '@models/core/transaction.model';
-import { BreadcrumbService, CategoriesHttpService, CoreService, MessageService, ProductsHttpService, RoutesService } from '@services/core';
+import { UsersHttpService } from '@services/auth';
+import {
+  BreadcrumbService,
+  CategoriesHttpService,
+  CoreService,
+  MessageService,
+  ProductsHttpService,
+  RoutesService,
+} from '@services/core';
 import { TransactionsHttpService } from '@services/core/transactions-http.service';
-import { BreadcrumbEnum, ClassButtonActionEnum, IconButtonActionEnum, LabelButtonActionEnum, RoutesEnum, SkeletonEnum } from '@shared/enums';
+import {
+  BreadcrumbEnum,
+  ClassButtonActionEnum,
+  IconButtonActionEnum,
+  LabelButtonActionEnum,
+  RoleEnum,
+  RoutesEnum,
+  SkeletonEnum,
+} from '@shared/enums';
 import { PrimeIcons } from 'primeng/api';
 
 @Component({
   selector: 'app-transaction-form',
   templateUrl: './transaction-form.component.html',
-  styleUrl: './transaction-form.component.scss'
+  styleUrl: './transaction-form.component.scss',
 })
 export class TransactionFormComponent implements OnInit {
-  private readonly transactionsHttpService= inject(TransactionsHttpService);
+  private readonly transactionsHttpService = inject(TransactionsHttpService);
+  private readonly usersHttpService = inject(UsersHttpService);
   private readonly productsHttpService = inject(ProductsHttpService);
   private readonly categoriesHttpService = inject(CategoriesHttpService);
   private readonly breadcrumbService = inject(BreadcrumbService); //
@@ -28,6 +51,9 @@ export class TransactionFormComponent implements OnInit {
   protected form!: FormGroup;
   protected formErrors!: string[];
   protected types!: any[];
+  protected users!: UserModel[];
+  protected clients!: UserModel[];
+  protected client!: string;
 
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -35,59 +61,93 @@ export class TransactionFormComponent implements OnInit {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly SkeletonEnum = SkeletonEnum;
 
-
   protected helpText!: string;
   private saving: boolean = true;
 
+  constructor() {
+    this.breadcrumbService.setItems([
+      {
+        label: BreadcrumbEnum.TRANSACTIONS,
+        routerLink: [this.routesService.transactionsList],
+      },
+      {
+        label: BreadcrumbEnum.FORM,
+      },
+    ]);
 
-    constructor(){
-      this.breadcrumbService.setItems([
-        {
-          label: BreadcrumbEnum.TRANSACTIONS,
-          routerLink: [this.routesService.transactionsList],
-        },
-        {
-          label: BreadcrumbEnum.FORM,
-        },
-      ]);
-
-      this.form = this.buildForm;
-      this.checkValueChanges();
-    }
-
-    ngOnInit(): void {
-      this.loadTypes();
-
-      if (this.id != RoutesEnum.NEW) {
-        this.findTransaction();
-      }
-    }
-
-    //metodo validación de emulación de foringkey
-    loadTypes(){
-      this.types = [{name:'Ingresos',type:true},{name:'Egresos', type:false}];
-    }
-
-
-    //Este metodo Construir el formulario reactivo
-    get buildForm() {
-      return this.formBuilder.group({
-        code: ['', Validators.required],
-        description: ['', Validators.required],
-        date: ['', Validators.required],
-        type: ['', Validators.required],
-      });
+    this.form = this.buildForm;
+    this.checkValueChanges();
   }
-  checkValueChanges() {}
+
+  ngOnInit(): void {
+    this.loadTypes();
+    this.loadUsers();
+
+    if (this.id != RoutesEnum.NEW) {
+      this.findTransaction();
+    }
+  }
+
+  //metodo validación de emulación de foringkey
+  loadTypes() {
+    this.types = [
+      { name: 'Ingresos', type: true },
+      { name: 'Egresos', type: false },
+    ];
+  }
+
+  //metodo
+  loadUsers() {
+    this.usersHttpService.findCatalogues().subscribe((users) => {
+      this.users = users.filter((user) =>
+        user.roles.some((role) => role.code === RoleEnum.APPROVER)
+      );
+
+      if (this.typeField.value && this.typeField.value.type) {
+        this.client='Proveedor';
+
+        this.clients = users.filter((user) =>
+          user.roles.some((role) => role.code === RoleEnum.PROVIDER)
+        );
+      } else {
+        this.client='Cliente';
+
+        this.clients = users.filter((user) =>
+          user.roles.some((role) => role.code === RoleEnum.CUSTOMER)
+        );
+      }
+    });
+  }
+
+  //método
+  loadAuthorizer() {
+    this.usersHttpService.findCatalogues().subscribe((users) => {
+      this.users = users;
+    });
+  }
+
+  //Este metodo Construir el formulario reactivo
+  get buildForm() {
+    return this.formBuilder.group({
+      code: [null, Validators.required],
+      description: [null, Validators.required],
+      date: [null, Validators.required],
+      type: [null, Validators.required],
+      user: [null, Validators.required],
+      client: [null, Validators.required],
+    });
+  }
+  checkValueChanges() {
+    this.typeField.valueChanges.subscribe((value) => {
+      this.loadUsers();
+    });
+  }
 
   findTransaction(): void {
-    this.transactionsHttpService
-      .findOne(this.id!)
-      .subscribe((data) => {
-        this.form.patchValue(data);
-      });
+    this.transactionsHttpService.findOne(this.id!).subscribe((data) => {
+      this.form.patchValue(data);
+    });
   }
-
 
   get validateFormErrors() {
     this.formErrors = [];
@@ -99,17 +159,18 @@ export class TransactionFormComponent implements OnInit {
 
     return this.formErrors.length === 0 && this.form.valid;
   }
+
   back(): void {
     this.router.navigate([this.routesService.transactionsList]);
   }
 
-
-
   create(payload: TransactionModel): void {
-    this.transactionsHttpService.create(payload).subscribe((applicationStatus) => {
-      this.saving = false;
-      this.back();
-    });
+    this.transactionsHttpService
+      .create(payload)
+      .subscribe((applicationStatus) => {
+        this.saving = false;
+        this.back();
+      });
   }
 
   update(payload: TransactionModel): void {
@@ -119,7 +180,7 @@ export class TransactionFormComponent implements OnInit {
         this.saving = false;
         this.back();
       });
-    }
+  }
 
   onSubmit() {
     if (this.validateFormErrors) {
@@ -134,21 +195,26 @@ export class TransactionFormComponent implements OnInit {
       this.messageService.errorsFields(this.formErrors);
     }
   }
-    get codeField(): AbstractControl {
-      return this.form.controls['code'];
-    }
-    get descriptionField(): AbstractControl {
-      return this.form.controls['description'];
-    }
-    get dateField(): AbstractControl {
-      return this.form.controls['date'];
-    }
 
-    get typeField(): AbstractControl {
-      return this.form.controls['type'];
-    }
+  get codeField(): AbstractControl {
+    return this.form.controls['code'];
+  }
+  get descriptionField(): AbstractControl {
+    return this.form.controls['description'];
+  }
+  get dateField(): AbstractControl {
+    return this.form.controls['date'];
+  }
 
+  get typeField(): AbstractControl {
+    return this.form.controls['type'];
+  }
 
+  get userField(): AbstractControl {
+    return this.form.controls['user'];
+  }
 
-
+  get clientField(): AbstractControl {
+    return this.form.controls['client'];
+  }
 }
