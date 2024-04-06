@@ -1,15 +1,14 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import {Component, Input, OnInit, inject} from '@angular/core';
 import {
-  AbstractControl,
+  AbstractControl, FormArray,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { UserModel } from '@models/auth';
-import { CategoryModel } from '@models/core';
-import { TransactionModel } from '@models/core/transaction.model';
-import { UsersHttpService } from '@services/auth';
+import {Router} from '@angular/router';
+import {UserModel} from '@models/auth';
+import {TransactionModel} from '@models/core/transaction.model';
+import {UsersHttpService} from '@services/auth';
 import {
   BreadcrumbService,
   CategoriesHttpService,
@@ -18,7 +17,7 @@ import {
   ProductsHttpService,
   RoutesService,
 } from '@services/core';
-import { TransactionsHttpService } from '@services/core/transactions-http.service';
+import {TransactionsHttpService} from '@services/core/transactions-http.service';
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
@@ -28,7 +27,10 @@ import {
   RoutesEnum,
   SkeletonEnum,
 } from '@shared/enums';
-import { PrimeIcons } from 'primeng/api';
+import {PrimeIcons} from 'primeng/api';
+import {TransactionDetailModel} from "@models/core/transaction-detail.model";
+import {format} from "date-fns";
+import {computeStartOfLinePositions} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/source_file";
 
 @Component({
   selector: 'app-transaction-form',
@@ -54,6 +56,7 @@ export class TransactionFormComponent implements OnInit {
   protected users!: UserModel[];
   protected clients!: UserModel[];
   protected client!: string;
+  protected titleTransactionDetails!: string;
 
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -63,6 +66,7 @@ export class TransactionFormComponent implements OnInit {
 
   protected helpText!: string;
   private saving: boolean = true;
+  protected isTransactionForm: boolean = false;
 
   constructor() {
     this.breadcrumbService.setItems([
@@ -76,12 +80,14 @@ export class TransactionFormComponent implements OnInit {
     ]);
 
     this.form = this.buildForm;
+
     this.checkValueChanges();
   }
 
   ngOnInit(): void {
     this.loadTypes();
     this.loadUsers();
+    this.loadTransaction();
 
     if (this.id != RoutesEnum.NEW) {
       this.findTransaction();
@@ -90,10 +96,20 @@ export class TransactionFormComponent implements OnInit {
 
   //metodo validación de emulación de foringkey
   loadTypes() {
-    this.types = [
-      { name: 'Ingresos', type: true },
-      { name: 'Egresos', type: false },
-    ];
+    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as TransactionModel;
+
+    this.types = [transactionStorage.type];
+  }
+
+  loadTransaction() {
+    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as TransactionModel;
+
+    if (transactionStorage) {
+      this.form.patchValue(transactionStorage);
+      if (!transactionStorage.date) {
+        this.dateField.setValue(format(new Date(), 'yyyy-MM-dd'));
+      }
+    }
   }
 
   //metodo
@@ -104,42 +120,56 @@ export class TransactionFormComponent implements OnInit {
       );
 
       if (this.typeField.value && this.typeField.value.type) {
-        this.client='Proveedor';
+        this.client = 'Proveedor';
 
         this.clients = users.filter((user) =>
           user.roles.some((role) => role.code === RoleEnum.PROVIDER)
         );
       } else {
-        this.client='Cliente';
+        this.client = 'Cliente';
 
         this.clients = users.filter((user) =>
           user.roles.some((role) => role.code === RoleEnum.CUSTOMER)
         );
       }
-    });
-  }
 
-  //método
-  loadAuthorizer() {
-    this.usersHttpService.findCatalogues().subscribe((users) => {
-      this.users = users;
+      if (this.clients.length === 1) {
+        this.clientField.patchValue(this.clients[0]);
+      }
+
+      if (this.users.length === 1) {
+        this.userField.patchValue(this.users[0]);
+      }
     });
   }
 
   //Este metodo Construir el formulario reactivo
   get buildForm() {
+    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as TransactionModel;
+
     return this.formBuilder.group({
       code: [null, Validators.required],
       description: [null, Validators.required],
       date: [null, Validators.required],
-      type: [null, Validators.required],
+      type: [transactionStorage.type, Validators.required],
       user: [null, Validators.required],
       client: [null, Validators.required],
+      transactionDetails: [[], Validators.required]
     });
   }
+
   checkValueChanges() {
     this.typeField.valueChanges.subscribe((value) => {
       this.loadUsers();
+      if (value && value.type) {
+        this.titleTransactionDetails = 'Ingresos';
+      } else {
+        this.titleTransactionDetails = 'Egresos';
+      }
+    });
+
+    this.form.valueChanges.subscribe(value => {
+      localStorage.setItem('transaction', JSON.stringify(value));
     });
   }
 
@@ -155,12 +185,14 @@ export class TransactionFormComponent implements OnInit {
     if (this.codeField.errors) {
       this.formErrors.push('Código');
     }
+
     this.formErrors.sort();
 
     return this.formErrors.length === 0 && this.form.valid;
   }
 
   back(): void {
+    localStorage.removeItem('transaction');
     this.router.navigate([this.routesService.transactionsList]);
   }
 
@@ -183,6 +215,7 @@ export class TransactionFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.transactionDetailsField.updateValueAndValidity();
     if (this.validateFormErrors) {
       this.typeField.patchValue(this.typeField.value.type);
       if (this.id === RoutesEnum.NEW) {
@@ -196,12 +229,38 @@ export class TransactionFormComponent implements OnInit {
     }
   }
 
+  openTransactionForm() {
+    this.isTransactionForm = true;
+  }
+
+  addTransactionDetail(transactionDetailModel: TransactionDetailModel) {
+    const transactionDetails: TransactionDetailModel[] = this.transactionDetailsField.value;
+    const index = transactionDetails.findIndex(item => item.product.id == transactionDetailModel.product.id);
+
+    if (index > -1) {
+      this.transactionDetailsField.value[index].quantity += transactionDetailModel.quantity;
+      this.transactionDetailsField.value[index].observation = transactionDetailModel.observation;
+      this.messageService.warningCustom('El producto ya existe', 'Fue actualizado');
+    } else {
+      this.transactionDetailsField.value.push(transactionDetailModel);
+      this.messageService.successCustom('Producto Agregado', 'Correctamente');
+    }
+
+    // this.transactionDetailsField.patchValue(this.transactionDetailsField.value);
+
+    localStorage.setItem('transaction', JSON.stringify(this.form.value));
+
+    this.isTransactionForm = false;
+  }
+
   get codeField(): AbstractControl {
     return this.form.controls['code'];
   }
+
   get descriptionField(): AbstractControl {
     return this.form.controls['description'];
   }
+
   get dateField(): AbstractControl {
     return this.form.controls['date'];
   }
@@ -216,5 +275,9 @@ export class TransactionFormComponent implements OnInit {
 
   get clientField(): AbstractControl {
     return this.form.controls['client'];
+  }
+
+  get transactionDetailsField(): FormArray {
+    return this.form.controls['transactionDetails'] as FormArray;
   }
 }

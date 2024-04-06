@@ -1,4 +1,5 @@
 import { TransactionModel } from "./transaction.model";
+import {ProductModel} from "@models/core/product.model";
 
 export interface TransactionDetailModel {
   id: string;
@@ -6,11 +7,12 @@ export interface TransactionDetailModel {
   updateAt: Date;
   deleteAt: Date;
 
+  code: string;
   observation: string;
   quantity: number;
-  
-  Transaction: TransactionModel[];
-  //Producto: ProductoModel[];
+
+  transaction: TransactionModel[];
+  product: ProductModel;
 }
 
 

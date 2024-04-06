@@ -1,19 +1,29 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { ColumnModel } from '@models/core';
-import { TransactionDetailModel } from '@models/core/transaction-detail.model';
-import { BreadcrumbService, CoreService, MessageService, RoutesService } from '@services/core';
-import { TransactionDetailsHttpService } from '@services/core/transaction-details-http.service';
-import { BreadcrumbEnum, ClassButtonActionEnum, IconButtonActionEnum, IdButtonActionEnum, LabelButtonActionEnum, RoutesEnum, TableEnum } from '@shared/enums';
-import { MenuItem, PrimeIcons } from 'primeng/api';
+import {Component, OnInit, inject, Input} from '@angular/core';
+import {Router} from '@angular/router';
+import {ColumnModel} from '@models/core';
+import {TransactionDetailModel} from '@models/core/transaction-detail.model';
+import {BreadcrumbService, CoreService, MessageService, RoutesService} from '@services/core';
+import {TransactionDetailsHttpService} from '@services/core/transaction-details-http.service';
+import {
+  BreadcrumbEnum,
+  ClassButtonActionEnum,
+  IconButtonActionEnum,
+  IdButtonActionEnum,
+  LabelButtonActionEnum,
+  RoutesEnum,
+  TableEnum
+} from '@shared/enums';
+import {MenuItem, PrimeIcons} from 'primeng/api';
+import {iterator} from "rxjs/internal/symbol/iterator";
+import {TransactionModel} from "@models/core/transaction.model";
 
 @Component({
   selector: 'app-transaction-detail-list',
   templateUrl: './transaction-detail-list.component.html',
   styleUrl: './transaction-detail-list.component.scss'
 })
-export class TransactionDetailListComponent implements OnInit  {
-   /** Services **/
+export class TransactionDetailListComponent implements OnInit {
+  /** Services **/
   private readonly transactionDetailsHttpService = inject(TransactionDetailsHttpService);
   private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly router = inject(Router);
@@ -36,44 +46,35 @@ export class TransactionDetailListComponent implements OnInit  {
   /** Table **/
   protected columns: ColumnModel[] = this.buildColumns;
   // protected globalFilterFields: string[] = ['code', 'name'];//Busqueda cuando hay paginado en el frontend
-  protected items: TransactionDetailModel[] = [];
+  @Input() items: TransactionDetailModel[] = [];
+  @Input() title!: string;
+  @Input() isIncome: boolean = false;
   protected selectedItem!: TransactionDetailModel;
   protected selectedItems: TransactionDetailModel[] = [];
-  
+  protected isTransactionForm: boolean = false;
+
   constructor() {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.APPLICATION_STATUS}]);
+
   }
 
-  
   ngOnInit() {
-  
-    this.findAll();
+
   }
 
-  checkValueChanges() {  }
-  findAll() {
-    this.transactionDetailsHttpService.findAll()
-      .subscribe((response) => {
-        this.items = response;
-      });
-  }
-
-
-  
-  
   // Para poner nombres y orden de las columnas de la tabla
   get buildColumns(): ColumnModel[] {
     return [
       {field: 'quantity', header: 'Cantidad'},
+      {field: 'code', header: 'Código'},
+      {field: 'product', header: 'Producto'},
       {field: 'observation', header: 'Detalle'},
     ];
   }
+
   validateButtonActions(item: TransactionDetailModel): void {
     this.buttonActions = this.buildButtonActions;
 
   }
-
-
 
   get buildButtonActions(): MenuItem[] {
     return [
@@ -82,7 +83,7 @@ export class TransactionDetailListComponent implements OnInit  {
         label: LabelButtonActionEnum.UPDATE,
         icon: IconButtonActionEnum.UPDATE,
         command: () => {
-          if (this.selectedItem?.id) this.redirectEditForm(this.selectedItem.id);
+          this.openTransactionForm();
         },
       },
       {
@@ -96,13 +97,6 @@ export class TransactionDetailListComponent implements OnInit  {
     ];
   }
 
-  redirectCreateForm() {
-    this.router.navigate([this.routesService.transactionDetailsForm(RoutesEnum.NEW)]);
-  }
-
-  redirectEditForm(id: string) {
-    this.router.navigate([this.routesService.transactionDetailsForm(id)]);
-  }
   // Solo cambiar categoriesHttpService
   remove(id: string) {
     this.messageService.questionDelete()
@@ -114,11 +108,30 @@ export class TransactionDetailListComponent implements OnInit  {
         }
       });
   }
-    // Solo cambiar CategoryModel
-    selectItem(item: TransactionDetailModel) {
-      this.isButtonActions = true;
-      this.selectedItem = item;
-      this.validateButtonActions(item);
-    }
 
+  // Solo cambiar CategoryModel
+  selectItem(item: TransactionDetailModel) {
+    this.isButtonActions = true;
+    this.selectedItem = item;
+    this.validateButtonActions(item);
+  }
+
+  openTransactionForm() {
+    this.isTransactionForm = true;
+  }
+
+  editTransactionDetail(transactionDetailModel: TransactionDetailModel) {
+    const index = this.items.findIndex(item => item.product.id == transactionDetailModel.product.id);
+    this.items[index] = transactionDetailModel;
+    this.isTransactionForm = false;
+    this.messageService.successCustom('Producto Actualizado', 'Correctamente');
+
+    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as TransactionModel;
+
+    if (transactionStorage) {
+      transactionStorage.transactionDetails = this.items;
+
+      localStorage.setItem('transaction', JSON.stringify(transactionStorage));
+    }
+  }
 }

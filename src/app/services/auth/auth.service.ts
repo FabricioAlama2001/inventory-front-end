@@ -106,19 +106,7 @@ export class AuthService {
         break;
       }
       case RoleEnum.WORKER: {
-        this.routesService.dashboardPlanner();
-        break;
-      }
-      case RoleEnum.APPROVER: {
-        this.routesService.dashboardPlanner();
-        break;
-      }
-      case RoleEnum.PROVIDER: {
-        this.routesService.dashboardFollower();
-        break;
-      }
-      case RoleEnum.CUSTOMER: {
-        this.routesService.dashboardApplicant();
+        this.routesService.dashboardWorker();
         break;
       }
     }

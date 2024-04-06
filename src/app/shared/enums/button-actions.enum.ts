@@ -25,10 +25,13 @@ export enum IdButtonActionEnum {
 
 export enum LabelButtonActionEnum {
   ACTIONS = 'Acciones',
+  CREATE_IN = 'Ingresar Productos',
+  CREATE_OUT = 'Entregar Productos',
   CREATE = 'Crear',
   CANCEL = 'Cancelar',
   RETURN = 'Regresar',
   SAVE = 'Guardar',
+  ADD = 'Agregar',
   UPDATE = 'Editar',
   DELETE = 'Eliminar',
   DOWNLOADS = 'Descargas',
@@ -53,6 +56,8 @@ export enum LabelButtonActionEnum {
 }
 
 export enum IconButtonActionEnum {
+  CREATE_IN = 'pi pi-plus-circle',
+  CREATE_OUT = 'pi pi-minus-circle',
   CREATE = 'pi pi-plus',
   SYNC = 'pi pi-sync',
   UPDATE = 'pi pi-pencil',
@@ -60,6 +65,7 @@ export enum IconButtonActionEnum {
   RETURN = 'pi pi-arrow-left',
   DOWNLOADS = 'pi pi-download',
   SAVE = 'pi pi-save',
+  ADD = 'pi pi-plus',
   SUSPEND = 'pi pi-ban',
   PARALLEL_CAPACITY = 'pi pi-list',
   DELETE = 'pi pi-trash',
@@ -76,10 +82,13 @@ export enum IconButtonActionEnum {
 }
 
 export enum ClassButtonActionEnum {
+  CREATE_IN = 'p-button-success',
+  CREATE_OUT = '',
   CREATE = 'p-button-success',
   CANCEL = 'p-button-warning',
   RETURN = 'p-button-warning',
   SAVE = '',
+  ADD = 'p-button-success',
   SYNC = 'p-button-info',
   REDIRECT_SECONDARY = 'p-button-secondary',
   REDIRECT_HELP = 'p-button-help',

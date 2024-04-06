@@ -88,10 +88,11 @@ export class ProductListComponent implements OnInit {
   // Para poner nombres y orden de las columnas de la tabla
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'category', header: 'Categoría'},
+      {field: 'code', header: 'Código'},
       {field: 'name', header: 'Producto'},
-      {field: 'enabled', header: 'Estado'},
-      {field: 'stock', header: 'Stock'}
+      {field: 'category', header: 'Categoría'},
+      {field: 'stock', header: 'Stock'},
+      {field: 'enabled', header: 'Estado'}
     ];
   }
 

@@ -10,8 +10,6 @@ import {
 } from "@shared/enums";
 import {MenuItem,PrimeIcons} from "primeng/api";
 import {CategoryModel, ColumnModel} from "@models/core";
-import {FormControl} from "@angular/forms";
-import {debounceTime} from "rxjs";
 
 @Component({
   selector: 'app-category-list',
@@ -45,24 +43,15 @@ export class CategoryListComponent implements OnInit {
   protected items: CategoryModel[] = [];
   protected selectedItem!: CategoryModel;
   protected selectedItems: CategoryModel[] = [];
-  // protected search: FormControl = new FormControl('');//Busqueada cuando hay paginado en el backend
   protected globalFilterFields: string[] = ['code', 'name'];//Busqueda cuando hay paginado en el frontend
 
   constructor() {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.APPLICATION_STATUS}]);
+    this.breadcrumbService.setItems([{label: BreadcrumbEnum.CATEGORIES}]);
   }
 
   ngOnInit() {
     // this.checkValueChanges();
     this.findAll();
-  }
-
-  checkValueChanges() {
-    // this.search.valueChanges.pipe(
-    //   debounceTime(500)
-    // ).subscribe(value => {
-    //   this.findAll();
-    // });
   }
 
   findAll() {
@@ -75,9 +64,9 @@ export class CategoryListComponent implements OnInit {
   // Para poner nombres y orden de las columnas de la tabla
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'code', header: 'Codigo'},
-      {field: 'name', header: 'Name'},
-      {field: 'enabled', header: 'Enable'}
+      {field: 'code', header: 'Código'},
+      {field: 'name', header: 'Categoría'},
+      {field: 'enabled', header: 'Estado'}
     ];
   }
 

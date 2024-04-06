@@ -1,4 +1,4 @@
-q@if (coreService.isLoading) {
+@if (coreService.isLoading) {
     <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
     } @if (!coreService.isLoading) {
     <p-toolbar>
@@ -16,9 +16,9 @@ q@if (coreService.isLoading) {
           [loading]="coreService.isLoading"
           [ngClass]="[ClassButtonActionEnum.CANCEL]"
         ></button>
-  
+
         <p-divider layout="vertical"></p-divider>
-  
+
         <button
           pButton
           pRipple
@@ -31,10 +31,10 @@ q@if (coreService.isLoading) {
         ></button>
       </div>
     </p-toolbar>
-  
+
     <p-panel class="p-fluid">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  
+
         <div class="formgrid grid">
           <!-- Codigo -->
           <div class="field xl:col-5 lg:col-5 md:col-12 sm:col-12">
@@ -93,7 +93,7 @@ q@if (coreService.isLoading) {
             >
             </small>
           </div>
-  
+
         <!-- Descripcion -->
         <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
           <label
@@ -115,7 +115,7 @@ q@if (coreService.isLoading) {
       </form>
     </p-panel>
     }
-  
+
     <p-overlayPanel #opName>
       <ng-template pTemplate="content">
         Ingrese el nombre de la categoría

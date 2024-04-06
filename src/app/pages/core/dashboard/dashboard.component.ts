@@ -28,10 +28,7 @@ export class DashboardComponent {
         this.routesService.dashboardAdmin();
         break;
       case RoleEnum.WORKER:
-        this.routesService.dashboardPlanner();
-        break;
-      case RoleEnum.APPROVER:
-        this.routesService.dashboardApplicant();
+        this.routesService.dashboardWorker();
         break;
     }
   }

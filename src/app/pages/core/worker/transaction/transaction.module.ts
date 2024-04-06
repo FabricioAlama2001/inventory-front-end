@@ -18,6 +18,9 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import {RippleModule} from "primeng/ripple";
+import {DialogModule} from "primeng/dialog";
+import {TransactionDetailModule} from "../transaction-detail/transaction-detail.module";
 
 
 @NgModule({
@@ -44,7 +47,10 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     OverlayPanelModule,
     InputSwitchModule,
     CalendarModule,
-    InputTextareaModule
+    InputTextareaModule,
+    RippleModule,
+    DialogModule,
+    TransactionDetailModule
 
   ]
 })

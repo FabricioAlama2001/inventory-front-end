@@ -54,6 +54,14 @@ export class MessageService {
     });
   }
 
+  warningCustom(title: string, text: string) {
+    return Swal.fire({
+      title,
+      text,
+      icon: 'warning'
+    });
+  }
+
   errorCustom(title: string, text: string) {
     return Swal.fire({
       title,

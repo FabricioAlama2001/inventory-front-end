@@ -1,4 +1,5 @@
 import { TransactionDetailModel } from "./transaction-detail.model";
+import {UserModel} from "@models/auth";
 
 export interface TransactionModel {
   id: string;
@@ -11,4 +12,7 @@ export interface TransactionModel {
   date: Date;
   type: boolean;
   transactionDetails: TransactionDetailModel[];
+
+  user:UserModel;
+  client:UserModel;
 }

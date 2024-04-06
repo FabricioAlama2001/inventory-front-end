@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {Router} from "@angular/router";
 import {
   BreadcrumbService,
@@ -7,7 +7,7 @@ import {
   RoutesService
 } from '@services/core';
 
-import {MenuItem,PrimeIcons} from "primeng/api";
+import {MenuItem, PrimeIcons} from "primeng/api";
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
@@ -16,8 +16,8 @@ import {
   LabelButtonActionEnum, RoutesEnum, TableEnum
 } from "@shared/enums";
 import {ColumnModel} from "@models/core";
-import { TransactionModel } from '@models/core/transaction.model';
-import { TransactionsHttpService } from '@services/core/transactions-http.service';
+import {TransactionModel} from '@models/core/transaction.model';
+import {TransactionsHttpService} from '@services/core/transactions-http.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -40,7 +40,7 @@ export class TransactionListComponent implements OnInit {
   protected readonly IdButtonActionEnum = IdButtonActionEnum;
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly PrimeIcons = PrimeIcons;
-  protected readonly TableEnum = TableEnum; 
+  protected readonly TableEnum = TableEnum;
 
   /** Buttons Actions **/
   protected buttonActions: MenuItem[] = this.buildButtonActions;
@@ -55,20 +55,12 @@ export class TransactionListComponent implements OnInit {
   protected globalFilterFields: string[] = ['code', 'name'];//Busqueda cuando hay paginado en el frontend
 
   constructor() {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.APPLICATION_STATUS}]);
+    this.breadcrumbService.setItems([{label: BreadcrumbEnum.TRANSACTIONS}]);
   }
 
   ngOnInit() {
     // this.checkValueChanges();
     this.findAll();
-  }
-
-  checkValueChanges() {
-    // this.search.valueChanges.pipe(
-    //   debounceTime(500)
-    // ).subscribe(value => {
-    //   this.findAll();
-    // });
   }
 
   findAll() {
@@ -81,8 +73,9 @@ export class TransactionListComponent implements OnInit {
   // Para poner nombres y orden de las columnas de la tabla
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'code', header: 'Codigo'},
-      {field: 'description', header: 'Detalle'},
+      {field: 'authorizer', header: 'Autorización'},
+      {field: 'dispatcher', header: 'Despachador'},
+      {field: 'receiver', header: 'Proveedor/Cliente'},
       {field: 'date', header: 'Fecha'},
       {field: 'type', header: 'Tipo'}
     ];
@@ -139,32 +132,28 @@ export class TransactionListComponent implements OnInit {
   }
 
   // Solo cambiar la ruta del servicio
-  redirectCreateForm() {
+  redirectCreateForm(type: boolean) {
+    localStorage.removeItem('transaction');
+
+    let transactionStorage = null;
+
+    if (type) {
+      transactionStorage = {type: {name: 'Ingresos', type}};
+    } else {
+      transactionStorage = {type: {name: 'Egresos', type}};
+    }
+
+    localStorage.setItem('transaction', JSON.stringify(transactionStorage));
+
     this.router.navigate([this.routesService.transactionsForm(RoutesEnum.NEW)]);
   }
 
   redirectEditForm(id: string) {
+    localStorage.removeItem('transaction');
     this.router.navigate([this.routesService.transactionsForm(id)]);
   }
 
   /** Actions **/
-  // Solo cambiar categoriesHttpService
-  // disable(id: string) {
-  //   this.transactionsHttpService.disable(id).subscribe(item => {
-  //     const index = this.items.findIndex(disabledItem => disabledItem.id === id);
-  //     this.items[index] = item;
-  //   });
-  // }
-
-  // Solo cambiar categoriesHttpService
-  // enable(id: string) {
-  //   this.transactionsHttpService.enable(id).subscribe(item => {
-  //     const index = this.items.findIndex(enabledItem => enabledItem.id === id);
-  //     this.items[index] = item;
-  //   });
-  // }
-
-  // Solo cambiar categoriesHttpService
   remove(id: string) {
     this.messageService.questionDelete()
       .then((result) => {

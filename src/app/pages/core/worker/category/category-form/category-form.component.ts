@@ -1,12 +1,12 @@
-import { Component, Input, inject } from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { PrimeIcons } from 'primeng/api';
+import {Router} from '@angular/router';
+import {PrimeIcons} from 'primeng/api';
 import {
   BreadcrumbService,
   CategoriesHttpService,
@@ -22,12 +22,9 @@ import {
   LabelButtonActionEnum,
   SkeletonEnum,
   RoutesEnum,
-  ApplicationStatusFormEnum,
 } from '@shared/enums';
-import { getSlug } from '@shared/helpers';
-import { CatalogueModel, CategoryModel, ProductModel } from '@models/core';
-//---------------------------------------------------------
 
+import {CategoryModel} from '@models/core';
 
 @Component({
   selector: 'app-category-form',
@@ -36,7 +33,6 @@ import { CatalogueModel, CategoryModel, ProductModel } from '@models/core';
 })
 export class CategoryFormComponent {
 
-  private readonly productsHttpService = inject(ProductsHttpService);
   private readonly categoriesHttpService = inject(CategoriesHttpService);
   private readonly breadcrumbService = inject(BreadcrumbService); //
   private readonly formBuilder = inject(FormBuilder); //Ayuda a crear - Formulario Reactivos
@@ -50,6 +46,7 @@ export class CategoryFormComponent {
   @Input() id!: string;
   protected form!: FormGroup;
   protected formErrors!: string[];
+  protected categories!: CategoryModel[];
 
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -57,10 +54,7 @@ export class CategoryFormComponent {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly SkeletonEnum = SkeletonEnum;
 
-  protected helpText!: string;
   private saving: boolean = true;
-
-  protected categories!: CategoryModel[];
 
   constructor() {
     this.breadcrumbService.setItems([
@@ -88,15 +82,16 @@ export class CategoryFormComponent {
   //Este metodo Construir el formulario reactivo
   get buildForm() {
     return this.formBuilder.group({
-      code: ['', Validators.required],
+      code: [null, Validators.required],
       enabled: true,
-      name: ['', Validators.required],
-      description: ['', Validators.required],
+      name: [null, Validators.required],
+      description: [null],
 
     });
   }
 
-  checkValueChanges() {}
+  checkValueChanges() {
+  }
 
   findCategory(): void {
     this.categoriesHttpService

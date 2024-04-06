@@ -1,9 +1,8 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AdminComponent} from "./admin/admin.component";
-import {PlannerComponent} from "./planner/planner.component";
+import {WorkerComponent} from "./worker/worker.component";
 import {DashboardComponent} from "./dashboard.component";
-import {ApplicantComponent} from "./applicant/applicant.component";
 
 const routes: Routes = [
   {
@@ -15,16 +14,8 @@ const routes: Routes = [
     component: AdminComponent
   },
   {
-    path: 'catalogue',
-    component: PlannerComponent
-  },
-  {
-    path: 'planner',
-    component: PlannerComponent
-  },
-  {
-    path: 'applicant',
-    component: ApplicantComponent
+    path: 'worker',
+    component: WorkerComponent
   },
 ];
 

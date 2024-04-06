@@ -1,8 +1,18 @@
 <p-toolbar>
   <div class="p-toolbar-group-left">
-    <button pButton type="button" (click)="redirectCreateForm()" [icon]="IconButtonActionEnum.CREATE"
-            [label]="LabelButtonActionEnum.CREATE" [loading]="coreService.isLoading"
-            [ngClass]="[ClassButtonActionEnum.CREATE]">
+    <button pButton type="button"
+            (click)="redirectCreateForm(true)"
+            [icon]="IconButtonActionEnum.CREATE_IN"
+            [label]="LabelButtonActionEnum.CREATE_IN"
+            [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.CREATE_IN]">
+    </button>
+    <button pButton type="button"
+            (click)="redirectCreateForm(false)"
+            [icon]="IconButtonActionEnum.CREATE_OUT"
+            [label]="LabelButtonActionEnum.CREATE_OUT"
+            [loading]="coreService.isLoading"
+            [ngClass]="[ClassButtonActionEnum.CREATE_OUT, 'ml-2']">
     </button>
     <button pButton type="button" (click)="findAll()" [icon]="IconButtonActionEnum.SYNC"
             [label]="LabelButtonActionEnum.SYNC" [loading]="coreService.isLoading"
@@ -21,7 +31,7 @@
   [value]="items"
   [columns]="columns"
   [paginator]="true"
-  [rows]="1"
+  [rows]="10"
   paginatorPosition="top"
   [globalFilterFields]="globalFilterFields"
   [loading]="coreService.isLoading"
@@ -29,7 +39,7 @@
 >
   <ng-template pTemplate="caption">
     <div class="flex">
-      <h1>{{ BreadcrumbEnum.APPLICATION_STATUS }}</h1>
+      <h1>{{ BreadcrumbEnum.TRANSACTIONS }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
         <div class="p-input-icon-right ml-auto">
@@ -81,6 +91,15 @@
               }
               @case ('date') {
                 {{rowData.date | date:'mediumDate'}}
+              }
+              @case ('authorizer') {
+                {{ rowData.signature.authorizer.identification }} {{ rowData.signature.authorizer.name }} {{ rowData.signature.authorizer.lastname }}
+              }
+              @case ('dispatcher') {
+                {{ rowData.signature.dispatcher.identification }} {{ rowData.signature.dispatcher.name }} {{ rowData.signature.dispatcher.lastname }}
+              }
+              @case ('receiver') {
+                {{ rowData.signature.receiver.identification }} {{ rowData.signature.receiver.name }} {{ rowData.signature.receiver.lastname }}
               }
             }
           </td>

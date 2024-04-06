@@ -22,7 +22,6 @@ export class ProductsHttpService {
 
     const params = new HttpParams()
       .append('page', page)
-      .append('limit', 2)
       .append('search', search);
 
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(

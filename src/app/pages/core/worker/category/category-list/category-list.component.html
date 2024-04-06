@@ -21,7 +21,7 @@
   [value]="items"
   [columns]="columns"
   [paginator]="true"
-  [rows]="1"
+  [rows]="10"
   paginatorPosition="top"
   [globalFilterFields]="globalFilterFields"
   [loading]="coreService.isLoading"
@@ -29,7 +29,7 @@
 >
   <ng-template pTemplate="caption">
     <div class="flex">
-      <h1>{{ BreadcrumbEnum.APPLICATION_STATUS }}</h1>
+      <h1>{{ BreadcrumbEnum.CATEGORIES }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
         <div class="p-input-icon-right ml-auto">

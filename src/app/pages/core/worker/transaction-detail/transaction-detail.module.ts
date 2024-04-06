@@ -18,12 +18,18 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TransactionDetailListComponent } from './transaction-detail-list/transaction-detail-list.component';
 import { TransactionDetailFormComponent } from './transaction-detail-form/transaction-detail-form.component';
+import {RippleModule} from "primeng/ripple";
+import {DialogModule} from "primeng/dialog";
 
 
 
 
 @NgModule({
-  declarations: [TransactionDetailListComponent,TransactionDetailFormComponent],
+    declarations: [TransactionDetailListComponent, TransactionDetailFormComponent],
+  exports: [
+    TransactionDetailFormComponent,
+    TransactionDetailListComponent
+  ],
   imports: [
     CommonModule,
     TransactionDetailRoutingModule,
@@ -46,7 +52,9 @@ import { TransactionDetailFormComponent } from './transaction-detail-form/transa
     OverlayPanelModule,
     InputSwitchModule,
     CalendarModule,
-    InputTextareaModule
+    InputTextareaModule,
+    RippleModule,
+    DialogModule
   ]
 })
 export class TransactionDetailModule { }

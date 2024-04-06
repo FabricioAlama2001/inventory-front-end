@@ -1,12 +1,17 @@
-import { ProductModel } from './../../../../../models/core/product.model';
-import { Component, Input, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TransactionDetailModel } from '@models/core/transaction-detail.model';
-import { BreadcrumbService, CoreService, MessageService, ProductsHttpService, RoutesService } from '@services/core';
-import { TransactionDetailsHttpService } from '@services/core/transaction-details-http.service';
-import { BreadcrumbEnum, ClassButtonActionEnum, IconButtonActionEnum, LabelButtonActionEnum, RoutesEnum, SkeletonEnum } from '@shared/enums';
-import { PrimeIcons } from 'primeng/api';
+import {ProductModel} from './../../../../../models/core/product.model';
+import {Component, Input, OnInit, inject, Output, EventEmitter} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {TransactionDetailModel} from '@models/core/transaction-detail.model';
+import {BreadcrumbService, CoreService, MessageService, ProductsHttpService, RoutesService} from '@services/core';
+import {TransactionDetailsHttpService} from '@services/core/transaction-details-http.service';
+import {
+  ClassButtonActionEnum,
+  IconButtonActionEnum,
+  LabelButtonActionEnum,
+  SkeletonEnum
+} from '@shared/enums';
+import {PrimeIcons} from 'primeng/api';
 
 @Component({
   selector: 'app-transaction-detail-form',
@@ -16,8 +21,8 @@ import { PrimeIcons } from 'primeng/api';
 export class TransactionDetailFormComponent implements OnInit {
 
 
-  private readonly transactionDetailsHttpService= inject(TransactionDetailsHttpService);
-  private readonly productsHttpService= inject(ProductsHttpService);
+  private readonly transactionDetailsHttpService = inject(TransactionDetailsHttpService);
+  private readonly productsHttpService = inject(ProductsHttpService);
   private readonly breadcrumbService = inject(BreadcrumbService); //
   private readonly formBuilder = inject(FormBuilder); //Ayuda a crear - Formulario Reactivos
   private readonly router = inject(Router); //Redireccionar
@@ -26,11 +31,15 @@ export class TransactionDetailFormComponent implements OnInit {
   protected readonly messageService = inject(MessageService); //
 
   @Input() id!: string;
+  @Input() transactionId!: string;
+  @Input() isEditing: boolean = false;
+  @Input() isIncome: boolean = false;
+  @Input() transactionDetail!: TransactionDetailModel;
+  @Output() transactionDetailFormOut = new EventEmitter<TransactionDetailModel>();
   protected form!: FormGroup;
   protected formErrors!: string[];
   protected transaction!: any[];
   protected products!: ProductModel[];
-
 
   protected readonly ClassButtonActionEnum = ClassButtonActionEnum;
   protected readonly IconButtonActionEnum = IconButtonActionEnum;
@@ -42,87 +51,90 @@ export class TransactionDetailFormComponent implements OnInit {
   protected helpText!: string;
   private saving: boolean = true;
 
-  constructor(){
-    this.breadcrumbService.setItems([
-      {
-        label: BreadcrumbEnum.TRANSACTION_DETAILS,
-        routerLink: [this.routesService.transactionDetailsList],
-      },
-      {
-        label: BreadcrumbEnum.FORM,
-      },
-    ]);
-
+  constructor() {
     this.form = this.buildForm;
+
     this.checkValueChanges();
   }
 
   ngOnInit(): void {
     this.loadProduct();
-    if (this.id != RoutesEnum.NEW) {
-      this.findProduct;
+
+    if (this.isEditing) {
+      this.form.patchValue(this.transactionDetail);
     }
   }
 
-
   loadProduct() {
     this.productsHttpService.findCatalogues().subscribe((products) => {
-      this.products = products;
+      if (this.isEditing) {
+        this.products = [this.productField.value];
+      } else {
+        this.products = products;
+      }
     });
   }
 
-  findProduct(): void {
-    this.productsHttpService.findOne(this.id!).subscribe((data) => {
-      this.form.patchValue(data);
-    });
-  }
-
-
-
-  //Este metodo Construir el formulario reactivo
   get buildForm() {
     return this.formBuilder.group({
-      observation: ['', Validators.required],
-      quantity: ['', Validators.required],
+      observation: [null],
+      quantity: [{value: null, disabled: true}],
       product: ['', Validators.required],
-    });
-}
-checkValueChanges() {}
-
-
-
-back(): void {
-  this.router.navigate([this.routesService.transactionDetailsList]);
-}
-
-
-
-create(payload: TransactionDetailModel): void {
-  this.transactionDetailsHttpService.create(payload).subscribe((applicationStatus) => {
-    this.saving = false;
-    this.back();
-  });
-}
-
-update(payload: TransactionDetailModel): void {
-  this.transactionDetailsHttpService
-    .update(this.id!, payload)
-    .subscribe((applicationStatus) => {
-      this.saving = false;
-      this.back();
     });
   }
 
-get observationField(): AbstractControl {
-  return this.form.controls['observation'];
-}
-get quantityField(): AbstractControl {
-  return this.form.controls['quantity'];
-}
+  checkValueChanges() {
+    this.productField.valueChanges.subscribe(value => {
+      if (value) {
+        this.quantityField.enable();
 
-get productField(): AbstractControl {
-  return this.form.controls['product'];
-}
+        if (!this.isIncome) {
+          if (this.productField.value.stock == 0) {
+            this.quantityField.setValue(null);
+            this.quantityField.setValidators([Validators.min(1), Validators.max(0)]);
+          } else {
+            this.quantityField.setValidators([Validators.required, Validators.min(1), Validators.max(this.productField.value.stock)]);
+          }
+        }else{
+          this.quantityField.setValidators([Validators.min(1)]);
+        }
+
+        this.quantityField.updateValueAndValidity();
+
+      }
+    })
+
+    this.quantityField.valueChanges.subscribe((value) => {
+      console.log(this.productField.value.stock == 0);
+
+
+    });
+
+    this.form.valueChanges.subscribe(value => {
+      localStorage.setItem('transaction', JSON.stringify(value));
+    });
+  }
+
+  add(): void {
+    console.log(this.form);
+    if (this.form.valid) {
+      this.transactionDetailFormOut.emit(this.form.value);
+    } else {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  get observationField(): AbstractControl {
+    return this.form.controls['observation'];
+  }
+
+  get quantityField(): AbstractControl {
+    return this.form.controls['quantity'];
+  }
+
+  get productField(): AbstractControl {
+    return this.form.controls['product'];
+  }
 
 }
 

@@ -1,12 +1,12 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import {Component, Input, OnInit, inject} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { PrimeIcons } from 'primeng/api';
+import {Router} from '@angular/router';
+import {PrimeIcons} from 'primeng/api';
 import {
   BreadcrumbService,
   CategoriesHttpService,
@@ -22,10 +22,9 @@ import {
   LabelButtonActionEnum,
   SkeletonEnum,
   RoutesEnum,
-  ApplicationStatusFormEnum,
 } from '@shared/enums';
-import { getSlug } from '@shared/helpers';
-import { CatalogueModel, CategoryModel, ProductModel } from '@models/core';
+import {CategoryModel, ProductModel} from '@models/core';
+
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
@@ -60,44 +59,45 @@ export class ProductFormComponent implements OnInit {
 
   constructor() {
     this.breadcrumbService.setItems([
-        {
-          label: BreadcrumbEnum.PRODUCTS,
-          routerLink: [this.routesService.productsList],
-        },
-        {
-          label: BreadcrumbEnum.FORM,
-        },
-      ]);
+      {
+        label: BreadcrumbEnum.PRODUCTS,
+        routerLink: [this.routesService.productsList],
+      },
+      {
+        label: BreadcrumbEnum.FORM,
+      },
+    ]);
 
-      this.form = this.buildForm;
-      this.checkValueChanges();
+    this.form = this.buildForm;
+    this.checkValueChanges();
+  }
+
+  ngOnInit(): void {
+    this.loadCategories();
+
+    if (this.id != RoutesEnum.NEW) {
+      this.findProdcut();
     }
-
-    ngOnInit(): void {
-      this.loadCategories();
-
-      if (this.id != RoutesEnum.NEW) {
-        this.findProdcut();
-      }
-    }
+  }
 
   //Este metodo Construir el formulario reactivo
   get buildForm() {
     return this.formBuilder.group({
-      code: ['', Validators.required],
+      code: [null, Validators.required],
       enabled: true,
-      name: ['', Validators.required],
-      category: ['', Validators.required],
-      costPrice: ['', Validators.required],
-      description: ['', Validators.required],
-      minimumAmount: ['', Validators.required],
-      sellingPrice: ['', Validators.required],
-      stock: ['', Validators.required],
+      name: [null, Validators.required],
+      category: [null, Validators.required],
+      costPrice: [0, Validators.required],
+      description: [null],
+      minimumAmount: [1, Validators.required],
+      sellingPrice: [0, Validators.required],
+      stock: [1, Validators.required],
 
     });
   }
 
-  checkValueChanges() {}
+  checkValueChanges() {
+  }
 
   findProdcut(): void {
     this.productsHttpService
@@ -188,15 +188,15 @@ export class ProductFormComponent implements OnInit {
     return this.form.controls['costPrice'];
   }
 
-  get  minimumAmountField(): AbstractControl {
+  get minimumAmountField(): AbstractControl {
     return this.form.controls['minimumAmount'];
   }
 
-  get  sellingPriceField(): AbstractControl {
+  get sellingPriceField(): AbstractControl {
     return this.form.controls['sellingPrice'];
   }
 
-  get  stockField(): AbstractControl {
+  get stockField(): AbstractControl {
     return this.form.controls['stock'];
   }
 

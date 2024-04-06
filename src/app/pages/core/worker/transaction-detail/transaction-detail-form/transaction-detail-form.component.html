@@ -1,133 +1,117 @@
 @if (coreService.isLoading) {
-    <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
-    } @if (!coreService.isLoading) {
-    <p-toolbar>
-      <div class="p-toolbar-group-left">
-        <app-header-form [id]="id"></app-header-form>
-      </div>
-      <div class="p-toolbar-group-right">
-        <button
-          pButton
-          pRipple
-          type="button"
-          (click)="back()"
-          [icon]="IconButtonActionEnum.CANCEL"
-          [label]="LabelButtonActionEnum.CANCEL"
-          [loading]="coreService.isLoading"
-          [ngClass]="[ClassButtonActionEnum.CANCEL]"
-        ></button>
+  <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
+}
+@if (!coreService.isLoading) {
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
 
-        <p-divider layout="vertical"></p-divider>
+    </div>
+    <div class="p-toolbar-group-right">
+      <button
+        pButton
+        pRipple
+        type="button"
+        (click)="add()"
+        [icon]="IconButtonActionEnum.ADD"
+        [label]="LabelButtonActionEnum.ADD"
+        [loading]="coreService.isLoading"
+        [ngClass]="[ClassButtonActionEnum.ADD]"
+      ></button>
+    </div>
+  </p-toolbar>
 
-        <button
-          pButton
-          pRipple
-          type="button"
-          [icon]="IconButtonActionEnum.SAVE"
-          [label]="LabelButtonActionEnum.SAVE"
-          [loading]="coreService.isLoading"
-          [ngClass]="[ClassButtonActionEnum.SAVE]"
-        ></button>
-      </div>
-    </p-toolbar>
- <!-- Drop de products -->
-    <p-panel class="p-fluid">
-      <form [formGroup]="form" >
-        <div class="formgrid grid">
-          <div class="field xl:col-4 lg:col-3 md:col-12 sm:col-12">
-            <label
-              appLabel
-              for="product"
-              label="Producto"
-              [required]="productField"
-            ></label>
-            <p-dropdown
-              id="product"
-              dataKey="id"
-              formControlName="product"
-              [filter]="true"
-              [options]="products"
-              optionLabel="name"
-              placeholder="Seleccione..."
-            >
-            </p-dropdown>
-            <small
-              appErrorMessage
-              [errors]="productField.errors"
-              [touched]="productField.touched"
-              [dirty]="productField.dirty"
-            >
-            </small>
-          </div>
-          <!-- <div class="field">
-            <label appLabel for="type" label="Tipo" [required]="typeField"></label>
-
-            <p-dropdown
-              id="type"
-              formControlName="type"
-              [options]="types"
-              optionLabel="name"
-              placeholder="Seleccione...">
-            </p-dropdown>
-            <small
-              appErrorMessage
-              [errors]="typeField.errors"
-              [touched]="typeField.touched"
-              [dirty]="typeField.dirty"
-            >
-            </small>
-          </div> -->
-
-          <!-- Quantity -->
-          <div class="field xl:col-3 lg:col-3 md:col-12 sm:col-12">
-            <label
-              appLabel
-              for="quantity"
-              label="Cantidad"
-              [required]="quantityField"
-            ></label>
-            <input pInputText type="number" id="quantity" formControlName="quantity" />
-            <small
-              appErrorMessage
-              [errors]="quantityField.errors"
-              [touched]="quantityField.touched"
-              [dirty]="quantityField.dirty"
-            >
-            </small>
-          </div>
+  <!-- Drop de products -->
+  <p-panel class="p-fluid">
+    <form [formGroup]="form">
+      <div class="formgrid grid">
+        <div class="field xl:col-9 lg:col-9 md:col-12 sm:col-12">
+          <label
+            appLabel
+            for="product"
+            label="Producto"
+            [required]="productField"
+          ></label>
+          {{productField.value}}
+          <p-dropdown
+            id="product"
+            dataKey="id"
+            formControlName="product"
+            [filter]="true"
+            [options]="products"
+            optionLabel="name"
+            placeholder="Seleccione...">
+            <ng-template pTemplate="selectedItem">
+              @if (productField.value) {
+                <div>{{ productField.value.code }} - {{ productField.value.name }} ({{ productField.value.stock }})</div>
+              }
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>{{ item.code }} - {{ item.name }} ({{ item.stock }})</div>
+            </ng-template>
+          </p-dropdown>
+          <small
+            appErrorMessage
+            [errors]="productField.errors"
+            [touched]="productField.touched"
+            [dirty]="productField.dirty"
+          >
+          </small>
         </div>
-        <div class="formgrid grid">
-          <!-- Observation -->
-          <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
-            <label
-              appLabel
-              for="observation"
-              label="Observacion"
-              [required]="observationField"
-            ></label>
-            <textarea
-              pInputTextarea
-              id="observation"
-              formControlName="observation"
-            ></textarea>
-            <small
-              appErrorMessage
-              [errors]="observationField.errors"
-              [touched]="observationField.touched"
-              [dirty]="observationField.dirty"
-            >
-            </small>
-          </div>
+
+        <!-- Quantity -->
+        <div class="field xl:col-3 lg:col-3 md:col-12 sm:col-12">
+          <label
+            appLabel
+            for="quantity"
+            label="Cantidad"
+            [required]="quantityField"
+          ></label>
+          <p-inputNumber id="quantity"
+                         formControlName="quantity"
+                         mode="decimal"
+                         [showButtons]="true"
+                         [min]="0"></p-inputNumber>
+          <small
+            appErrorMessage
+            [errors]="quantityField.errors"
+            [touched]="quantityField.touched"
+            [dirty]="quantityField.dirty"
+          >
+          </small>
         </div>
-      </form>
-    </p-panel>
-    }
+      </div>
+      <div class="formgrid grid">
+        <!-- Observation -->
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label
+            appLabel
+            for="observation"
+            label="Observacion"
+            [required]="observationField"
+          ></label>
+          <textarea
+            pInputTextarea
+            id="observation"
+            formControlName="observation"
+          ></textarea>
+          <small
+            appErrorMessage
+            [errors]="observationField.errors"
+            [touched]="observationField.touched"
+            [dirty]="observationField.dirty"
+          >
+          </small>
+        </div>
+      </div>
+    </form>
+  </p-panel>
+}
 
-    <p-overlayPanel #opQuantity>
-      <ng-template pTemplate="content">Ingrese Cantidad</ng-template>
-    </p-overlayPanel>
+<p-overlayPanel #opQuantity>
+  <ng-template pTemplate="content">Ingrese Cantidad</ng-template>
+</p-overlayPanel>
 
 
-    <p-overlayPanel #opObservation>
-      <ng-template pTemplate="content"> Ingrese Observaciones </ng-template>
-    </p-overlayPanel>
+<p-overlayPanel #opObservation>
+  <ng-template pTemplate="content"> Ingrese Observaciones</ng-template>
+</p-overlayPanel>
