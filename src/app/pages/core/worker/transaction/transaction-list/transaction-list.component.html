@@ -18,9 +18,9 @@
   </div>
 </p-toolbar>
 
-<p-table #dt dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns" [paginator]="true"
+<p-table #dt dataKey="id" styleClass="p-datatable-striped" [value]="incomes" [columns]="columns" [paginator]="true"
   [rows]="10" paginatorPosition="top" [globalFilterFields]="globalFilterFields" [loading]="coreService.isLoading"
-  [(selection)]="selectedItems">
+  [(selection)]="selectedIncomes">
   <ng-template pTemplate="caption">
     <div class="flex">
       <h1>{{ BreadcrumbEnum.INCOMES }}</h1>
@@ -100,7 +100,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="summary">
-    {{ messageService.paginatorTotalRegisters(items.length) }}
+    {{ messageService.paginatorTotalRegisters(incomes.length) }}
   </ng-template>
 </p-table>
 
