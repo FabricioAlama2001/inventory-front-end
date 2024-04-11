@@ -18,7 +18,7 @@ import {
   ProductsHttpService,
   RoutesService,
 } from '@services/core';
-import {TransactionsHttpService} from '@services/core/transactions-http.service';
+import {IncomesHttpService} from '@services/core/incomes-http.service';
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
@@ -39,7 +39,7 @@ import {computeStartOfLinePositions} from "@angular/compiler-cli/src/ngtsc/sourc
   styleUrl: './transaction-form.component.scss',
 })
 export class TransactionFormComponent implements OnInit {
-  private readonly transactionsHttpService = inject(TransactionsHttpService);
+  private readonly incomesHttpService = inject(IncomesHttpService);
   private readonly expensesHttpService = inject(ExpensesHttpService);
   private readonly usersHttpService = inject(UsersHttpService);
   private readonly productsHttpService = inject(ProductsHttpService);
@@ -176,7 +176,7 @@ export class TransactionFormComponent implements OnInit {
   }
 
   findTransaction(): void {
-    this.transactionsHttpService.findOne(this.id!).subscribe((data) => {
+    this.incomesHttpService.findOne(this.id!).subscribe((data) => {
       this.form.patchValue(data);
     });
   }
@@ -199,7 +199,7 @@ export class TransactionFormComponent implements OnInit {
   }
 
   createIncome(payload: TransactionModel): void {
-    this.transactionsHttpService
+    this.incomesHttpService
       .create(payload)
       .subscribe((applicationStatus) => {
         this.saving = false;
@@ -217,7 +217,7 @@ export class TransactionFormComponent implements OnInit {
   }
 
   update(payload: TransactionModel): void {
-    this.transactionsHttpService
+    this.incomesHttpService
       .update(this.id!, payload)
       .subscribe((applicationStatus) => {
         this.saving = false;

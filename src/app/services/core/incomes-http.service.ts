@@ -10,7 +10,7 @@ import { TransactionModel } from '@models/core/transaction.model';
 @Injectable({
   providedIn: 'root'
 })
-export class TransactionsHttpService {
+export class IncomesHttpService {
   private readonly httpClient = inject(HttpClient);
   private readonly API_URL = `${environment.API_URL}/incomes`;
   private readonly API_REPORTS_URL = `${environment.API_URL}/reports`;

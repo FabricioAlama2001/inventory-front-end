@@ -15,6 +15,6 @@ export * from './parishes-http.service';
 export * from './categories-http.service';
 export * from './products-http.service';
 export * from './expenses-http.service';
-
+export * from './incomes-http.service';
 
 

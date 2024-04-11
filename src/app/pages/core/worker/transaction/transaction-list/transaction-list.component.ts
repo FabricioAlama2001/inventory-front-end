@@ -4,6 +4,7 @@ import {
   BreadcrumbService,
   CoreService,
   ExpensesHttpService,
+  IncomesHttpService,
   MessageService,
   RoutesService
 } from '@services/core';
@@ -18,7 +19,6 @@ import {
 } from "@shared/enums";
 import { ColumnModel } from "@models/core";
 import { TransactionModel } from '@models/core/transaction.model';
-import { TransactionsHttpService } from '@services/core/transactions-http.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -27,7 +27,7 @@ import { TransactionsHttpService } from '@services/core/transactions-http.servic
 })
 export class TransactionListComponent implements OnInit {
   /** Services **/
-  private readonly transactionsHttpService = inject(TransactionsHttpService);
+  private readonly incomesHttpService = inject(IncomesHttpService);
   private readonly expensesHttpService = inject(ExpensesHttpService);
   private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly router = inject(Router);
@@ -50,10 +50,13 @@ export class TransactionListComponent implements OnInit {
 
   /** Table **/
   protected columns: ColumnModel[] = this.buildColumns;
-  protected items: TransactionModel[] = [];
-  protected selectedItem!: TransactionModel;
-  protected selectedItems: TransactionModel[] = [];
+  protected incomes: TransactionModel[] = [];
+  protected selectedIncomes!: TransactionModel;
+  protected selectedIIncomes: TransactionModel[] = [];
 
+  protected expenses: TransactionModel[] = [];
+  protected selectedExpensesItem!: TransactionModel;
+  protected selectedExpenses: TransactionModel[] = [];
   // protected search: FormControl = new FormControl('');//Busqueada cuando hay paginado en el backend
   protected globalFilterFields: string[] = ['code', 'name'];//Busqueda cuando hay paginado en el frontend
 
@@ -68,16 +71,16 @@ export class TransactionListComponent implements OnInit {
   }
 
   findIncomes() {
-    this.transactionsHttpService.findAll()
+    this.incomesHttpService.findAll()
       .subscribe((response) => {
-        this.items = response;
+        this.incomes = response;
       });
   }
 
   findExpenses() {
     this.expensesHttpService.findAll()
       .subscribe((response) => {
-        this.items = response;
+        this.expenses = response;
       });
   }
 
@@ -98,7 +101,7 @@ export class TransactionListComponent implements OnInit {
         label: LabelButtonActionEnum.UPDATE,
         icon: IconButtonActionEnum.UPDATE,
         command: () => {
-          if (this.selectedItem?.id) this.redirectEditForm(this.selectedItem.id);
+          if (this.selectedIncomes?.id) this.redirectEditForm(this.selectedIncomes.id);
         },
       },
       {
@@ -106,7 +109,7 @@ export class TransactionListComponent implements OnInit {
         label: LabelButtonActionEnum.DELETE,
         icon: IconButtonActionEnum.DELETE,
         command: () => {
-          if (this.selectedItem?.id) this.remove(this.selectedItem.id);
+          if (this.selectedIncomes?.id) this.remove(this.selectedIncomes.id);
         },
       },
       {
@@ -114,7 +117,7 @@ export class TransactionListComponent implements OnInit {
         label: LabelButtonActionEnum.DOWNLOADS,
         icon: IconButtonActionEnum.DOWNLOADS,
         command: () => {
-          if (this.selectedItem?.id) this.downloadIncomeReport(this.selectedItem.id);
+          if (this.selectedIncomes?.id) this.downloadIncomeReport(this.selectedIncomes.id);
         },
       },
       // {
@@ -176,8 +179,8 @@ export class TransactionListComponent implements OnInit {
     this.messageService.questionDelete()
       .then((result) => {
         if (result.isConfirmed) {
-          this.transactionsHttpService.remove(id).subscribe((removedItem) => {
-            this.items = this.items.filter(item => item.id !== removedItem.id);
+          this.incomesHttpService.remove(id).subscribe((removedItem) => {
+            this.incomes = this.incomes.filter(incomes => incomes.id !== removedItem.id);
           });
         }
       });
@@ -186,11 +189,11 @@ export class TransactionListComponent implements OnInit {
   // Solo cambiar CategoryModel
   selectItem(item: TransactionModel) {
     this.isButtonActions = true;
-    this.selectedItem = item;
+    this.selectedIncomes = item;
     this.validateButtonActions(item);
   }
 
   downloadIncomeReport(incomeId: string) {
-    this.transactionsHttpService.downloadReport(incomeId);
+    this.incomesHttpService.downloadReport(incomeId);
   }
 }

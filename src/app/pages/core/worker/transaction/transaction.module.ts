@@ -22,9 +22,11 @@ import {RippleModule} from "primeng/ripple";
 import {DialogModule} from "primeng/dialog";
 import {TransactionDetailModule} from "../transaction-detail/transaction-detail.module";
 import { TabViewModule } from 'primeng/tabview';
+import { IncomeListComponent } from './income-list/income-list.component';
+import { ExpenseListComponent } from './expense-list/expense-list.component';
 
 @NgModule({
-  declarations: [TransactionListComponent, TransactionFormComponent],
+  declarations: [TransactionListComponent, TransactionFormComponent, IncomeListComponent, ExpenseListComponent],
   imports: [
     CommonModule,
     TransactionRoutingModule,

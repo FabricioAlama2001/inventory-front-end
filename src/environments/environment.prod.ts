@@ -5,3 +5,4 @@ export const environment = {
   APP_NAME:'Sistema de inventario',
   APP_SHORT_NAME:'SICNM',
 };
+  
