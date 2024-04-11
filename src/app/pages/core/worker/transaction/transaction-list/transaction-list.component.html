@@ -1,22 +1,16 @@
 <p-toolbar>
   <div class="p-toolbar-group-left">
-    <button pButton type="button"
-            (click)="redirectCreateForm(true)"
-            [icon]="IconButtonActionEnum.CREATE_IN"
-            [label]="LabelButtonActionEnum.CREATE_IN"
-            [loading]="coreService.isLoading"
-            [ngClass]="[ClassButtonActionEnum.CREATE_IN]">
+    <button pButton type="button" (click)="redirectCreateForm(true)" [icon]="IconButtonActionEnum.CREATE_IN"
+      [label]="LabelButtonActionEnum.CREATE_IN" [loading]="coreService.isLoading"
+      [ngClass]="[ClassButtonActionEnum.CREATE_IN]">
     </button>
-    <button pButton type="button"
-            (click)="redirectCreateForm(false)"
-            [icon]="IconButtonActionEnum.CREATE_OUT"
-            [label]="LabelButtonActionEnum.CREATE_OUT"
-            [loading]="coreService.isLoading"
-            [ngClass]="[ClassButtonActionEnum.CREATE_OUT, 'ml-2']">
+    <button pButton type="button" (click)="redirectCreateForm(false)" [icon]="IconButtonActionEnum.CREATE_OUT"
+      [label]="LabelButtonActionEnum.CREATE_OUT" [loading]="coreService.isLoading"
+      [ngClass]="[ClassButtonActionEnum.CREATE_OUT, 'ml-2']">
     </button>
-    <button pButton type="button" (click)="findAll()" [icon]="IconButtonActionEnum.SYNC"
-            [label]="LabelButtonActionEnum.SYNC" [loading]="coreService.isLoading"
-            [ngClass]="[ClassButtonActionEnum.SYNC,'ml-2']">
+    <button pButton type="button" (click)="findIncomes()" [icon]="IconButtonActionEnum.SYNC"
+      [label]="LabelButtonActionEnum.SYNC" [loading]="coreService.isLoading"
+      [ngClass]="[ClassButtonActionEnum.SYNC,'ml-2']">
     </button>
   </div>
   <div class="p-toolbar-group-right">
@@ -24,30 +18,19 @@
   </div>
 </p-toolbar>
 
-<p-table
-  #dt
-  dataKey="id"
-  styleClass="p-datatable-striped"
-  [value]="items"
-  [columns]="columns"
-  [paginator]="true"
-  [rows]="10"
-  paginatorPosition="top"
-  [globalFilterFields]="globalFilterFields"
-  [loading]="coreService.isLoading"
-  [(selection)]="selectedItems"
->
+<p-table #dt dataKey="id" styleClass="p-datatable-striped" [value]="items" [columns]="columns" [paginator]="true"
+  [rows]="10" paginatorPosition="top" [globalFilterFields]="globalFilterFields" [loading]="coreService.isLoading"
+  [(selection)]="selectedItems">
   <ng-template pTemplate="caption">
     <div class="flex">
-      <h1>{{ BreadcrumbEnum.TRANSACTIONS }}</h1>
+      <h1>{{ BreadcrumbEnum.INCOMES }}</h1>
       <div class="p-input-icon-right ml-auto">
         <i [class]="PrimeIcons.SEARCH"></i>
         <div class="p-input-icon-right ml-auto">
           <p-inputGroup>
             <button type="button" pButton [icon]="PrimeIcons.SEARCH"></button>
-            <input #search pInputText type="text"
-                   [placeholder]="TableEnum.SEARCH"
-                   (input)="dt.filterGlobal(search.value, 'contains')"/>
+            <input #search pInputText type="text" [placeholder]="TableEnum.SEARCH"
+              (input)="dt.filterGlobal(search.value, 'contains')" />
           </p-inputGroup>
         </div>
       </div>
@@ -56,10 +39,10 @@
   <ng-template pTemplate="header" let-columns>
     <tr>
       @for (col of columns; track col) {
-        <th [pSortableColumn]="col.field">
-          {{ col.header }}
-          <p-sortIcon [field]="col.field"></p-sortIcon>
-        </th>
+      <th [pSortableColumn]="col.field">
+        {{ col.header }}
+        <p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
       }
       <th class="text-center">
         {{ TableEnum.ACTIONS }}
@@ -69,41 +52,40 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
     <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
       @for (col of columns; track col) {
-        <!--Objects-->
-        @if (rowData[col.field]?.id) {
-          @switch (col.field) {
-            @case ('category') {
-              {{ rowData[col.field].code }} {{ rowData[col.field].name }}
-            }
-          }
-        }
+      <!--Objects-->
+      @if (rowData[col.field]?.id) {
+      @switch (col.field) {
+      @case ('category') {
+      {{ rowData[col.field].code }} {{ rowData[col.field].name }}
+      }
+      }
+      }
 
-          <!--Fields-->
-        @if (!rowData[col.field]?.id) {
-          <td>
-            @switch (col.field) {
-              @default {
-                {{ rowData[col.field] }}
-              }
-              @case ('type') {
-                <p-tag [value]="rowData[col.field]|transactionType"
-                [severity]="rowData[col.field]|transactionTypeSeverity"></p-tag>
-              }
-              @case ('date') {
-                {{rowData.date | date:'mediumDate'}}
-              }
-              @case ('authorizer') {
-                {{ rowData.signature.authorizer.identification }} {{ rowData.signature.authorizer.name }} {{ rowData.signature.authorizer.lastname }}
-              }
-              @case ('dispatcher') {
-                {{ rowData.signature.dispatcher.identification }} {{ rowData.signature.dispatcher.name }} {{ rowData.signature.dispatcher.lastname }}
-              }
-              @case ('receiver') {
-                {{ rowData.signature.receiver.identification }} {{ rowData.signature.receiver.name }} {{ rowData.signature.receiver.lastname }}
-              }
-            }
-          </td>
+      <!--Fields-->
+      @if (!rowData[col.field]?.id) {
+      <td>
+        @switch (col.field) {
+        @default {
+        {{ rowData[col.field] }}
         }
+        @case ('date') {
+        {{rowData.date | date:'mediumDate'}}
+        }
+        @case ('authorizer') {
+        {{ rowData.signature.authorizer.identification }} {{ rowData.signature.authorizer.name }} {{
+        rowData.signature.authorizer.lastname }}
+        }
+        @case ('dispatcher') {
+        {{ rowData.signature.dispatcher.identification }} {{ rowData.signature.dispatcher.name }} {{
+        rowData.signature.dispatcher.lastname }}
+        }
+        @case ('receiver') {
+        {{ rowData.signature.receiver.identification }} {{ rowData.signature.receiver.name }} {{
+        rowData.signature.receiver.lastname }}
+        }
+        }
+      </td>
+      }
       }
       <td class="text-center">
         <button type="button" pButton [icon]="PrimeIcons.ELLIPSIS_V" (click)="selectItem(rowData)"></button>
@@ -124,3 +106,10 @@
 
 <app-button-action [buttonActions]="buttonActions" [enabled]="isButtonActions" (isHide)="isButtonActions=!$event">
 </app-button-action>
+
+<p-tabView>
+  <p-tabPanel header="Ingresos">
+  </p-tabPanel>
+  <p-tabPanel header="Egresos">
+  </p-tabPanel>
+</p-tabView>

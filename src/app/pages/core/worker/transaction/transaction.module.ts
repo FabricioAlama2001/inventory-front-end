@@ -21,7 +21,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import {RippleModule} from "primeng/ripple";
 import {DialogModule} from "primeng/dialog";
 import {TransactionDetailModule} from "../transaction-detail/transaction-detail.module";
-
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [TransactionListComponent, TransactionFormComponent],
@@ -50,8 +50,8 @@ import {TransactionDetailModule} from "../transaction-detail/transaction-detail.
     InputTextareaModule,
     RippleModule,
     DialogModule,
-    TransactionDetailModule
-
+    TransactionDetailModule,
+    TabViewModule
   ]
 })
 export class TransactionModule { }

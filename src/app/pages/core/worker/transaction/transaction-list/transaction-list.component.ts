@@ -1,13 +1,14 @@
-import {Component, OnInit, inject} from '@angular/core';
-import {Router} from "@angular/router";
+import { Component, OnInit, inject } from '@angular/core';
+import { Router } from "@angular/router";
 import {
   BreadcrumbService,
   CoreService,
+  ExpensesHttpService,
   MessageService,
   RoutesService
 } from '@services/core';
 
-import {MenuItem, PrimeIcons} from "primeng/api";
+import { MenuItem, PrimeIcons } from "primeng/api";
 import {
   BreadcrumbEnum,
   ClassButtonActionEnum,
@@ -15,9 +16,9 @@ import {
   IdButtonActionEnum,
   LabelButtonActionEnum, RoutesEnum, TableEnum
 } from "@shared/enums";
-import {ColumnModel} from "@models/core";
-import {TransactionModel} from '@models/core/transaction.model';
-import {TransactionsHttpService} from '@services/core/transactions-http.service';
+import { ColumnModel } from "@models/core";
+import { TransactionModel } from '@models/core/transaction.model';
+import { TransactionsHttpService } from '@services/core/transactions-http.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -27,6 +28,7 @@ import {TransactionsHttpService} from '@services/core/transactions-http.service'
 export class TransactionListComponent implements OnInit {
   /** Services **/
   private readonly transactionsHttpService = inject(TransactionsHttpService);
+  private readonly expensesHttpService = inject(ExpensesHttpService);
   private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly router = inject(Router);
   private readonly routesService = inject(RoutesService);
@@ -51,20 +53,29 @@ export class TransactionListComponent implements OnInit {
   protected items: TransactionModel[] = [];
   protected selectedItem!: TransactionModel;
   protected selectedItems: TransactionModel[] = [];
+
   // protected search: FormControl = new FormControl('');//Busqueada cuando hay paginado en el backend
   protected globalFilterFields: string[] = ['code', 'name'];//Busqueda cuando hay paginado en el frontend
 
   constructor() {
-    this.breadcrumbService.setItems([{label: BreadcrumbEnum.TRANSACTIONS}]);
+    this.breadcrumbService.setItems([{ label: BreadcrumbEnum.TRANSACTIONS }]);
   }
 
   ngOnInit() {
     // this.checkValueChanges();
-    this.findAll();
+    this.findIncomes();
+    this.findExpenses();
   }
 
-  findAll() {
+  findIncomes() {
     this.transactionsHttpService.findAll()
+      .subscribe((response) => {
+        this.items = response;
+      });
+  }
+
+  findExpenses() {
+    this.expensesHttpService.findAll()
       .subscribe((response) => {
         this.items = response;
       });
@@ -73,11 +84,10 @@ export class TransactionListComponent implements OnInit {
   // Para poner nombres y orden de las columnas de la tabla
   get buildColumns(): ColumnModel[] {
     return [
-      {field: 'authorizer', header: 'Autorización'},
-      {field: 'dispatcher', header: 'Despachador'},
-      {field: 'receiver', header: 'Proveedor/Cliente'},
-      {field: 'date', header: 'Fecha'},
-      {field: 'type', header: 'Tipo'}
+      { field: 'authorizer', header: 'Autorización' },
+      { field: 'dispatcher', header: 'Despachador' },
+      { field: 'receiver', header: 'Proveedor/Cliente' },
+      { field: 'date', header: 'Fecha' }
     ];
   }
 
@@ -97,6 +107,14 @@ export class TransactionListComponent implements OnInit {
         icon: IconButtonActionEnum.DELETE,
         command: () => {
           if (this.selectedItem?.id) this.remove(this.selectedItem.id);
+        },
+      },
+      {
+        id: IdButtonActionEnum.DOWNLOADS,
+        label: LabelButtonActionEnum.DOWNLOADS,
+        icon: IconButtonActionEnum.DOWNLOADS,
+        command: () => {
+          if (this.selectedItem?.id) this.downloadIncomeReport(this.selectedItem.id);
         },
       },
       // {
@@ -138,9 +156,9 @@ export class TransactionListComponent implements OnInit {
     let transactionStorage = null;
 
     if (type) {
-      transactionStorage = {type: {name: 'Ingresos', type}};
+      transactionStorage = { type: { name: 'Ingresos', type } };
     } else {
-      transactionStorage = {type: {name: 'Egresos', type}};
+      transactionStorage = { type: { name: 'Egresos', type } };
     }
 
     localStorage.setItem('transaction', JSON.stringify(transactionStorage));
@@ -170,5 +188,9 @@ export class TransactionListComponent implements OnInit {
     this.isButtonActions = true;
     this.selectedItem = item;
     this.validateButtonActions(item);
+  }
+
+  downloadIncomeReport(incomeId: string) {
+    this.transactionsHttpService.downloadReport(incomeId);
   }
 }

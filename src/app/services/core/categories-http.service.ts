@@ -24,6 +24,7 @@ export class CategoriesHttpService {
       })
     );
   }
+  
 
   findAll(): Observable<CategoryModel[]> {
     const url = this.API_URL;

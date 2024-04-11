@@ -1,12 +1,12 @@
-import {Component, Input, OnInit, inject} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {Router} from '@angular/router';
-import {PrimeIcons} from 'primeng/api';
+import { Router } from '@angular/router';
+import { PrimeIcons } from 'primeng/api';
 import {
   BreadcrumbService,
   CategoriesHttpService,
@@ -23,7 +23,7 @@ import {
   SkeletonEnum,
   RoutesEnum,
 } from '@shared/enums';
-import {CategoryModel, ProductModel} from '@models/core';
+import { CategoryModel, ProductModel } from '@models/core';
 
 @Component({
   selector: 'app-product-form',
@@ -53,7 +53,7 @@ export class ProductFormComponent implements OnInit {
   protected readonly SkeletonEnum = SkeletonEnum;
 
   protected helpText!: string;
-  private saving: boolean = true;
+  private editing: boolean = false;
 
   protected categories!: CategoryModel[];
 
@@ -73,9 +73,10 @@ export class ProductFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCategories();
+    this.loadAllCategories();
 
     if (this.id != RoutesEnum.NEW) {
+      this.editing = true;
       this.findProdcut();
     }
   }
@@ -91,7 +92,7 @@ export class ProductFormComponent implements OnInit {
       description: [null],
       minimumAmount: [1, Validators.required],
       sellingPrice: [0, Validators.required],
-      stock: [1, Validators.required],
+      stock: [{ value: 0, disabled: true }, Validators.required],
 
     });
   }
@@ -104,12 +105,19 @@ export class ProductFormComponent implements OnInit {
       .findOne(this.id!)
       .subscribe((data) => {
         this.form.patchValue(data);
+        this.loadAllCategories();
       });
   }
 
-  loadCategories() {
-    this.categoriesHttpService.findCatalogues().subscribe((categories) => {
-      this.categories = categories;
+  loadAllCategories() {
+    this.categoriesHttpService.findAll().subscribe((categories) => {
+      if (this.editing) {
+        this.categories = categories.filter(category =>
+          category.enabled || category.id === this.categoryField.value?.id
+        );
+      } else {
+        this.categories = categories.filter(category => category.enabled);
+      }
     });
   }
 
@@ -150,7 +158,7 @@ export class ProductFormComponent implements OnInit {
 
   create(payload: ProductModel): void {
     this.productsHttpService.create(payload).subscribe((applicationStatus) => {
-      this.saving = false;
+      this.form.reset();
       this.back();
     });
   }
@@ -159,7 +167,7 @@ export class ProductFormComponent implements OnInit {
     this.productsHttpService
       .update(this.id!, payload)
       .subscribe((applicationStatus) => {
-        this.saving = false;
+        this.form.reset();
         this.back();
       });
   }

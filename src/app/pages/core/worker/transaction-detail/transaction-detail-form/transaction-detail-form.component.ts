@@ -116,7 +116,6 @@ export class TransactionDetailFormComponent implements OnInit {
   }
 
   add(): void {
-    console.log(this.form);
     if (this.form.valid) {
       this.transactionDetailFormOut.emit(this.form.value);
     } else {

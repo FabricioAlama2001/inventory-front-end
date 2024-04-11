@@ -13,6 +13,7 @@ import {
   BreadcrumbService,
   CategoriesHttpService,
   CoreService,
+  ExpensesHttpService,
   MessageService,
   ProductsHttpService,
   RoutesService,
@@ -39,6 +40,7 @@ import {computeStartOfLinePositions} from "@angular/compiler-cli/src/ngtsc/sourc
 })
 export class TransactionFormComponent implements OnInit {
   private readonly transactionsHttpService = inject(TransactionsHttpService);
+  private readonly expensesHttpService = inject(ExpensesHttpService);
   private readonly usersHttpService = inject(UsersHttpService);
   private readonly productsHttpService = inject(ProductsHttpService);
   private readonly categoriesHttpService = inject(CategoriesHttpService);
@@ -196,8 +198,17 @@ export class TransactionFormComponent implements OnInit {
     this.router.navigate([this.routesService.transactionsList]);
   }
 
-  create(payload: TransactionModel): void {
+  createIncome(payload: TransactionModel): void {
     this.transactionsHttpService
+      .create(payload)
+      .subscribe((applicationStatus) => {
+        this.saving = false;
+        this.back();
+      });
+  }
+
+  createExpenses(payload: TransactionModel): void {
+    this.expensesHttpService
       .create(payload)
       .subscribe((applicationStatus) => {
         this.saving = false;
@@ -216,10 +227,14 @@ export class TransactionFormComponent implements OnInit {
 
   onSubmit() {
     this.transactionDetailsField.updateValueAndValidity();
+    
     if (this.validateFormErrors) {
-      this.typeField.patchValue(this.typeField.value.type);
       if (this.id === RoutesEnum.NEW) {
-        this.create(this.form.value);
+        if(this.typeField.value.type){
+          this.createIncome(this.form.value);
+        }else{
+          this.createExpenses(this.form.value);
+        }
       } else {
         this.update(this.form.value);
       }
@@ -246,11 +261,9 @@ export class TransactionFormComponent implements OnInit {
       this.messageService.successCustom('Producto Agregado', 'Correctamente');
     }
 
-    // this.transactionDetailsField.patchValue(this.transactionDetailsField.value);
-
     localStorage.setItem('transaction', JSON.stringify(this.form.value));
 
-    this.isTransactionForm = false;
+    //this.isTransactionForm = false;
   }
 
   get codeField(): AbstractControl {

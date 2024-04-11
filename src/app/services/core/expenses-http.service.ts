@@ -1,22 +1,19 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from '@env/environment';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ServerResponse } from '@models/http-response';
-import { CoreService, MessageService } from "@services/core";
+import {Injectable, inject} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {environment} from '@env/environment';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ServerResponse} from '@models/http-response';
+import {MessageService} from "@services/core";
 import { TransactionModel } from '@models/core/transaction.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TransactionsHttpService {
+export class ExpensesHttpService {
   private readonly httpClient = inject(HttpClient);
-  private readonly API_URL = `${environment.API_URL}/incomes`;
-  private readonly API_REPORTS_URL = `${environment.API_URL}/reports`;
-  private readonly messageService = inject(MessageService);
-
-  constructor(private readonly coreService: CoreService) { }
+  private readonly API_URL = `${environment.API_URL}/expenses`;
+  private readonly messageService = inject(MessageService) ;
 
   create(payload: TransactionModel): Observable<TransactionModel> {
     const url = this.API_URL;
@@ -29,6 +26,7 @@ export class TransactionsHttpService {
     );
 
   }
+
 
   findAll(): Observable<TransactionModel[]> {
     const url = this.API_URL;
@@ -48,7 +46,7 @@ export class TransactionsHttpService {
       .append('page', page)
       .append('search', search);
 
-    return this.httpClient.get<ServerResponse>(url, { headers, params }).pipe(
+    return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
         return response;
       })
@@ -76,6 +74,7 @@ export class TransactionsHttpService {
     );
   }
 
+
   remove(id: string): Observable<TransactionModel> {
     const url = `${this.API_URL}/${id}`;
 
@@ -96,22 +95,5 @@ export class TransactionsHttpService {
         return response.data;
       })
     );
-  }
-
-  downloadReport(incomeId: string) {
-    const url = `${this.API_REPORTS_URL}/incomes/${incomeId}`;
-
-    this.coreService.isProcessing = true;
-
-    this.httpClient.get<BlobPart>(url, { responseType: 'blob' as 'json' })
-      .subscribe(response => {
-        const filePath = URL.createObjectURL(new Blob([response]));
-        const downloadLink = document.createElement('a');
-        downloadLink.href = filePath;
-        downloadLink.setAttribute('download', 'reporte_ingresos.pdf');
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        this.coreService.isProcessing = false;
-      });
   }
 }
