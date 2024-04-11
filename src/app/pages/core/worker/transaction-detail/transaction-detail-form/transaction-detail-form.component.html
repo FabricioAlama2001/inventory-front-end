@@ -1,10 +1,11 @@
 @if (coreService.isLoading) {
   <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
 }
+
 @if (!coreService.isLoading) {
   <p-toolbar>
     <div class="p-toolbar-group-left">
-
+      <h1>Seleccione los productos que desea agregar:</h1>
     </div>
     <div class="p-toolbar-group-right">
       <button
@@ -41,11 +42,11 @@
             placeholder="Seleccione...">
             <ng-template pTemplate="selectedItem">
               @if (productField.value) {
-                <div>{{ productField.value.code }} - {{ productField.value.name }} ({{ productField.value.stock }})</div>
+                {{ productField.value.code }} - {{ productField.value.name }} (stock {{ productField.value.stock }})
               }
             </ng-template>
             <ng-template let-item pTemplate="item">
-              <div>{{ item.code }} - {{ item.name }} ({{ item.stock }})</div>
+              {{ item.code }} - {{ item.name }} (stock {{ item.stock }})
             </ng-template>
           </p-dropdown>
           <small

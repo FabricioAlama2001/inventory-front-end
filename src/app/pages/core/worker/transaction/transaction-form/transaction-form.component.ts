@@ -42,8 +42,6 @@ export class TransactionFormComponent implements OnInit {
   private readonly transactionsHttpService = inject(TransactionsHttpService);
   private readonly expensesHttpService = inject(ExpensesHttpService);
   private readonly usersHttpService = inject(UsersHttpService);
-  private readonly productsHttpService = inject(ProductsHttpService);
-  private readonly categoriesHttpService = inject(CategoriesHttpService);
   private readonly breadcrumbService = inject(BreadcrumbService); //
   private readonly formBuilder = inject(FormBuilder); //Ayuda a crear - Formulario Reactivos
   private readonly router = inject(Router); //Redireccionar
@@ -150,7 +148,7 @@ export class TransactionFormComponent implements OnInit {
     const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as TransactionModel;
 
     return this.formBuilder.group({
-      code: [null, Validators.required],
+      code: [null],
       description: [null, Validators.required],
       date: [null, Validators.required],
       type: [transactionStorage.type, Validators.required],
@@ -227,12 +225,12 @@ export class TransactionFormComponent implements OnInit {
 
   onSubmit() {
     this.transactionDetailsField.updateValueAndValidity();
-    
+
     if (this.validateFormErrors) {
       if (this.id === RoutesEnum.NEW) {
-        if(this.typeField.value.type){
+        if (this.typeField.value.type) {
           this.createIncome(this.form.value);
-        }else{
+        } else {
           this.createExpenses(this.form.value);
         }
       } else {

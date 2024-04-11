@@ -67,7 +67,7 @@ export class TransactionDetailListComponent implements OnInit {
       {field: 'quantity', header: 'Cantidad'},
       {field: 'code', header: 'Código'},
       {field: 'product', header: 'Producto'},
-      {field: 'observation', header: 'Detalle'},
+      {field: 'observation', header: 'Observación'},
     ];
   }
 

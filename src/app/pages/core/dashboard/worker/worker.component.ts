@@ -48,16 +48,6 @@ export class WorkerComponent {
         routerLink: this.routesService.productsList,
       },
     );
-
-    this.reportMenus.push(
-      {
-        code: 'reports',
-        header: 'Reportes',
-        subheader: 'Administrar',
-        img: `${assetsPath}/report.png`,
-        routerLink: '',
-      },
-    );
   }
 
   redirect(url: string) {

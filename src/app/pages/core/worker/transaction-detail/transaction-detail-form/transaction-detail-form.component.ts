@@ -1,4 +1,3 @@
-import {ProductModel} from './../../../../../models/core/product.model';
 import {Component, Input, OnInit, inject, Output, EventEmitter} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
@@ -12,6 +11,8 @@ import {
   SkeletonEnum
 } from '@shared/enums';
 import {PrimeIcons} from 'primeng/api';
+import {ProductModel} from "@models/core";
+import {TransactionModel} from "@models/core/transaction.model";
 
 @Component({
   selector: 'app-transaction-detail-form',
@@ -96,22 +97,11 @@ export class TransactionDetailFormComponent implements OnInit {
             this.quantityField.setValidators([Validators.required, Validators.min(1), Validators.max(this.productField.value.stock)]);
           }
         }else{
-          this.quantityField.setValidators([Validators.min(1)]);
+          this.quantityField.setValidators([Validators.required,Validators.min(1)]);
         }
 
         this.quantityField.updateValueAndValidity();
-
       }
-    })
-
-    this.quantityField.valueChanges.subscribe((value) => {
-      console.log(this.productField.value.stock == 0);
-
-
-    });
-
-    this.form.valueChanges.subscribe(value => {
-      localStorage.setItem('transaction', JSON.stringify(value));
     });
   }
 

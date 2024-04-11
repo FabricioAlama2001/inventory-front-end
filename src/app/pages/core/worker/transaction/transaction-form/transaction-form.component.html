@@ -77,7 +77,8 @@
             placeholder="Seleccione...">
             <ng-template pTemplate="selectedItem">
               @if (userField.value) {
-                <div>{{ userField.value.identification }} - {{ userField.value.name }} {{ userField.value.lastname }}</div>
+                <div>{{ userField.value.identification }}- {{ userField.value.name }} {{ userField.value.lastname }}
+                </div>
               }
             </ng-template>
             <ng-template let-item pTemplate="item">
@@ -114,7 +115,9 @@
             >
               <ng-template pTemplate="selectedItem">
                 @if (clientField.value) {
-                  <div>{{ clientField.value.identification }} - {{ clientField.value.name }} {{ clientField.value.lastname }}</div>
+                  <div>{{ clientField.value.identification }}
+                    - {{ clientField.value.name }} {{ clientField.value.lastname }}
+                  </div>
                 }
               </ng-template>
               <ng-template let-item pTemplate="item">
@@ -133,24 +136,6 @@
       </div>
 
       <div class="formgrid grid">
-        <!-- Codigo -->
-        <div class="field xl:col-2 lg:col-2 md:col-6 sm:col-12">
-          <label
-            appLabel
-            for="code"
-            label="Código"
-            [required]="codeField"
-          ></label>
-          <input pInputText type="text" id="code" formControlName="code"/>
-          <small
-            appErrorMessage
-            [errors]="codeField.errors"
-            [touched]="codeField.touched"
-            [dirty]="codeField.dirty"
-          >
-          </small>
-        </div>
-
         <!--Date -->
         <div class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
           <label
@@ -176,7 +161,7 @@
         </div>
 
         <!-- Descripcion -->
-        <div class="field xl:col-7 lg:col-7 md:col-12 sm:col-12">
+        <div class="field xl:col-9 lg:col-9 md:col-6 sm:col-12">
           <label
             appLabel
             for="description"
@@ -197,26 +182,25 @@
           </small>
         </div>
       </div>
-
-      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
-        <label
-          appLabel
-          label="Inventario"
-          [required]="descriptionField"
-        ></label>
-        <button pButton pRipple type="button"
-                label="Agregar Productos"
-                [icon]="PrimeIcons.PLUS" class="p-button-success"
-                (click)="openTransactionForm()"></button>
-      </div>
     </form>
   </p-panel>
 }
 
+<p-divider></p-divider>
+
+<p-panel>
+  <app-transaction-detail-form [transactionId]="'cod'"
+                               [isEditing]="false"
+                               [isIncome]="typeField.value?.type"
+                               (transactionDetailFormOut)="addTransactionDetail($event)"></app-transaction-detail-form>
+</p-panel>
+
+<p-divider></p-divider>
+
 @if (transactionDetailsField.value) {
   <p-panel>
     <app-transaction-detail-list [items]="transactionDetailsField.value"
-                                 [isIncome]="typeField.value.type"
+                                 [isIncome]="typeField.value?.type"
                                  [title]="titleTransactionDetails"></app-transaction-detail-list>
   </p-panel>
 }
