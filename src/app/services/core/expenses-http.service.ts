@@ -4,7 +4,7 @@ import {environment} from '@env/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ServerResponse} from '@models/http-response';
-import {MessageService} from "@services/core";
+import {CoreService, MessageService} from "@services/core";
 import { TransactionModel } from '@models/core/transaction.model';
 
 @Injectable({
@@ -13,7 +13,9 @@ import { TransactionModel } from '@models/core/transaction.model';
 export class ExpensesHttpService {
   private readonly httpClient = inject(HttpClient);
   private readonly API_URL = `${environment.API_URL}/expenses`;
+  private readonly API_REPORTS_URL = `${environment.API_URL}/reports`;
   private readonly messageService = inject(MessageService) ;
+  private readonly coreService = inject(CoreService);
 
   create(payload: TransactionModel): Observable<TransactionModel> {
     const url = this.API_URL;
@@ -26,7 +28,6 @@ export class ExpensesHttpService {
     );
 
   }
-
 
   findAll(): Observable<TransactionModel[]> {
     const url = this.API_URL;
@@ -74,7 +75,6 @@ export class ExpensesHttpService {
     );
   }
 
-
   remove(id: string): Observable<TransactionModel> {
     const url = `${this.API_URL}/${id}`;
 
@@ -95,5 +95,22 @@ export class ExpensesHttpService {
         return response.data;
       })
     );
+  }
+
+  downloadReport(id: string) {
+    const url = `${this.API_REPORTS_URL}/expenses/${id}`;
+
+    this.coreService.isProcessing = true;
+
+    this.httpClient.get<BlobPart>(url, { responseType: 'blob' as 'json' })
+      .subscribe(response => {
+        const filePath = URL.createObjectURL(new Blob([response]));
+        const downloadLink = document.createElement('a');
+        downloadLink.href = filePath;
+        downloadLink.setAttribute('download', 'reporte_ingresos.pdf');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        this.coreService.isProcessing = false;
+      });
   }
 }

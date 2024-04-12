@@ -84,7 +84,7 @@ registerLocaleData(localEs, 'es');
     //   provide: LocationStrategy,
     //   useClass: HashLocationStrategy
     // },
-    {provide: LOCALE_ID, useValue: 'es'},
+    {provide: LOCALE_ID, useValue: 'es-Es'},
     HttpInterceptorProviders,
     MessageService,
   ],

@@ -1,11 +1,11 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from '@env/environment';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ServerResponse } from '@models/http-response';
-import { CoreService, MessageService } from "@services/core";
-import { TransactionModel } from '@models/core/transaction.model';
+import {Injectable, inject} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {environment} from '@env/environment';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ServerResponse} from '@models/http-response';
+import {CoreService, MessageService} from "@services/core";
+import {TransactionModel} from '@models/core/transaction.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,10 @@ export class IncomesHttpService {
   private readonly API_URL = `${environment.API_URL}/incomes`;
   private readonly API_REPORTS_URL = `${environment.API_URL}/reports`;
   private readonly messageService = inject(MessageService);
+  private readonly coreService = inject(CoreService);
 
-  constructor(private readonly coreService: CoreService) { }
+  constructor() {
+  }
 
   create(payload: TransactionModel): Observable<TransactionModel> {
     const url = this.API_URL;
@@ -48,7 +50,7 @@ export class IncomesHttpService {
       .append('page', page)
       .append('search', search);
 
-    return this.httpClient.get<ServerResponse>(url, { headers, params }).pipe(
+    return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
       map((response) => {
         return response;
       })
@@ -98,12 +100,12 @@ export class IncomesHttpService {
     );
   }
 
-  downloadReport(incomeId: string) {
-    const url = `${this.API_REPORTS_URL}/incomes/${incomeId}`;
+  downloadReport(id: string) {
+    const url = `${this.API_REPORTS_URL}/incomes/${id}`;
 
     this.coreService.isProcessing = true;
 
-    this.httpClient.get<BlobPart>(url, { responseType: 'blob' as 'json' })
+    this.httpClient.get<BlobPart>(url, {responseType: 'blob' as 'json'})
       .subscribe(response => {
         const filePath = URL.createObjectURL(new Blob([response]));
         const downloadLink = document.createElement('a');
