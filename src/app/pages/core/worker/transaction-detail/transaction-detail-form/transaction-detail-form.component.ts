@@ -12,7 +12,7 @@ import {
 } from '@shared/enums';
 import {PrimeIcons} from 'primeng/api';
 import {ProductModel} from "@models/core";
-import {TransactionModel} from "@models/core/transaction.model";
+import {IncomeModel} from "@models/core/income.model";
 
 @Component({
   selector: 'app-transaction-detail-form',
@@ -20,14 +20,8 @@ import {TransactionModel} from "@models/core/transaction.model";
   styleUrl: './transaction-detail-form.component.scss'
 })
 export class TransactionDetailFormComponent implements OnInit {
-
-
-  private readonly transactionDetailsHttpService = inject(TransactionDetailsHttpService);
   private readonly productsHttpService = inject(ProductsHttpService);
-  private readonly breadcrumbService = inject(BreadcrumbService); //
   private readonly formBuilder = inject(FormBuilder); //Ayuda a crear - Formulario Reactivos
-  private readonly router = inject(Router); //Redireccionar
-  private readonly routesService = inject(RoutesService); //Ruta de la aplicacion
   protected readonly coreService = inject(CoreService); //Funcionalidades Generalidades que se utilizan en todos los componente
   protected readonly messageService = inject(MessageService); //
 
@@ -47,10 +41,6 @@ export class TransactionDetailFormComponent implements OnInit {
   protected readonly LabelButtonActionEnum = LabelButtonActionEnum;
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly SkeletonEnum = SkeletonEnum;
-
-
-  protected helpText!: string;
-  private saving: boolean = true;
 
   constructor() {
     this.form = this.buildForm;
@@ -124,6 +114,5 @@ export class TransactionDetailFormComponent implements OnInit {
   get productField(): AbstractControl {
     return this.form.controls['product'];
   }
-
 }
 

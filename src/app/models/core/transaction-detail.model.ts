@@ -1,4 +1,4 @@
-import { TransactionModel } from "./transaction.model";
+import { IncomeModel } from "./income.model";
 import {ProductModel} from "@models/core/product.model";
 
 export interface TransactionDetailModel {
@@ -11,7 +11,7 @@ export interface TransactionDetailModel {
   observation: string;
   quantity: number;
 
-  transaction: TransactionModel[];
+  transaction: IncomeModel[];
   product: ProductModel;
 }
 

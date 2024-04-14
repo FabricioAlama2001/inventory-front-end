@@ -1,7 +1,7 @@
 import { TransactionDetailModel } from "./transaction-detail.model";
 import {UserModel} from "@models/auth";
 
-export interface TransactionModel {
+export interface ExpenseModel {
   id: string;
   createAt: Date;
   updateAt: Date;

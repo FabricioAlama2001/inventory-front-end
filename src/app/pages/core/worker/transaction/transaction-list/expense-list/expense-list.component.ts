@@ -1,6 +1,6 @@
 import {Component, OnInit, inject} from '@angular/core';
 import {Router} from '@angular/router';
-import {TransactionModel} from '@models/core/transaction.model';
+import {ExpenseModel} from '@models/core';
 import {
   BreadcrumbService,
   CoreService,
@@ -17,8 +17,10 @@ import {
   RoutesEnum,
   TableEnum
 } from '@shared/enums';
-import {MenuItem, PrimeIcons} from "primeng/api";
-import {ColumnModel} from "@models/core";
+import {MenuItem,PrimeIcons} from "primeng/api";
+import {ColumnModel, PaginatorModel} from "@models/core";
+import {FormControl} from "@angular/forms";
+import {debounceTime} from "rxjs";
 
 @Component({
   selector: 'app-expense-list',
@@ -49,35 +51,45 @@ export class ExpenseListComponent implements OnInit {
 
   /** Table **/
   protected columns: ColumnModel[] = this.buildColumns;
-  protected items: TransactionModel[] = [];
-  protected selectedItem!: TransactionModel;
-  protected selectedItems: TransactionModel[] = [];
+  protected items: ExpenseModel[] = [];
+  protected selectedItem!: ExpenseModel;
+  protected selectedIItems: ExpenseModel[] = [];
 
-  // protected search: FormControl = new FormControl('');//Busqueada cuando hay paginado en el backend
-  protected globalFilterFields: string[] = ['code', 'name'];//Busqueda cuando hay paginado en el frontend
+  protected paginator!: PaginatorModel;
+  protected search: FormControl = new FormControl('');
 
   constructor() {
     this.breadcrumbService.setItems([{label: BreadcrumbEnum.TRANSACTIONS}]);
+
+    this.paginator = this.coreService.paginator;
   }
 
   ngOnInit() {
-    // this.checkValueChanges();
+    this.checkValueChanges();
     this.findExpenses();
   }
 
-  findExpenses() {
-    this.expensesHttpService.findAll()
+  checkValueChanges() {
+    this.search.valueChanges.pipe(
+      debounceTime(500)
+    ).subscribe(value => {
+      this.findExpenses();
+    });
+  }
+
+  findExpenses(page: number = 0) {
+    this.expensesHttpService.findExpenses(page,this.search.value)
       .subscribe((response) => {
-        this.items = response;
+        this.items = response.data;
+        this.paginator = response.pagination!;
       });
   }
 
-  // Para poner nombres y orden de las columnas de la tabla
   get buildColumns(): ColumnModel[] {
     return [
       {field: 'authorizer', header: 'Autorización'},
       {field: 'dispatcher', header: 'Despachador'},
-      {field: 'receiver', header: 'Proveedor/Cliente'},
+      {field: 'receiver', header: 'Proveedor'},
       {field: 'date', header: 'Fecha'}
     ];
   }
@@ -105,7 +117,7 @@ export class ExpenseListComponent implements OnInit {
         label: LabelButtonActionEnum.DOWNLOADS,
         icon: IconButtonActionEnum.DOWNLOADS,
         command: () => {
-          if (this.selectedItem?.id) this.downloadExpenseReport(this.selectedItem.id);
+          if (this.selectedItem?.id) this.downloadIncomeReport(this.selectedItem.id);
         },
       },
       // {
@@ -127,8 +139,7 @@ export class ExpenseListComponent implements OnInit {
     ];
   }
 
-  // Solo cambiar CategoryModel
-  validateButtonActions(item: TransactionModel): void {
+  validateButtonActions(item: ExpenseModel): void {
     this.buttonActions = this.buildButtonActions;
 
     // if (item.enabled) {
@@ -140,17 +151,12 @@ export class ExpenseListComponent implements OnInit {
     // }
   }
 
-  // Solo cambiar la ruta del servicio
-  redirectCreateForm(type: boolean) {
+  redirectCreateForm() {
     localStorage.removeItem('transaction');
 
     let transactionStorage = null;
 
-    if (type) {
-      transactionStorage = {type: {name: 'Ingresos', type}};
-    } else {
-      transactionStorage = {type: {name: 'Egresos', type}};
-    }
+    transactionStorage = {type: {name: 'Egresos', type:false}};
 
     localStorage.setItem('transaction', JSON.stringify(transactionStorage));
 
@@ -158,7 +164,6 @@ export class ExpenseListComponent implements OnInit {
   }
 
   redirectEditForm(id: string) {
-    localStorage.removeItem('transaction');
     this.router.navigate([this.routesService.transactionsForm(id)]);
   }
 
@@ -174,14 +179,26 @@ export class ExpenseListComponent implements OnInit {
       });
   }
 
-  // Solo cambiar CategoryModel
-  selectItem(item: TransactionModel) {
+  selectItem(item: ExpenseModel) {
     this.isButtonActions = true;
     this.selectedItem = item;
+
+    localStorage.removeItem('transaction');
+
+    let transactionStorage = null;
+
+    transactionStorage = {type: {name: 'Egresos', type:false}};
+
+    localStorage.setItem('transaction', JSON.stringify(transactionStorage));
+
     this.validateButtonActions(item);
   }
 
-  downloadExpenseReport(incomeId: string) {
+  downloadIncomeReport(incomeId: string) {
     this.expensesHttpService.downloadReport(incomeId);
+  }
+
+  paginate(event: any) {
+    this.findExpenses(event.page);
   }
 }

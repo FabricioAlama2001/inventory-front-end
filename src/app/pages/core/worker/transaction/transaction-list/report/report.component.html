@@ -1,0 +1,32 @@
+<p-panel class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-6">
+      <label for="startedAt" class="font-bold block mb-2">Fecha de
+        inicio: {{ format(startedAt.value, 'PPPPP', {locale: es}) }}</label>
+      <p-calendar
+        id="startedAt"
+        [formControl]="startedAt"
+        [inline]="true"
+        [maxDate]="endedAt.value"
+        [readonlyInput]="true"></p-calendar>
+
+    </div>
+    <div class="field xl:col-6">
+      <label for="endedAt" class="font-bold block mb-2">Fecha de
+        fin: {{ format(endedAt.value, 'PPPPP', {locale: es}) }}</label>
+      <p-calendar
+        id="endedAt"
+        [formControl]="endedAt"
+        [inline]="true"
+        [minDate]="startedAt.value"
+        [readonlyInput]="true"></p-calendar>
+    </div>
+
+  </div>
+  <div class="field">
+    <button pButton pRipple label="Dscargar Reporte"
+            (click)="downloadPdfReport()"
+            [icon]="PrimeIcons.DOWNLOAD"></button>
+  </div>
+
+</p-panel>

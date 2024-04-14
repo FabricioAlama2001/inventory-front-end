@@ -3,24 +3,6 @@
 }
 
 @if (!coreService.isLoading) {
-  <p-toolbar>
-    <div class="p-toolbar-group-left">
-      <h1>Seleccione los productos que desea agregar:</h1>
-    </div>
-    <div class="p-toolbar-group-right">
-      <button
-        pButton
-        pRipple
-        type="button"
-        (click)="add()"
-        [icon]="IconButtonActionEnum.ADD"
-        [label]="LabelButtonActionEnum.ADD"
-        [loading]="coreService.isLoading"
-        [ngClass]="[ClassButtonActionEnum.ADD]"
-      ></button>
-    </div>
-  </p-toolbar>
-
   <!-- Drop de products -->
   <p-panel class="p-fluid">
     <form [formGroup]="form">
@@ -102,6 +84,19 @@
           >
           </small>
         </div>
+      </div>
+
+      <div class="field">
+        <button
+          pButton
+          pRipple
+          type="button"
+          (click)="add()"
+          [icon]="IconButtonActionEnum.ADD"
+          [label]="LabelButtonActionEnum.ADD"
+          [loading]="coreService.isLoading"
+          [ngClass]="[ClassButtonActionEnum.ADD]"
+        ></button>
       </div>
     </form>
   </p-panel>

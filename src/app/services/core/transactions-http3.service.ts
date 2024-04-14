@@ -1,7 +1,7 @@
 // import { HttpClient } from '@angular/common/http';
 // import { Injectable, inject } from '@angular/core';
 // import { environment } from '@env/environment';
-// import { TransactionModel } from '@models/core/transaction.model';
+// import { IncomeModel } from '@models/core/transaction.model';
 // import { Observable } from 'rxjs';
 
 // @Injectable({
@@ -11,7 +11,7 @@
 //   private readonly httpClient = inject(HttpClient);
 //   private API_URL = `${environment.API_URL}/transactions`;
 
-//   findAll(): Observable<TransactionModel> {
+//   findAll(): Observable<IncomeModel> {
 //     const url = this.API_URL;
 
 //     return this.httpClient.get(url);

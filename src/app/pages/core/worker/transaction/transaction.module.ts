@@ -24,9 +24,16 @@ import {TransactionDetailModule} from "../transaction-detail/transaction-detail.
 import {TabViewModule} from 'primeng/tabview';
 import {IncomeListComponent} from './transaction-list/income-list/income-list.component';
 import {ExpenseListComponent} from './transaction-list/expense-list/expense-list.component';
+import {ReportComponent} from "./transaction-list/report/report.component";
 
 @NgModule({
-  declarations: [TransactionListComponent, TransactionFormComponent, IncomeListComponent, ExpenseListComponent],
+  declarations: [
+    TransactionListComponent,
+    TransactionFormComponent,
+    IncomeListComponent,
+    ExpenseListComponent,
+    ReportComponent,
+  ],
   imports: [
     CommonModule,
     TransactionRoutingModule,

@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ServerResponse} from '@models/http-response';
 import {CoreService, MessageService} from "@services/core";
-import { TransactionModel } from '@models/core/transaction.model';
+import { IncomeModel } from '@models/core/income.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class ExpensesHttpService {
   private readonly messageService = inject(MessageService) ;
   private readonly coreService = inject(CoreService);
 
-  create(payload: TransactionModel): Observable<TransactionModel> {
+  create(payload: IncomeModel): Observable<IncomeModel> {
     const url = this.API_URL;
 
     return this.httpClient.post<ServerResponse>(url, payload).pipe(
@@ -29,7 +29,7 @@ export class ExpensesHttpService {
 
   }
 
-  findAll(): Observable<TransactionModel[]> {
+  findAll(): Observable<IncomeModel[]> {
     const url = this.API_URL;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -54,7 +54,7 @@ export class ExpensesHttpService {
     );
   }
 
-  findOne(id: string): Observable<TransactionModel> {
+  findOne(id: string): Observable<IncomeModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -64,7 +64,7 @@ export class ExpensesHttpService {
     );
   }
 
-  update(id: string, payload: TransactionModel): Observable<TransactionModel> {
+  update(id: string, payload: IncomeModel): Observable<IncomeModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.put<ServerResponse>(url, payload).pipe(
@@ -75,7 +75,7 @@ export class ExpensesHttpService {
     );
   }
 
-  remove(id: string): Observable<TransactionModel> {
+  remove(id: string): Observable<IncomeModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.delete<ServerResponse>(url).pipe(
@@ -86,7 +86,7 @@ export class ExpensesHttpService {
     );
   }
 
-  removeAll(transaction: TransactionModel[]): Observable<TransactionModel[]> {
+  removeAll(transaction: IncomeModel[]): Observable<IncomeModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
     return this.httpClient.patch<ServerResponse>(url, transaction).pipe(
@@ -112,5 +112,21 @@ export class ExpensesHttpService {
         downloadLink.click();
         this.coreService.isProcessing = false;
       });
+  }
+
+  findExpenses(page: number = 0, search: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}`;
+
+    const headers = new HttpHeaders().append('pagination', 'true');
+
+    const params = new HttpParams()
+      .append('page', page)
+      .append('search', search);
+
+    return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
+      map((response) => {
+        return response;
+      })
+    );
   }
 }

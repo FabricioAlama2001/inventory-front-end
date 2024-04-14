@@ -5,7 +5,8 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ServerResponse} from '@models/http-response';
 import {CoreService, MessageService} from "@services/core";
-import {TransactionModel} from '@models/core/transaction.model';
+import {IncomeModel} from '@models/core/income.model';
+import {format} from "date-fns";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class IncomesHttpService {
   constructor() {
   }
 
-  create(payload: TransactionModel): Observable<TransactionModel> {
+  create(payload: IncomeModel): Observable<IncomeModel> {
     const url = this.API_URL;
 
     return this.httpClient.post<ServerResponse>(url, payload).pipe(
@@ -32,7 +33,7 @@ export class IncomesHttpService {
 
   }
 
-  findAll(): Observable<TransactionModel[]> {
+  findAll(): Observable<IncomeModel[]> {
     const url = this.API_URL;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -57,7 +58,7 @@ export class IncomesHttpService {
     );
   }
 
-  findOne(id: string): Observable<TransactionModel> {
+  findOne(id: string): Observable<IncomeModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.get<ServerResponse>(url).pipe(
@@ -67,7 +68,7 @@ export class IncomesHttpService {
     );
   }
 
-  update(id: string, payload: TransactionModel): Observable<TransactionModel> {
+  update(id: string, payload: IncomeModel): Observable<IncomeModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.put<ServerResponse>(url, payload).pipe(
@@ -78,7 +79,7 @@ export class IncomesHttpService {
     );
   }
 
-  remove(id: string): Observable<TransactionModel> {
+  remove(id: string): Observable<IncomeModel> {
     const url = `${this.API_URL}/${id}`;
 
     return this.httpClient.delete<ServerResponse>(url).pipe(
@@ -89,7 +90,7 @@ export class IncomesHttpService {
     );
   }
 
-  removeAll(transaction: TransactionModel[]): Observable<TransactionModel[]> {
+  removeAll(transaction: IncomeModel[]): Observable<IncomeModel[]> {
     const url = `${this.API_URL}/remove-all`;
 
     return this.httpClient.patch<ServerResponse>(url, transaction).pipe(
@@ -111,6 +112,45 @@ export class IncomesHttpService {
         const downloadLink = document.createElement('a');
         downloadLink.href = filePath;
         downloadLink.setAttribute('download', 'reporte_ingresos.pdf');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        this.coreService.isProcessing = false;
+      });
+  }
+
+  findIncomes(page: number = 0, search: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}`;
+
+    const headers = new HttpHeaders().append('pagination', 'true');
+
+    const params = new HttpParams()
+      .append('page', page)
+      .append('search', search);
+
+    return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
+      map((response) => {
+        return response;
+      })
+    );
+  }
+
+  downloadPdfReport(startedAt: string, endedAt: string) {
+    const url = `${this.API_REPORTS_URL}/transactions`;
+
+    const params = new HttpParams()
+      .append('startedAt', JSON.stringify(startedAt))
+      .append('endedAt', JSON.stringify(endedAt));
+
+    this.coreService.isProcessing = true;
+
+    this.httpClient.get<BlobPart>(url, {params,responseType: 'blob' as 'json'})
+      .subscribe(response => {
+        const filePath = URL.createObjectURL(new Blob([response]));
+        const downloadLink = document.createElement('a');
+        downloadLink.href = filePath;
+
+        const fileName=`inventario_${startedAt}_a_${endedAt}.pdf`
+        downloadLink.setAttribute('download', fileName);
         document.body.appendChild(downloadLink);
         downloadLink.click();
         this.coreService.isProcessing = false;

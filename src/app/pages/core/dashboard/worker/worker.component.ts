@@ -42,7 +42,7 @@ export class WorkerComponent {
       },
       {
         code: 'products',
-        header: 'Products',
+        header: 'Productos',
         subheader: 'Administrar',
         img: `${assetsPath}/product.png`,
         routerLink: this.routesService.productsList,

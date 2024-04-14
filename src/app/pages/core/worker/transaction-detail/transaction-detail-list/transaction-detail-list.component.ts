@@ -15,7 +15,7 @@ import {
 } from '@shared/enums';
 import {MenuItem, PrimeIcons} from 'primeng/api';
 import {iterator} from "rxjs/internal/symbol/iterator";
-import {TransactionModel} from "@models/core/transaction.model";
+import {IncomeModel} from "@models/core/income.model";
 
 @Component({
   selector: 'app-transaction-detail-list',
@@ -91,20 +91,25 @@ export class TransactionDetailListComponent implements OnInit {
         label: LabelButtonActionEnum.DELETE,
         icon: IconButtonActionEnum.DELETE,
         command: () => {
-          if (this.selectedItem?.id) this.remove(this.selectedItem.id);
+          if (this.selectedItem?.product) this.remove(this.selectedItem.product.id);
         },
       },
     ];
   }
 
   // Solo cambiar categoriesHttpService
-  remove(id: string) {
+  remove(productId: string) {
     this.messageService.questionDelete()
       .then((result) => {
         if (result.isConfirmed) {
-          this.transactionDetailsHttpService.remove(id).subscribe((removedItem) => {
-            this.items = this.items.filter(item => item.id !== removedItem.id);
-          });
+          this.items = this.items.filter(item => item.product.id !== productId);
+          const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as IncomeModel;
+
+          if (transactionStorage) {
+            transactionStorage.transactionDetails = this.items;
+
+            localStorage.setItem('transaction', JSON.stringify(transactionStorage));
+          }
         }
       });
   }
@@ -126,7 +131,7 @@ export class TransactionDetailListComponent implements OnInit {
     this.isTransactionForm = false;
     this.messageService.successCustom('Producto Actualizado', 'Correctamente');
 
-    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as TransactionModel;
+    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as IncomeModel;
 
     if (transactionStorage) {
       transactionStorage.transactionDetails = this.items;

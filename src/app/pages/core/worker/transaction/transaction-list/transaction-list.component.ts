@@ -18,7 +18,7 @@ import {
   LabelButtonActionEnum, RoutesEnum, TableEnum
 } from "@shared/enums";
 import { ColumnModel } from "@models/core";
-import { TransactionModel } from '@models/core/transaction.model';
+import { IncomeModel } from '@models/core/income.model';
 
 @Component({
   selector: 'app-transaction-list',

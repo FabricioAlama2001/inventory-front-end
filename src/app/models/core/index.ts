@@ -15,3 +15,6 @@ export * from './canton.model';
 export * from './parish.model';
 export * from './category.model';
 export * from './product.model';
+export * from './income.model';
+export * from './expense.model';
+export * from './signature.model';

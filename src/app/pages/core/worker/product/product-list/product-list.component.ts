@@ -192,5 +192,4 @@ export class ProductListComponent implements OnInit {
   paginate(event: any) {
     this.findProducts(event.page);
   }
-
 }

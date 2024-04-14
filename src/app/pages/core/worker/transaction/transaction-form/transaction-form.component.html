@@ -2,200 +2,198 @@
   <app-skeleton [type]="SkeletonEnum.CARD"></app-skeleton>
 }
 
-@if (!coreService.isLoading) {
-  <p-toolbar>
-    <div class="p-toolbar-group-left">
-      <app-header-form [id]="id"></app-header-form>
-    </div>
-    <div class="p-toolbar-group-right">
-      <button
-        pButton
-        pRipple
-        type="button"
-        (click)="back()"
-        [icon]="IconButtonActionEnum.CANCEL"
-        [label]="LabelButtonActionEnum.CANCEL"
-        [loading]="coreService.isLoading"
-        [ngClass]="[ClassButtonActionEnum.CANCEL]"
-      ></button>
 
-      <p-divider layout="vertical"></p-divider>
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+    <app-header-form [id]="id"></app-header-form>
+  </div>
+  <div class="p-toolbar-group-right">
+    <button
+      pButton
+      pRipple
+      type="button"
+      (click)="back()"
+      [icon]="IconButtonActionEnum.CANCEL"
+      [label]="LabelButtonActionEnum.CANCEL"
+      [loading]="coreService.isLoading"
+      [ngClass]="[ClassButtonActionEnum.CANCEL]"
+    ></button>
 
-      <button
-        pButton
-        pRipple
-        type="button"
-        (click)="onSubmit()"
-        [icon]="IconButtonActionEnum.SAVE"
-        [label]="LabelButtonActionEnum.SAVE"
-        [loading]="coreService.isLoading"
-        [ngClass]="[ClassButtonActionEnum.SAVE]"
-      ></button>
-    </div>
-  </p-toolbar>
+    <p-divider layout="vertical"></p-divider>
 
-  <p-panel class="p-fluid">
-    <form [formGroup]="form">
-      <div class="formgrid grid">
-        <!-- Drop de tipos (Ingresos e ingresos) -->
-        <div class="field xl:col-4 lg:col-3 md:col-12 sm:col-12">
-          <label appLabel for="type" label="Tipo" [required]="typeField"></label>
+    <button
+      pButton
+      pRipple
+      type="button"
+      (click)="onSubmit()"
+      [icon]="IconButtonActionEnum.SAVE"
+      [label]="LabelButtonActionEnum.SAVE"
+      [loading]="coreService.isLoading"
+      [ngClass]="[ClassButtonActionEnum.SAVE]"
+    ></button>
+  </div>
+</p-toolbar>
 
-          <p-dropdown
-            id="type"
-            formControlName="type"
-            [options]="types"
-            optionLabel="name"
-            placeholder="Seleccione..."
-          >
-          </p-dropdown>
-          <small
-            appErrorMessage
-            [errors]="typeField.errors"
-            [touched]="typeField.touched"
-            [dirty]="typeField.dirty"
-          >
-          </small>
-        </div>
+<form [formGroup]="form" class="p-fluid">
+  <div class="formgrid grid">
+    @if (!coreService.isLoading) {
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <p-panel>
+          <div class="formgrid grid">
+            <!-- Drop de tipos (Ingresos e ingresos) -->
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label appLabel for="type" label="Tipo" [required]="typeField"></label>
 
-        <!-- Drop de Authorizer -->
-        <div class="field xl:col-4 lg:col-3 md:col-12 sm:col-12">
-          <label
-            appLabel
-            for="user"
-            label="Autorizador"
-            [required]="userField"
-          ></label>
-          <p-dropdown
-            id="user"
-            dataKey="id"
-            formControlName="user"
-            [filter]="true"
-            filterBy="identification,name,lastname"
-            [options]="users"
-            optionLabel="name"
-            placeholder="Seleccione...">
-            <ng-template pTemplate="selectedItem">
-              @if (userField.value) {
-                <div>{{ userField.value.identification }}- {{ userField.value.name }} {{ userField.value.lastname }}
-                </div>
-              }
-            </ng-template>
-            <ng-template let-item pTemplate="item">
-              <div>{{ item.identification }} - {{ item.name }} {{ item.lastname }}</div>
-            </ng-template>
-          </p-dropdown>
-          <small
-            appErrorMessage
-            [errors]="userField.errors"
-            [touched]="userField.touched"
-            [dirty]="userField.dirty"
-          >
-          </small>
-        </div>
+              <p-dropdown
+                id="type"
+                formControlName="type"
+                [options]="types"
+                optionLabel="name"
+                placeholder="Seleccione..."
+              >
+              </p-dropdown>
+              <small
+                appErrorMessage
+                [errors]="typeField.errors"
+                [touched]="typeField.touched"
+                [dirty]="typeField.dirty"
+              >
+              </small>
+            </div>
 
-        <!-- Drop de proveedor -->
-        @if (typeField.valid) {
-          <div class="field xl:col-4 lg:col-3 md:col-12 sm:col-12">
-            <label
-              appLabel
-              for="client"
-              [label]="client"
-              [required]="userField"
-            ></label>
-            <p-dropdown
-              id="client"
-              dataKey="id"
-              formControlName="client"
-              [filter]="true"
-              filterBy="identification,name,lastname"
-              [options]="clients"
-              optionLabel="name"
-              placeholder="Seleccione..."
-            >
-              <ng-template pTemplate="selectedItem">
-                @if (clientField.value) {
-                  <div>{{ clientField.value.identification }}
-                    - {{ clientField.value.name }} {{ clientField.value.lastname }}
-                  </div>
-                }
-              </ng-template>
-              <ng-template let-item pTemplate="item">
-                <div>{{ item.identification }} - {{ item.name }} {{ item.lastname }}</div>
-              </ng-template>
-            </p-dropdown>
-            <small
-              appErrorMessage
-              [errors]="userField.errors"
-              [touched]="userField.touched"
-              [dirty]="userField.dirty"
-            >
-            </small>
+            <!-- Drop de proveedor -->
+            @if (typeField.valid) {
+              <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+                <label
+                  appLabel
+                  for="client"
+                  [label]="client"
+                  [required]="userField"
+                ></label>
+                <p-dropdown
+                  id="client"
+                  dataKey="id"
+                  formControlName="client"
+                  [filter]="true"
+                  filterBy="identification,name,lastname"
+                  [options]="clients"
+                  optionLabel="name"
+                  placeholder="Seleccione..."
+                >
+                  <ng-template pTemplate="selectedItem">
+                    @if (clientField.value) {
+                      <div>{{ clientField.value.identification }}
+                        - {{ clientField.value.name }} {{ clientField.value.lastname }}
+                      </div>
+                    }
+                  </ng-template>
+                  <ng-template let-item pTemplate="item">
+                    <div>{{ item.identification }} - {{ item.name }} {{ item.lastname }}</div>
+                  </ng-template>
+                </p-dropdown>
+                <small
+                  appErrorMessage
+                  [errors]="userField.errors"
+                  [touched]="userField.touched"
+                  [dirty]="userField.dirty"
+                >
+                </small>
+              </div>
+            }
+
+            <!--Date -->
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label
+                appLabel
+                for="date"
+                label="Fecha de transaccion: (yyyy-mm-dd)"
+                [required]="dateField"
+              ></label>
+              <p-calendar
+                id="date"
+                formControlName="date"
+                dateFormat="yy-mm-dd"
+                [firstDayOfWeek]="1"
+                [showIcon]="true"
+              ></p-calendar>
+              <small
+                appErrorMessage
+                [errors]="dateField.errors"
+                [touched]="dateField.touched"
+                [dirty]="dateField.dirty"
+              >
+              </small>
+            </div>
+
+            <!-- Drop de Authorizer -->
+            <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+              <label
+                appLabel
+                for="user"
+                label="Autorizador"
+                [required]="userField"
+              ></label>
+              <p-dropdown
+                id="user"
+                dataKey="id"
+                formControlName="user"
+                [filter]="true"
+                filterBy="identification,name,lastname"
+                [options]="users"
+                optionLabel="name"
+                placeholder="Seleccione...">
+                <ng-template pTemplate="selectedItem">
+                  @if (userField.value) {
+                    <div>{{ userField.value.identification }}- {{ userField.value.name }} {{ userField.value.lastname }}
+                    </div>
+                  }
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.identification }} - {{ item.name }} {{ item.lastname }}</div>
+                </ng-template>
+              </p-dropdown>
+              <small
+                appErrorMessage
+                [errors]="userField.errors"
+                [touched]="userField.touched"
+                [dirty]="userField.dirty"
+              >
+              </small>
+            </div>
+
+            <!-- Descripcion -->
+            <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+              <label
+                appLabel
+                for="description"
+                label="Descripción"
+                [required]="descriptionField"
+              ></label>
+              <input
+                pInputText
+                id="description"
+                formControlName="description"
+              >
+              <small
+                appErrorMessage
+                [errors]="descriptionField.errors"
+                [touched]="descriptionField.touched"
+                [dirty]="descriptionField.dirty"
+              >
+              </small>
+            </div>
           </div>
-        }
+        </p-panel>
       </div>
-
-      <div class="formgrid grid">
-        <!--Date -->
-        <div class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
-          <label
-            appLabel
-            for="date"
-            label="Fecha de transaccion: (yyyy-mm-dd)"
-            [required]="dateField"
-          ></label>
-          <p-calendar
-            id="date"
-            formControlName="date"
-            dateFormat="yy-mm-dd"
-            [firstDayOfWeek]="1"
-            [showIcon]="true"
-          ></p-calendar>
-          <small
-            appErrorMessage
-            [errors]="dateField.errors"
-            [touched]="dateField.touched"
-            [dirty]="dateField.dirty"
-          >
-          </small>
-        </div>
-
-        <!-- Descripcion -->
-        <div class="field xl:col-9 lg:col-9 md:col-6 sm:col-12">
-          <label
-            appLabel
-            for="description"
-            label="Descripción"
-            [required]="descriptionField"
-          ></label>
-          <input
-            pInputText
-            id="description"
-            formControlName="description"
-          >
-          <small
-            appErrorMessage
-            [errors]="descriptionField.errors"
-            [touched]="descriptionField.touched"
-            [dirty]="descriptionField.dirty"
-          >
-          </small>
-        </div>
-      </div>
-    </form>
-  </p-panel>
-}
-
-<p-divider></p-divider>
-
-<p-panel>
-  <app-transaction-detail-form [transactionId]="'cod'"
-                               [isEditing]="false"
-                               [isIncome]="typeField.value?.type"
-                               (transactionDetailFormOut)="addTransactionDetail($event)"></app-transaction-detail-form>
-</p-panel>
-
-<p-divider></p-divider>
+    }
+    <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+      <app-transaction-detail-form [transactionId]="'cod'"
+                                   [isEditing]="false"
+                                   [isIncome]="typeField.value?.type"
+                                   (transactionDetailFormOut)="addTransactionDetail($event)"></app-transaction-detail-form>
+    </div>
+  </div>
+</form>
 
 @if (transactionDetailsField.value) {
   <p-panel>

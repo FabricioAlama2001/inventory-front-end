@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserModel} from '@models/auth';
-import {TransactionModel} from '@models/core/transaction.model';
+import {IncomeModel} from '@models/core/income.model';
 import {UsersHttpService} from '@services/auth';
 import {
   BreadcrumbService,
@@ -85,24 +85,19 @@ export class TransactionFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadTransaction();
     this.loadTypes();
     this.loadUsers();
-    this.loadTransaction();
-
-    if (this.id != RoutesEnum.NEW) {
-      this.findTransaction();
-    }
   }
 
-  //metodo validación de emulación de foringkey
   loadTypes() {
-    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as TransactionModel;
+    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as IncomeModel;
 
     this.types = [transactionStorage.type];
   }
 
   loadTransaction() {
-    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as TransactionModel;
+    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as IncomeModel;
 
     if (transactionStorage) {
       this.form.patchValue(transactionStorage);
@@ -112,7 +107,6 @@ export class TransactionFormComponent implements OnInit {
     }
   }
 
-  //metodo
   loadUsers() {
     this.usersHttpService.findCatalogues().subscribe((users) => {
       this.users = users.filter((user) =>
@@ -133,25 +127,28 @@ export class TransactionFormComponent implements OnInit {
         );
       }
 
-      if (this.clients.length === 1) {
-        this.clientField.patchValue(this.clients[0]);
-      }
+      if (this.id === RoutesEnum.NEW) {
+        if (this.clients.length === 1) {
+          this.clientField.patchValue(this.clients[0]);
+        }
 
-      if (this.users.length === 1) {
-        this.userField.patchValue(this.users[0]);
+        if (this.users.length === 1) {
+          this.userField.patchValue(this.users[0]);
+        }
+      } else {
+        this.findTransaction();
       }
     });
   }
 
-  //Este metodo Construir el formulario reactivo
   get buildForm() {
-    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as TransactionModel;
+    const transactionStorage = JSON.parse(localStorage.getItem('transaction')!) as IncomeModel;
 
     return this.formBuilder.group({
       code: [null],
       description: [null, Validators.required],
       date: [null, Validators.required],
-      type: [transactionStorage.type, Validators.required],
+      type: [transactionStorage?.type, Validators.required],
       user: [null, Validators.required],
       client: [null, Validators.required],
       transactionDetails: [[], Validators.required]
@@ -174,9 +171,36 @@ export class TransactionFormComponent implements OnInit {
   }
 
   findTransaction(): void {
-    this.incomesHttpService.findOne(this.id!).subscribe((data) => {
-      this.form.patchValue(data);
-    });
+    if (this.typeField.value.type) {
+      this.incomesHttpService.findOne(this.id!).subscribe((data) => {
+        this.form.patchValue(data);
+        this.userField.patchValue(data.signature.authorizer);
+        this.clientField.patchValue(data.signature.receiver);
+
+        if (data.date) {
+          this.dateField.setValue(format(data.date, 'yyyy-MM-dd'));
+        }
+
+        this.transactionDetailsField.patchValue(data.transactionInDetails)
+        localStorage.setItem('transaction', JSON.stringify(this.form.value));
+        this.loadTypes();
+      });
+    } else {
+      this.expensesHttpService.findOne(this.id!).subscribe((data) => {
+        this.form.patchValue(data);
+        this.userField.patchValue(data.signature.authorizer);
+        this.clientField.patchValue(data.signature.receiver);
+
+        if (data.date) {
+          this.dateField.setValue(format(data.date, 'yyyy-MM-dd'));
+        }
+
+        this.transactionDetailsField.patchValue(data.transactionOutDetails)
+        localStorage.setItem('transaction', JSON.stringify(this.form.value));
+        this.loadTypes();
+      });
+    }
+
   }
 
   get validateFormErrors() {
@@ -196,7 +220,7 @@ export class TransactionFormComponent implements OnInit {
     this.router.navigate([this.routesService.transactionsList]);
   }
 
-  createIncome(payload: TransactionModel): void {
+  createIncome(payload: IncomeModel): void {
     this.incomesHttpService
       .create(payload)
       .subscribe((applicationStatus) => {
@@ -205,7 +229,7 @@ export class TransactionFormComponent implements OnInit {
       });
   }
 
-  createExpenses(payload: TransactionModel): void {
+  createExpenses(payload: IncomeModel): void {
     this.expensesHttpService
       .create(payload)
       .subscribe((applicationStatus) => {
@@ -214,7 +238,7 @@ export class TransactionFormComponent implements OnInit {
       });
   }
 
-  update(payload: TransactionModel): void {
+  update(payload: IncomeModel): void {
     this.incomesHttpService
       .update(this.id!, payload)
       .subscribe((applicationStatus) => {
@@ -253,7 +277,7 @@ export class TransactionFormComponent implements OnInit {
     if (index > -1) {
       this.transactionDetailsField.value[index].quantity += transactionDetailModel.quantity;
       this.transactionDetailsField.value[index].observation = transactionDetailModel.observation;
-      this.messageService.warningCustom('El producto ya existe', 'Fue actualizado');
+      this.messageService.warningCustom('El producto ya existe', `Se sumó la cantidad de: ${transactionDetailModel.quantity}, total: ${this.transactionDetailsField.value[index].quantity}`);
     } else {
       this.transactionDetailsField.value.push(transactionDetailModel);
       this.messageService.successCustom('Producto Agregado', 'Correctamente');
